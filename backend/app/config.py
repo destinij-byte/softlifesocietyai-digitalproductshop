@@ -27,5 +27,13 @@ class Settings(BaseSettings):
 
     inactivity_nudge_days: int = 5
 
+    # Comma-separated list of origins allowed to call this API from a browser,
+    # e.g. "https://academy.softlifesocietyai.com,https://softlifesocietyai.com"
+    cors_allowed_origins: str = ""
+
+    @property
+    def cors_allowed_origins_list(self) -> list[str]:
+        return [origin.strip() for origin in self.cors_allowed_origins.split(",") if origin.strip()]
+
 
 settings = Settings()
