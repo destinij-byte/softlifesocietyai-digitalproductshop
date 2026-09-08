@@ -112,61 +112,92 @@ Per the spec, the first course to seed via the admin endpoints is
 **Build Your Digital Empire** (7 modules), priced ~$149, with bundle/full-access
 tiers to follow.
 
-## Deploying to softlifesocietyai.com
+## Deploying to softlifesocietyai.com (cPanel)
 
-Two independent pieces go live: the API (backend) and the browser version of
-Academy (mobile's web export). Native iOS/Android builds are a separate track
-(App Store/Play Store) and aren't part of the domain.
+The domain is on cPanel (shared/VPS hosting via Passenger). cPanel is great
+for static files and PHP, but Passenger's Python support is WSGI-first,
+which doesn't reliably run this backend's async MongoDB driver (Motor) — and
+cPanel shared hosting can't run MongoDB itself either way. So the split is:
 
-### 1. Database
+- **API** → a proper ASGI host (Render, free tier) — runs `backend/` unmodified
+- **Web app** (mobile's browser build) → hosted directly in cPanel, since
+  it's just static files
+- **cPanel's job**: DNS (Zone Editor) for the API's subdomain, and File
+  Manager for the web app's files. Nothing on the domain itself changes.
 
-Create a MongoDB Atlas cluster (or any reachable Mongo instance) and grab its
-connection string for `MONGODB_URI`.
+### 1. Database — MongoDB Atlas
 
-### 2. API → `api.softlifesocietyai.com`
+1. Create a free cluster at mongodb.com/cloud/atlas.
+2. Under **Network Access**, allow access from anywhere (`0.0.0.0/0`) —
+   Render's outbound IPs aren't static on the free tier.
+3. Under **Database Access**, create a user/password.
+4. Copy the connection string (`mongodb+srv://...`) for `MONGODB_URI` below.
 
-1. Build/deploy `backend/` from its `Dockerfile` on whatever host you run —
-   Render, Fly.io, Railway, DigitalOcean App Platform, or a plain VPS behind
-   Caddy/Nginx all take a Dockerfile the same way.
-2. Set the env vars from `backend/.env.example` on that host, in particular:
+### 2. API → Render → `api.softlifesocietyai.com`
+
+1. Push this repo to GitHub if it isn't already (it is, on this branch).
+2. On render.com: **New → Web Service**, connect the repo, set:
+   - Root directory: `backend`
+   - Render auto-detects the `Dockerfile` — leave runtime as Docker
+3. Add environment variables (from `backend/.env.example`):
    - `MONGODB_URI` — from step 1
    - `JWT_SECRET`, `WORKBOOK_URL_SECRET` — long random strings, not the placeholders
-   - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` — from your Stripe dashboard
-   - `STRIPE_SUCCESS_URL` / `STRIPE_CANCEL_URL` — pointed at the web app, e.g.
-     `https://academy.softlifesocietyai.com/checkout/success`
+   - `STRIPE_SECRET_KEY` — **test** secret key from the Softlifesocietyai Stripe
+     account for now (switch to live once you're ready to charge real cards)
+   - `STRIPE_WEBHOOK_SECRET` — filled in after step 4 below
+   - `STRIPE_SUCCESS_URL=https://academy.softlifesocietyai.com/checkout/success`
+   - `STRIPE_CANCEL_URL=https://academy.softlifesocietyai.com/checkout/cancelled`
    - `CORS_ALLOWED_ORIGINS=https://academy.softlifesocietyai.com,https://softlifesocietyai.com`
-   - `SENDGRID_API_KEY` or `POSTMARK_SERVER_TOKEN` depending on `EMAIL_PROVIDER`
-3. In your DNS provider, add a record pointing `api.softlifesocietyai.com` at
-   your host (a CNAME to the host's URL, or an A record to its IP — your
-   host's docs will say which). Most PaaS hosts also want you to add the
-   custom domain in their dashboard so they can issue a TLS cert for it.
-4. In the Stripe dashboard, add a webhook endpoint at
-   `https://api.softlifesocietyai.com/academy/webhook/stripe` listening for
-   `checkout.session.completed`, then copy its signing secret into
-   `STRIPE_WEBHOOK_SECRET`.
-5. Promote your own account to admin so you can create courses: register via
-   `/auth/register`, then flip `is_admin: true` on that user document directly
-   in Mongo (there's intentionally no self-serve admin-promotion endpoint).
+   - `SENDGRID_API_KEY` or `POSTMARK_SERVER_TOKEN`, matching `EMAIL_PROVIDER`
+4. Deploy. Render gives you a `*.onrender.com` URL immediately — in Render's
+   dashboard, add the custom domain `api.softlifesocietyai.com`; it'll show
+   you the exact DNS target to use (usually a CNAME to
+   `your-service.onrender.com`).
+5. **In cPanel** → **Domains → Zone Editor** → pick `softlifesocietyai.com` →
+   **Add Record**: type `CNAME`, name `api`, points to the target Render gave
+   you. DNS propagation is usually minutes, occasionally longer.
+6. Register the Stripe webhook once the domain resolves — I can do this step
+   for you directly since Stripe is connected here; just say the word once
+   step 5 is live, and I'll create the webhook endpoint pointed at
+   `https://api.softlifesocietyai.com/academy/webhook/stripe` and hand you
+   the signing secret to paste into Render's `STRIPE_WEBHOOK_SECRET`.
+7. Promote your own account to admin so you can create courses: register via
+   `/auth/register` against the live API, then flip `is_admin: true` on that
+   user document in Atlas (Atlas has a web-based data browser — no shell
+   needed). There's intentionally no self-serve admin-promotion endpoint.
 
-### 3. Web app → `academy.softlifesocietyai.com`
+### 3. Web app → cPanel → `academy.softlifesocietyai.com`
 
 1. Build the static site with the production API URL baked in:
    ```
    cd mobile
    EXPO_PUBLIC_API_BASE_URL=https://api.softlifesocietyai.com npm run build:web
    ```
-2. Deploy the resulting `mobile/dist/` folder to any static host — Cloudflare
-   Pages, Netlify, Vercel, or an S3 bucket behind CloudFront all work, and all
-   let you attach a custom domain.
-3. Point `academy.softlifesocietyai.com` at that host per its custom-domain
-   instructions (usually a CNAME).
+   This produces `mobile/dist/`.
+2. **In cPanel** → **Domains → Domains** (or **Subdomains** on older themes)
+   → create subdomain `academy` on `softlifesocietyai.com`. cPanel will
+   create a document root, typically `public_html/academy`.
+3. **In cPanel → File Manager**, open that document root and upload the
+   *contents* of `mobile/dist/` (not the folder itself — `index.html` and
+   `_expo/` should sit directly in `public_html/academy/`). A zip-then-extract
+   round trip is usually faster than uploading files one by one.
+4. Visit `https://academy.softlifesocietyai.com` — cPanel issues a free
+   AutoSSL certificate for new subdomains automatically (may take a few
+   minutes on first creation).
 
 ### DNS summary
 
-| Record | Type | Points to |
-|---|---|---|
-| `api.softlifesocietyai.com` | CNAME (or A) | your backend host |
-| `academy.softlifesocietyai.com` | CNAME | your static host |
+| Record | Type | Points to | Where |
+|---|---|---|---|
+| `api.softlifesocietyai.com` | CNAME | Render's target for your service | cPanel Zone Editor |
+| `academy.softlifesocietyai.com` | — (subdomain, not external) | cPanel's own `public_html/academy` | cPanel Domains/Subdomains |
 
-Neither of these touches the bare `softlifesocietyai.com` record itself — so
-whatever's already serving that root domain is untouched.
+Neither touches the bare `softlifesocietyai.com` record — whatever's already
+serving your root domain is untouched.
+
+### Re-deploying after a change
+
+- Backend: push to the connected GitHub branch — Render redeploys automatically.
+- Web app: re-run `npm run build:web`, re-upload the new `dist/` contents
+  over the old ones in File Manager (or via cPanel's Git integration /
+  scheduled task, if you'd rather automate the upload later).
