@@ -42,7 +42,7 @@ export function MonthlyDropsPage() {
       ) : (
         drops.map((drop) => (
           <section key={drop.month} className="stack gap-md">
-            <div className="row-between">
+            <div className="row gap-md">
               <h2>{formatMonth(drop.month)}</h2>
               {!drop.unlocked && <span className="pill pill-cream">Vault members only</span>}
             </div>
