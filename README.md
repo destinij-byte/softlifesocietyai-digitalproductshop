@@ -9,7 +9,8 @@ infrastructure (no separate login system).
 
 ```
 backend/   FastAPI + MongoDB API (auth + academy + vault modules)
-mobile/    Expo / React Native screens & components for the Academy tab and the Vault
+mobile/    Expo / React Native screens & components for the Academy tab
+web/       The Soft Life Vault - a standalone React + Vite website
 ```
 
 ## Backend (`backend/`)
@@ -64,6 +65,7 @@ python -m app.scripts.seed_vault_products
 ```
 POST   /auth/register
 POST   /auth/login
+GET    /auth/me                         current user's profile (auth)
 
 GET    /academy/courses                 storefront listing (published only)
 GET    /academy/courses/{slug}          course + module/lesson outline (public)
@@ -124,35 +126,19 @@ set.
 
 ## Mobile (`mobile/`)
 
-Expo / React Native screens for the Academy tab and The Soft Life Vault,
-styled with the app's brand tokens (`mobile/src/theme` — ivory/cream/blush/
-gold/rose/ink, Cormorant Garamond display + DM Sans body) — swap the
-placeholder hex values there for the app's real theme file if one already
-exists elsewhere.
+Expo / React Native screens for the Academy tab, styled with the app's
+brand tokens (`mobile/src/theme`) — swap the placeholder hex values there
+for the app's real theme file if one already exists elsewhere.
 
-**Academy:**
 - `screens/academy/CourseListScreen` — enrolled courses with progress bars
 - `screens/academy/CourseDetailScreen` — module/lesson outline + workbook button
 - `screens/academy/LessonPlayerScreen` — ink-background video player, auto-completes on finish
 - `screens/academy/CourseCompleteScreen` — completion badge + "Recommended Next" upsell card
 - `navigation/AcademyNavigator` — stack wiring the four screens together
 
-**The Soft Life Vault:**
-- `screens/vault/VaultDashboardScreen` — "OPEN THE APP" button, boss/baddie welcome message,
-  membership badge, the 📚🎀🗂️✨🤖🎁 tile grid, "New This Month", "Continue Your Journey"
-- `screens/vault/MyLibraryScreen` — owned products grid, filterable by type
-- `screens/vault/MonthlyDropsScreen` — current + past drops, locked/unlocked by membership tier
-- `screens/vault/AiResourcesScreen` — owned Soft Life AI Collection prompt packs
-- `screens/vault/BundlesScreen` — Starter/Reset/Full Library/Founding Member upgrade cards with savings called out
-- `screens/vault/OrdersScreen` — purchase history
-- `navigation/VaultNavigator` — stack wiring the six screens together
-
 It's a real, runnable Expo app (`App.tsx` + `app.json`), not just a
 component library — it builds for iOS, Android, **and web** from the same
-source. `App.tsx` renders either `AcademyNavigator` or `VaultNavigator`
-based on `EXPO_PUBLIC_APP_MODULE` (`"academy"` by default, `"vault"` to
-build the Vault site instead) — see **Deploying to softlifesocietyai.com**
-below for how each becomes its own subdomain.
+source.
 
 ### Typecheck
 
@@ -172,6 +158,42 @@ stored, and `EXPO_PUBLIC_API_BASE_URL` at the deployed API.
 npm start          # Expo dev server, scan the QR code with Expo Go
 npm run web         # dev server in a browser
 npm run build:web   # static export to mobile/dist/ - deployable anywhere
+```
+
+## Web (`web/`) — The Soft Life Vault
+
+A standalone **React + Vite + TypeScript** website (not a mobile app screen
+export) — this is what actually gets deployed to `vault.softlifesocietyai.com`.
+Styled with the brand palette (ivory/cream/blush/gold/rose/ink,
+Cormorant Garamond display + DM Sans body) in `src/theme/global.css`.
+
+- `pages/LoginPage` / `RegisterPage` — email + password, shared with the app's account system via `/auth`
+- `pages/DashboardPage` — boss/baddie welcome message, membership badge, the
+  📚🎀🗂️✨🤖🎁 tile grid, "New This Month", "Continue Your Journey"
+- `pages/MyLibraryPage` — owned products grid, filterable by type, opens signed download links
+- `pages/MonthlyDropsPage` — current + past drops, locked/unlocked by membership tier
+- `pages/AiResourcesPage` — owned Soft Life AI Collection prompt packs
+- `pages/BundlesPage` — Starter/Reset/Full Library/Founding Member upgrade cards with savings called out, kicks off Stripe Checkout
+- `pages/OrdersPage` — purchase history
+- `pages/CheckoutSuccessPage` / `CheckoutCancelledPage` — Stripe redirect targets
+- `context/AuthContext` — holds the JWT (`localStorage`), validates it against `/auth/me` on load
+- `components/ProtectedRoute` — redirects to `/login` when signed out
+- `components/NavBar` — wordmark, section nav, "OPEN THE APP" link out to the mobile app, log out
+
+### Run it
+
+```
+cd web
+npm install
+cp .env.example .env   # set VITE_API_BASE_URL to your running backend
+npm run dev             # http://localhost:5173
+```
+
+### Typecheck / build
+
+```
+npm run typecheck
+npm run build            # static export to web/dist/ - deployable anywhere
 ```
 
 ## First course
@@ -200,10 +222,11 @@ build:
 
 - **API** → Render — runs `backend/` unmodified, as a real ASGI process,
   free tier to start
-- **Web app** (mobile's browser build) → hosted directly in cPanel under
-  `/home/softzwqm`, since it's just static files
+- **Academy web app** (mobile's browser build) and **the Vault website**
+  (`web/`) → both hosted directly in cPanel under `/home/softzwqm`, as two
+  separate static sites on two subdomains
 - **cPanel's job**: DNS (Zone Editor) for the API's subdomain, and
-  File Manager / FTP for the web app's files. Nothing on the domain's
+  File Manager / FTP for both web apps' files. Nothing on the domain's
   existing content changes.
 
 ### 1. Database — MongoDB Atlas
@@ -283,27 +306,55 @@ build:
    AutoSSL certificate for new subdomains automatically (may take a few
    minutes on first creation).
 
-### 4. Vault web app → cPanel (`/home/softzwqm`) → `vault.softlifesocietyai.com`
+### 4. The Vault → cPanel (`/home/softzwqm`) → `vault.softlifesocietyai.com`
 
-Same process as step 3, on a second subdomain, with `EXPO_PUBLIC_APP_MODULE`
-set so the build renders `VaultNavigator` instead of `AcademyNavigator`:
+The Vault is a separate app (`web/`), not part of the Expo mobile project —
+build it with Vite and deploy it the same way as the Academy web app, on
+its own subdomain:
 
-```
-cd mobile
-EXPO_PUBLIC_API_BASE_URL=https://api.softlifesocietyai.com \
-EXPO_PUBLIC_APP_MODULE=vault \
-npm run build:web
-```
+1. Build the static site with the production API URL baked in:
+   ```
+   cd web
+   VITE_API_BASE_URL=https://api.softlifesocietyai.com \
+   VITE_APP_LINK=https://softlifesocietyai.com/app \
+   npm run build
+   ```
+   This produces `web/dist/`. You can build and run this before the API is
+   live — the URL is just baked into the JS bundle; API calls will start
+   working once step 2 above is done.
+2. **In cPanel** → **Domains** → create subdomain `vault` on
+   `softlifesocietyai.com`, the same way as `academy` in step 3.2.
+3. Upload the site — two options, either works:
+   - **File Manager (no extra tools)**: run `npm run package` in `web/` to
+     produce `web/dist.zip`. In cPanel File Manager, navigate to the
+     document root, upload `dist.zip`, right-click it → **Extract**, then
+     delete the zip. `index.html` should end up directly in the document
+     root, not nested in a subfolder.
+   - **FTP script (repeatable)**: `web/scripts/deploy_ftp.py` uploads
+     `web/dist/` to your cPanel document root over FTPS, using Python's
+     standard library only — the same tool as `mobile/scripts/deploy_ftp.py`,
+     adapted for this app:
+     ```
+     cd web
+     npm run build
+     FTP_HOST=softlifesocietyai.com \
+     FTP_USER=vault@softlifesocietyai.com \
+     FTP_PASSWORD='...' \
+     FTP_REMOTE_DIR=/ \
+     python3 scripts/deploy_ftp.py
+     ```
+     Add `--delete` to also remove remote files no longer present locally
+     (off by default), or `--dry-run` to preview without changing anything.
+     Create a scoped FTP account for this subdomain in cPanel → FTP
+     Accounts first, same as for `academy`.
+4. Visit `https://vault.softlifesocietyai.com` — cPanel issues a free
+   AutoSSL certificate automatically (may take a few minutes on first
+   creation).
 
-Create the `vault` subdomain in cPanel the same way as `academy` in step 3.2,
-upload `mobile/dist/` (or `dist.zip`) to its document root, and visit
-`https://vault.softlifesocietyai.com`.
+#### FTP deploy script (Academy)
 
-#### FTP deploy script
-
-`mobile/scripts/deploy_ftp.py` uploads `mobile/dist/` to your cPanel
-document root over FTPS, using Python's standard library only (no `lftp` or
-other install required).
+`mobile/scripts/deploy_ftp.py` works the same way for the Academy web app —
+uploads `mobile/dist/` to your cPanel document root over FTPS:
 
 1. **In cPanel → FTP Accounts**, create an FTP account scoped to just the
    `academy` subdomain's document root (not the full cPanel login) — least
@@ -332,13 +383,16 @@ other install required).
 |---|---|---|---|
 | `api.softlifesocietyai.com` | CNAME | Render's target for your service | cPanel Zone Editor |
 | `academy.softlifesocietyai.com` | — (subdomain, not external) | cPanel's own document root under `/home/softzwqm` | cPanel Domains |
+| `vault.softlifesocietyai.com` | — (subdomain, not external) | cPanel's own document root under `/home/softzwqm` | cPanel Domains |
 
-Neither touches the bare `softlifesocietyai.com` record — whatever's already
-serving your root domain is untouched.
+None of these touch the bare `softlifesocietyai.com` record — whatever's
+already serving your root domain is untouched.
 
 ### Re-deploying after a change
 
 - Backend: push to the connected GitHub branch — Render rebuilds from the
   Dockerfile and redeploys automatically.
-- Web app: re-run `npm run build:web`, then either re-run
-  `scripts/deploy_ftp.py` or re-zip/re-upload via File Manager.
+- Academy web app: re-run `npm run build:web` in `mobile/`, then either
+  re-run `scripts/deploy_ftp.py` or re-zip/re-upload via File Manager.
+- The Vault: re-run `npm run build` in `web/`, then either re-run
+  `scripts/deploy_ftp.py` or `npm run package` + re-upload via File Manager.

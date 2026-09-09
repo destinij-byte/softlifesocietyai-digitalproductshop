@@ -1,0 +1,26 @@
+{
+  "name": "soft-life-vault-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "The Soft Life Vault - gated digital product library website",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "package": "bash scripts/package_web.sh"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.6"
+  }
+}

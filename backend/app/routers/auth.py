@@ -10,11 +10,12 @@ actual SLS auth service instead of building alongside it.
 
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.database import get_database
+from app.deps import get_current_user
 from app.models.user import UserInDB
-from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse
+from app.schemas.auth import LoginRequest, MeResponse, RegisterRequest, TokenResponse
 from app.security import create_access_token, hash_password, verify_password
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -51,3 +52,14 @@ async def login(payload: LoginRequest):
     user = UserInDB(**doc)
     token = create_access_token(str(user.id))
     return TokenResponse(access_token=token)
+
+
+@router.get("/me", response_model=MeResponse)
+async def get_me(user: UserInDB = Depends(get_current_user)):
+    return MeResponse(
+        id=user.id,
+        email=user.email,
+        full_name=user.full_name,
+        is_admin=user.is_admin,
+        membership_tier=user.membership_tier,
+    )
