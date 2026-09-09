@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import get_database
-from app.routers import academy, academy_admin, auth
+from app.routers import academy, academy_admin, auth, vault, vault_admin
 
 app = FastAPI(title="Soft Life Society API")
 
@@ -19,6 +19,8 @@ if settings.cors_allowed_origins_list:
 app.include_router(auth.router)
 app.include_router(academy.router)
 app.include_router(academy_admin.router)
+app.include_router(vault.router)
+app.include_router(vault_admin.router)
 
 
 @app.on_event("startup")
@@ -31,6 +33,13 @@ async def create_indexes():
     await db.lessons.create_index("module_id")
     await db.enrollments.create_index([("user_id", 1), ("course_id", 1)], unique=True)
     await db.email_triggers.create_index([("user_id", 1), ("course_id", 1), ("trigger_type", 1)])
+
+    await db.products.create_index("slug", unique=True)
+    await db.products.create_index([("is_monthly_drop", 1), ("drop_month", 1)])
+    await db.bundles.create_index("slug", unique=True)
+    await db.entitlements.create_index([("user_id", 1), ("product_id", 1)], unique=True)
+    await db.orders.create_index("stripe_payment_id", unique=True)
+    await db.orders.create_index("user_id")
 
 
 @app.get("/health")

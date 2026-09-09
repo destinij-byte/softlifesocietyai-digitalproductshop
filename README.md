@@ -1,14 +1,15 @@
 # Soft Life Society AI — Digital Product Shop
 
-Monorepo for the Soft Life Society app. Currently contains **Soft Life Academy**,
-a course/learning module that reuses the app's user accounts, auth, and
-subscription infrastructure (no separate login system).
+Monorepo for the Soft Life Society app. Contains **Soft Life Academy**, a
+course/learning module, and **The Soft Life Vault**, a gated digital product
+library — both reuse the app's user accounts, auth, and subscription
+infrastructure (no separate login system).
 
 ## Structure
 
 ```
-backend/   FastAPI + MongoDB API (auth + academy module)
-mobile/    Expo / React Native screens & components for the Academy tab
+backend/   FastAPI + MongoDB API (auth + academy + vault modules)
+mobile/    Expo / React Native screens & components for the Academy tab and the Vault
 ```
 
 ## Backend (`backend/`)
@@ -27,6 +28,12 @@ FastAPI service backed by MongoDB (via Motor). Implements:
 - Lifecycle emails (welcome, inactivity nudge, completion, upsell) logged
   to `email_triggers` so nothing double-sends, dispatched via SendGrid or
   Postmark (pick one with `EMAIL_PROVIDER`).
+- **The Soft Life Vault** — `products` / `bundles` content collections,
+  entitlements-driven access (`entitlements`), Stripe Checkout + webhook →
+  `orders` + entitlement grants, signed expiring download URLs, a member
+  dashboard, My Library (filterable by product type), Monthly Drops
+  (locked/unlocked by membership tier), AI Resources, and purchase history.
+  Admin-only CRUD for products/bundles (`/vault/admin/...`).
 
 ### Run it
 
@@ -42,6 +49,14 @@ Daily inactivity nudge (run via cron / celery beat):
 
 ```
 python -m app.scripts.send_inactivity_nudges
+```
+
+Seed the Vault's 18 products, 4 AI Collection monthly drops, and 4 bundles
+(Starter / Reset / Full Library / Founding Member Lifetime) — idempotent,
+safe to re-run:
+
+```
+python -m app.scripts.seed_vault_products
 ```
 
 ### API surface
@@ -70,21 +85,74 @@ POST   /academy/admin/lessons           create a lesson (admin)
 was added because the video player needs `video_url`/transcript/resources,
 which the public course-detail endpoint deliberately omits.
 
+### Vault API surface
+
+```
+GET    /vault/products                        catalog listing, optional ?type= filter (public)
+GET    /vault/products/{id_or_slug}            product detail (public)
+GET    /vault/bundles                          bundle listing incl. savings vs. buying individually (public)
+GET    /vault/bundles/{id_or_slug}             bundle detail (public)
+POST   /vault/checkout                         Stripe Checkout session for one product or bundle (auth)
+POST   /vault/webhook/stripe                   Stripe webhook -> creates order + grants entitlements
+GET    /vault/dashboard                        welcome message, badge, "New This Month", "Continue Your Journey" (auth)
+GET    /vault/library                          owned products, optional ?type= filter (auth)
+GET    /vault/ai-resources                     owned Soft Life AI Collection prompt packs (auth)
+GET    /vault/drops                            current + past monthly drops, locked/unlocked by tier (auth)
+POST   /vault/products/{id}/open               mark a product opened, for "Continue Your Journey" (auth + entitled)
+GET    /vault/products/{id}/download           signed, expiring download URL (auth + entitled)
+GET    /vault/orders                           purchase history (auth)
+
+POST   /vault/admin/products                   create a product (admin)
+PATCH  /vault/admin/products/{id}               update a product (admin)
+POST   /vault/admin/bundles                    create a bundle (admin)
+PATCH  /vault/admin/bundles/{id}                update a bundle (admin)
+```
+
+A bundle purchase is expanded into one entitlement per product it contains
+(rather than a single shared entitlement) so ownership checks and
+`last_opened_at` tracking stay a simple per-product lookup. Buying the
+Founding Member Lifetime bundle also flips the buyer's `membership_tier` to
+`founding_member`.
+
+Recurring subscription tiers (`vault_member` / `elite`) are modeled on the
+`UserInDB` (`subscription_status`, `subscription_renews_at`) and read by
+`/vault/drops`' unlock logic, but there's no subscription price in the
+brief's pricing table, so Stripe Subscription checkout isn't wired up yet —
+today, Monthly Drops access comes from owning a drop product directly or
+being a Founding Member. Add a subscription checkout flow once pricing is
+set.
+
 ## Mobile (`mobile/`)
 
-Expo / React Native screens for the Academy tab, styled with the app's
-brand tokens (`mobile/src/theme`) — swap the placeholder hex values there
-for the app's real theme file if one already exists elsewhere.
+Expo / React Native screens for the Academy tab and The Soft Life Vault,
+styled with the app's brand tokens (`mobile/src/theme` — ivory/cream/blush/
+gold/rose/ink, Cormorant Garamond display + DM Sans body) — swap the
+placeholder hex values there for the app's real theme file if one already
+exists elsewhere.
 
+**Academy:**
 - `screens/academy/CourseListScreen` — enrolled courses with progress bars
 - `screens/academy/CourseDetailScreen` — module/lesson outline + workbook button
 - `screens/academy/LessonPlayerScreen` — ink-background video player, auto-completes on finish
 - `screens/academy/CourseCompleteScreen` — completion badge + "Recommended Next" upsell card
 - `navigation/AcademyNavigator` — stack wiring the four screens together
 
+**The Soft Life Vault:**
+- `screens/vault/VaultDashboardScreen` — "OPEN THE APP" button, boss/baddie welcome message,
+  membership badge, the 📚🎀🗂️✨🤖🎁 tile grid, "New This Month", "Continue Your Journey"
+- `screens/vault/MyLibraryScreen` — owned products grid, filterable by type
+- `screens/vault/MonthlyDropsScreen` — current + past drops, locked/unlocked by membership tier
+- `screens/vault/AiResourcesScreen` — owned Soft Life AI Collection prompt packs
+- `screens/vault/BundlesScreen` — Starter/Reset/Full Library/Founding Member upgrade cards with savings called out
+- `screens/vault/OrdersScreen` — purchase history
+- `navigation/VaultNavigator` — stack wiring the six screens together
+
 It's a real, runnable Expo app (`App.tsx` + `app.json`), not just a
 component library — it builds for iOS, Android, **and web** from the same
-source.
+source. `App.tsx` renders either `AcademyNavigator` or `VaultNavigator`
+based on `EXPO_PUBLIC_APP_MODULE` (`"academy"` by default, `"vault"` to
+build the Vault site instead) — see **Deploying to softlifesocietyai.com**
+below for how each becomes its own subdomain.
 
 ### Typecheck
 
@@ -111,6 +179,14 @@ npm run build:web   # static export to mobile/dist/ - deployable anywhere
 Per the spec, the first course to seed via the admin endpoints is
 **Build Your Digital Empire** (7 modules), priced ~$149, with bundle/full-access
 tiers to follow.
+
+## Vault catalog
+
+`python -m app.scripts.seed_vault_products` (see **Backend** above) seeds
+the Vault's full catalog per the brief's pricing table: 18 individual
+products ($5–$27), 4 Soft Life AI Collection prompt packs seeded as monthly
+drops, and 4 bundles (Starter $27, Reset $47, Full Library $97, Founding
+Member Lifetime $147).
 
 ## Deploying to softlifesocietyai.com
 
@@ -153,7 +229,10 @@ build:
    - `STRIPE_WEBHOOK_SECRET` — filled in after step 4 below
    - `STRIPE_SUCCESS_URL=https://academy.softlifesocietyai.com/checkout/success`
    - `STRIPE_CANCEL_URL=https://academy.softlifesocietyai.com/checkout/cancelled`
-   - `CORS_ALLOWED_ORIGINS=https://academy.softlifesocietyai.com,https://softlifesocietyai.com`
+   - `VAULT_STRIPE_SUCCESS_URL=https://vault.softlifesocietyai.com/checkout/success`
+   - `VAULT_STRIPE_CANCEL_URL=https://vault.softlifesocietyai.com/checkout/cancelled`
+   - `VAULT_DOWNLOAD_SECRET` — long random string, not the placeholder
+   - `CORS_ALLOWED_ORIGINS=https://academy.softlifesocietyai.com,https://vault.softlifesocietyai.com,https://softlifesocietyai.com`
    - `SENDGRID_API_KEY` or `POSTMARK_SERVER_TOKEN`, matching `EMAIL_PROVIDER`
 4. Deploy. Render gives you a `*.onrender.com` URL immediately — in Render's
    dashboard, add the custom domain `api.softlifesocietyai.com`; it'll show
@@ -162,15 +241,20 @@ build:
 5. **In cPanel** → **Domains → Zone Editor** → pick `softlifesocietyai.com` →
    **Add Record**: type `CNAME`, name `api`, points to the target Render gave
    you. DNS propagation is usually minutes, occasionally longer.
-6. Once the domain resolves, I can register the Stripe webhook directly
+6. Once the domain resolves, I can register the Stripe webhooks directly
    (Stripe is connected here) — just say the word and I'll create the
-   endpoint at `https://api.softlifesocietyai.com/academy/webhook/stripe`
-   and hand you the signing secret to paste into Render's
-   `STRIPE_WEBHOOK_SECRET`.
-7. Promote your own account to admin so you can create courses: register
-   via `/auth/register` against the live API, then flip `is_admin: true`
-   on that user document in Atlas's web-based data browser (no shell
-   needed). There's intentionally no self-serve admin-promotion endpoint.
+   endpoints at `https://api.softlifesocietyai.com/academy/webhook/stripe`
+   and `https://api.softlifesocietyai.com/vault/webhook/stripe`, and hand
+   you the signing secrets to paste into Render's `STRIPE_WEBHOOK_SECRET`
+   (both webhooks share the same Stripe account/secret unless you split them).
+7. Promote your own account to admin so you can create courses and Vault
+   products: register via `/auth/register` against the live API, then flip
+   `is_admin: true` on that user document in Atlas's web-based data browser
+   (no shell needed). There's intentionally no self-serve admin-promotion
+   endpoint. Then seed the Vault's catalog:
+   ```
+   MONGODB_URI=<your Atlas URI> python -m app.scripts.seed_vault_products
+   ```
 
 ### 3. Web app → cPanel (`/home/softzwqm`) → `academy.softlifesocietyai.com`
 
@@ -198,6 +282,22 @@ build:
 4. Visit `https://academy.softlifesocietyai.com` — cPanel issues a free
    AutoSSL certificate for new subdomains automatically (may take a few
    minutes on first creation).
+
+### 4. Vault web app → cPanel (`/home/softzwqm`) → `vault.softlifesocietyai.com`
+
+Same process as step 3, on a second subdomain, with `EXPO_PUBLIC_APP_MODULE`
+set so the build renders `VaultNavigator` instead of `AcademyNavigator`:
+
+```
+cd mobile
+EXPO_PUBLIC_API_BASE_URL=https://api.softlifesocietyai.com \
+EXPO_PUBLIC_APP_MODULE=vault \
+npm run build:web
+```
+
+Create the `vault` subdomain in cPanel the same way as `academy` in step 3.2,
+upload `mobile/dist/` (or `dist.zip`) to its document root, and visit
+`https://vault.softlifesocietyai.com`.
 
 #### FTP deploy script
 

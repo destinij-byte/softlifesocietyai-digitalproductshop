@@ -8,6 +8,8 @@ to have something real to authenticate against. Swap this out for the
 actual SLS auth service instead of building alongside it.
 """
 
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, HTTPException, status
 
 from app.database import get_database
@@ -30,6 +32,10 @@ async def register(payload: RegisterRequest):
         "hashed_password": hash_password(payload.password),
         "full_name": payload.full_name,
         "is_admin": False,
+        "membership_tier": "free",
+        "subscription_status": "none",
+        "subscription_renews_at": None,
+        "created_at": datetime.now(timezone.utc),
     }
     result = await db.users.insert_one(doc)
     token = create_access_token(str(result.inserted_id))

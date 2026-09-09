@@ -27,6 +27,11 @@ class Settings(BaseSettings):
 
     inactivity_nudge_days: int = 5
 
+    vault_stripe_success_url: str = "https://vault.softlifesociety.ai/checkout/success"
+    vault_stripe_cancel_url: str = "https://vault.softlifesociety.ai/checkout/cancelled"
+    vault_download_secret: str = "change-me-vault"
+    vault_download_expire_seconds: int = 900
+
     # Comma-separated list of origins allowed to call this API from a browser,
     # e.g. "https://academy.softlifesocietyai.com,https://softlifesocietyai.com"
     cors_allowed_origins: str = ""
