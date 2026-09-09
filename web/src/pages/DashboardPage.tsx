@@ -49,6 +49,7 @@ export function DashboardPage() {
                 title={product.title}
                 type={product.type}
                 price={product.price}
+                subtitle={product.subtitle}
                 thumbnailUrl={product.thumbnail_url}
                 locked
                 onClick={() => navigate("/drops")}
@@ -70,6 +71,7 @@ export function DashboardPage() {
                 title={item.product.title}
                 type={item.product.type}
                 price={item.product.price}
+                subtitle={item.product.subtitle}
                 thumbnailUrl={item.product.thumbnail_url}
                 owned
                 onClick={() => navigate("/library")}

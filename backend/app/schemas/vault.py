@@ -11,12 +11,16 @@ class ProductOut(BaseModel):
     id: PyObjectId
     slug: str
     title: str
+    subtitle: str
     description: str
     type: str
+    collection: str
+    credit_line: str
     price: float
     thumbnail_url: str
     is_ai_resource: bool
     is_monthly_drop: bool
+    is_hero: bool
     drop_month: str | None
 
 

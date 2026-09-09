@@ -26,6 +26,7 @@ export function NavBar() {
               <NavLink to="/" end>
                 Dashboard
               </NavLink>
+              <NavLink to="/shop">Shop</NavLink>
               <NavLink to="/library">My Library</NavLink>
               <NavLink to="/drops">Monthly Drops</NavLink>
               <NavLink to="/ai-resources">AI Resources</NavLink>

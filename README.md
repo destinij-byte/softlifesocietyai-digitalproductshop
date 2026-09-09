@@ -164,12 +164,18 @@ npm run build:web   # static export to mobile/dist/ - deployable anywhere
 
 A standalone **React + Vite + TypeScript** website (not a mobile app screen
 export) — this is what actually gets deployed to `vault.softlifesocietyai.com`.
-Styled with the brand palette (ivory/cream/blush/gold/rose/ink,
-Cormorant Garamond display + DM Sans body) in `src/theme/global.css`.
+Styled with the brand palette — ivory/cream #F7F2EA, dusty blush #D8B7B2,
+champagne #D6C19A, soft black #171515, espresso #3A2A25, warm gold #B89B5E
+(used sparingly), Cormorant Garamond display + DM Sans body — in
+`src/theme/global.css`.
 
 - `pages/LoginPage` / `RegisterPage` — email + password, shared with the app's account system via `/auth`
 - `pages/DashboardPage` — boss/baddie welcome message, membership badge, the
   📚🎀🗂️✨🤖🎁 tile grid, "New This Month", "Continue Your Journey"
+- `pages/ShopPage` — the full 18-product catalog grouped into its six collections
+  (🌸 Soft Life, 💰 Wealth, 👑 CEO, 🤖 AI, 💕 Inner Life, 👑 Signature), each with
+  its own accent treatment via `theme/collections.ts`, a "Hero Products" row,
+  and a buy button per product (individual-product Stripe Checkout)
 - `pages/MyLibraryPage` — owned products grid, filterable by type, opens signed download links
 - `pages/MonthlyDropsPage` — current + past drops, locked/unlocked by membership tier
 - `pages/AiResourcesPage` — owned Soft Life AI Collection prompt packs
@@ -179,6 +185,10 @@ Cormorant Garamond display + DM Sans body) in `src/theme/global.css`.
 - `context/AuthContext` — holds the JWT (`localStorage`), validates it against `/auth/me` on load
 - `components/ProtectedRoute` — redirects to `/login` when signed out
 - `components/NavBar` — wordmark, section nav, "OPEN THE APP" link out to the mobile app, log out
+
+Every product carries a `collection`, `subtitle`, and `credit_line` ("D. Jones
+/ Soft Life Society") so the catalog reads as one boutique rather than 18
+unrelated PDFs — see `backend/app/models/product.py` and the seed script.
 
 ### Run it
 

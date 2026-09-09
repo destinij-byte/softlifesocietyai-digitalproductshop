@@ -38,7 +38,7 @@ export function BundleCard({
           ${individualTotal.toFixed(0)}
         </span>
       </div>
-      <span className="pill pill-rose" style={{ alignSelf: "flex-start" }}>
+      <span className="pill pill-blush" style={{ alignSelf: "flex-start" }}>
         Save ${savings.toFixed(0)}
       </span>
       <button className={`btn ${isFoundingMember ? "btn-gold" : "btn-ink"} btn-block`} onClick={onBuy} disabled={loading} style={{ marginTop: 8 }}>

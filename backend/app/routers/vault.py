@@ -49,12 +49,16 @@ def _product_out(doc: dict) -> ProductOut:
         id=doc["_id"],
         slug=doc["slug"],
         title=doc["title"],
+        subtitle=doc.get("subtitle", ""),
         description=doc.get("description", ""),
         type=doc["type"],
+        collection=doc.get("collection", "soft_life"),
+        credit_line=doc.get("credit_line", "D. Jones / Soft Life Society"),
         price=doc["price"],
         thumbnail_url=doc.get("thumbnail_url", ""),
         is_ai_resource=doc.get("is_ai_resource", False),
         is_monthly_drop=doc.get("is_monthly_drop", False),
+        is_hero=doc.get("is_hero", False),
         drop_month=doc.get("drop_month"),
     )
 

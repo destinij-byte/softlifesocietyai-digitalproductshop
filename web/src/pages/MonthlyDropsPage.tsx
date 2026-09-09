@@ -53,6 +53,7 @@ export function MonthlyDropsPage() {
                   title={product.title}
                   type={product.type}
                   price={product.price}
+                  subtitle={product.subtitle}
                   thumbnailUrl={product.thumbnail_url}
                   locked={!drop.unlocked}
                   owned={drop.unlocked}

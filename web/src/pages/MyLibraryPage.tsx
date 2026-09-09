@@ -68,6 +68,7 @@ export function MyLibraryPage() {
               title={item.product.title}
               type={item.product.type}
               price={item.product.price}
+              subtitle={item.product.subtitle}
               thumbnailUrl={item.product.thumbnail_url}
               owned
               busy={openingId === item.product.id}

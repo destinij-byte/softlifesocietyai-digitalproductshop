@@ -7,6 +7,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { DashboardPage } from "./pages/DashboardPage";
+import { ShopPage } from "./pages/ShopPage";
 import { MyLibraryPage } from "./pages/MyLibraryPage";
 import { MonthlyDropsPage } from "./pages/MonthlyDropsPage";
 import { AiResourcesPage } from "./pages/AiResourcesPage";
@@ -31,6 +32,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/shop"
+          element={
+            <ProtectedRoute>
+              <ShopPage />
             </ProtectedRoute>
           }
         />

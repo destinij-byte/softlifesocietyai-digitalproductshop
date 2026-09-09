@@ -45,6 +45,7 @@ export function AiResourcesPage() {
               title={item.product.title}
               type={item.product.type}
               price={item.product.price}
+              subtitle={item.product.subtitle}
               thumbnailUrl={item.product.thumbnail_url}
               owned
               onClick={() => handleOpen(item)}

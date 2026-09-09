@@ -2,16 +2,22 @@ import { apiRequest } from "./client";
 
 export type MembershipTier = "free" | "vault_member" | "elite" | "founding_member";
 
+export type ProductCollection = "soft_life" | "wealth" | "ceo" | "ai" | "inner_life" | "signature";
+
 export interface Product {
   id: string;
   slug: string;
   title: string;
+  subtitle: string;
   description: string;
   type: string;
+  collection: ProductCollection;
+  credit_line: string;
   price: number;
   thumbnail_url: string;
   is_ai_resource: boolean;
   is_monthly_drop: boolean;
+  is_hero: boolean;
   drop_month: string | null;
 }
 
