@@ -141,7 +141,7 @@ input {
 
 .btn-gold {
   background: linear-gradient(135deg, var(--gold), var(--champagne));
-  color: var(--ivory);
+  color: var(--ink); /* ivory-on-gold reads ~2.3:1 - fails contrast; ink reads ~6.8:1 */
 }
 
 .btn-gold:not(:disabled):hover {
@@ -194,7 +194,7 @@ input {
 
 .pill-gold {
   background: linear-gradient(135deg, var(--gold), var(--champagne));
-  color: var(--ivory);
+  color: var(--ink); /* ivory-on-gold reads ~2.3:1 - fails contrast; ink reads ~6.8:1 */
 }
 
 .pill-blush {
@@ -365,7 +365,7 @@ input {
 .nav-links a:hover,
 .nav-links a.active {
   opacity: 1;
-  color: var(--gold);
+  color: var(--espresso); /* gold-on-ivory reads ~2.2:1 - fails contrast; espresso reads ~11:1 */
 }
 
 /* Product thumbnails */

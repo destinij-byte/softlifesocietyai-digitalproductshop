@@ -31,7 +31,7 @@ export function BundleCard({
         {productCount} products
       </p>
       <div className="row gap-md" style={{ alignItems: "baseline", marginTop: 4 }}>
-        <span className="display" style={{ fontSize: 32, color: "var(--gold)" }}>
+        <span className="display" style={{ fontSize: 32, color: isFoundingMember ? "var(--champagne)" : "var(--espresso)" }}>
           ${price.toFixed(0)}
         </span>
         <span className="muted" style={{ textDecoration: "line-through" }}>

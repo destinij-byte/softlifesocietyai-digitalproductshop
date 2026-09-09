@@ -45,14 +45,14 @@ export function ProductCard({
         <img className="thumb" src={thumbnailUrl} alt="" />
       ) : (
         <div className="thumb" style={collectionMeta ? { background: collectionMeta.accentColor } : undefined}>
-          {locked ? "🔒" : "🎀"}
+          {locked ? "🔒" : collectionMeta?.emoji ?? "🎀"}
         </div>
       )}
       <span
         className={collectionMeta ? "pill" : "pill pill-cream"}
         style={
           collectionMeta
-            ? { alignSelf: "flex-start", background: collectionMeta.accentColor, color: collectionMeta.cardBg }
+            ? { alignSelf: "flex-start", background: collectionMeta.accentColor, color: "var(--ink)" }
             : { alignSelf: "flex-start" }
         }
       >
@@ -71,7 +71,7 @@ export function ProductCard({
           Vault members only
         </span>
       ) : (
-        <strong style={{ color: collectionMeta?.accentColor ?? "var(--gold)", fontSize: 18 }}>
+        <strong style={{ color: collectionMeta?.mutedColor ?? "var(--espresso)", fontSize: 18 }}>
           ${price.toFixed(0)}
         </strong>
       )}

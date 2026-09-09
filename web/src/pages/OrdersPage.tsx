@@ -32,7 +32,7 @@ export function OrdersPage() {
             <div key={order.id} className="card stack gap-sm">
               <div className="row-between">
                 <span className="muted">{formatDate(order.created_at)}</span>
-                <strong style={{ color: "var(--gold)" }}>${order.amount.toFixed(2)}</strong>
+                <strong style={{ color: "var(--espresso)" }}>${order.amount.toFixed(2)}</strong>
               </div>
               {order.items.map((line, idx) => (
                 <p key={idx}>{line.title}</p>
