@@ -21,7 +21,7 @@ export function NavBar() {
         </NavLink>
 
         {user ? (
-          <nav className="row gap-lg">
+          <nav className="row gap-md">
             <div className="nav-links">
               <NavLink to="/" end>
                 Dashboard
@@ -32,10 +32,10 @@ export function NavBar() {
               <NavLink to="/upgrade">Upgrade</NavLink>
               <NavLink to="/purchases">My Purchases</NavLink>
             </div>
-            <a className="btn btn-ink" href={APP_LINK} target="_blank" rel="noreferrer">
+            <a className="btn btn-sm btn-ink" href={APP_LINK} target="_blank" rel="noreferrer">
               OPEN THE APP
             </a>
-            <button className="btn btn-outline" onClick={handleLogout}>
+            <button className="btn btn-sm btn-outline" onClick={handleLogout}>
               Log out
             </button>
           </nav>

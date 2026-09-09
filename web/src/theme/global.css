@@ -158,6 +158,11 @@ input {
   border: 1.5px solid var(--ink);
 }
 
+.btn-sm {
+  padding: 9px 18px;
+  font-size: 13px;
+}
+
 .btn-outline:not(:disabled):hover {
   background: var(--ink);
   color: var(--ivory);
@@ -320,25 +325,29 @@ input {
 }
 
 .navbar .container {
+  max-width: 1320px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
 }
 
 .wordmark {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 700;
   letter-spacing: 0.01em;
+  flex-shrink: 0;
 }
 
 .nav-links {
   display: flex;
-  gap: 22px;
+  gap: 16px;
   align-items: center;
   font-size: 14px;
   font-weight: 500;
+  flex-wrap: wrap;
 }
 
 .nav-links a {
