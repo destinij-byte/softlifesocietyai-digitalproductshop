@@ -6,6 +6,7 @@ import { MembershipBadge } from "../components/MembershipBadge";
 import { VaultTile } from "../components/VaultTile";
 import { ProductCard } from "../components/ProductCard";
 import { Spinner } from "../components/Spinner";
+import { LIFE_AREAS, LIFE_AREA_ORDER } from "../theme/lifeAreas";
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -31,12 +32,9 @@ export function DashboardPage() {
       </div>
 
       <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
-        <VaultTile emoji="📚" label="My Library" to="/library" />
-        <VaultTile emoji="🎀" label="My Purchases" to="/purchases" />
-        <VaultTile emoji="🗂️" label="Downloads" to="/library" />
-        <VaultTile emoji="✨" label="Monthly Drops" to="/drops" />
-        <VaultTile emoji="🤖" label="AI Resources" to="/ai-resources" />
-        <VaultTile emoji="🎁" label="Member Bonuses" to="/upgrade" />
+        {LIFE_AREA_ORDER.map((key) => (
+          <VaultTile key={key} emoji={LIFE_AREAS[key].emoji} label={LIFE_AREAS[key].label} to={`/library?area=${key}`} />
+        ))}
       </div>
 
       {dashboard.new_this_month.length > 0 && (

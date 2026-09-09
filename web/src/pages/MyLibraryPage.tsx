@@ -1,13 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
-import { vaultApi, LibraryItem } from "../api/vault";
+import { vaultApi, LibraryItem, LifeArea } from "../api/vault";
 import { ProductCard } from "../components/ProductCard";
 import { Spinner } from "../components/Spinner";
+import { LIFE_AREAS, LIFE_AREA_ORDER } from "../theme/lifeAreas";
 
 export function MyLibraryPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeArea = (searchParams.get("area") as LifeArea | null) ?? undefined;
+
   const [items, setItems] = useState<LibraryItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeType, setActiveType] = useState<string | undefined>(undefined);
   const [openingId, setOpeningId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -17,8 +21,11 @@ export function MyLibraryPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const types = useMemo(() => Array.from(new Set(items.map((item) => item.product.type))), [items]);
-  const filtered = activeType ? items.filter((item) => item.product.type === activeType) : items;
+  const filtered = activeArea ? items.filter((item) => item.product.life_area === activeArea) : items;
+
+  function setArea(area: LifeArea | undefined) {
+    setSearchParams(area ? { area } : {});
+  }
 
   async function handleOpen(item: LibraryItem) {
     setOpeningId(item.product.id);
@@ -36,27 +43,25 @@ export function MyLibraryPage() {
     <div className="container page stack gap-lg">
       <h1>My Library</h1>
 
-      {types.length > 1 && (
-        <div className="row gap-sm" style={{ flexWrap: "wrap" }}>
+      <div className="row gap-sm" style={{ flexWrap: "wrap" }}>
+        <button
+          className={`pill ${activeArea === undefined ? "pill-gold" : "pill-cream"}`}
+          style={{ border: "none", cursor: "pointer" }}
+          onClick={() => setArea(undefined)}
+        >
+          All
+        </button>
+        {LIFE_AREA_ORDER.map((key) => (
           <button
-            className={`pill ${activeType === undefined ? "pill-gold" : "pill-cream"}`}
+            key={key}
+            className={`pill ${activeArea === key ? "pill-gold" : "pill-cream"}`}
             style={{ border: "none", cursor: "pointer" }}
-            onClick={() => setActiveType(undefined)}
+            onClick={() => setArea(key)}
           >
-            All
+            {LIFE_AREAS[key].emoji} {LIFE_AREAS[key].label}
           </button>
-          {types.map((t) => (
-            <button
-              key={t}
-              className={`pill ${activeType === t ? "pill-gold" : "pill-cream"}`}
-              style={{ border: "none", cursor: "pointer" }}
-              onClick={() => setActiveType(t)}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-      )}
+        ))}
+      </div>
 
       {filtered.length === 0 ? (
         <p className="muted">Nothing here yet — but she's about to have options.</p>

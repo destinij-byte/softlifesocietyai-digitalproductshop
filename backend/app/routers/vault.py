@@ -53,6 +53,7 @@ def _product_out(doc: dict) -> ProductOut:
         description=doc.get("description", ""),
         type=doc["type"],
         collection=doc.get("collection", "soft_life"),
+        life_area=doc.get("life_area", "soft_life"),
         credit_line=doc.get("credit_line", "D. Jones / Soft Life Society"),
         price=doc["price"],
         thumbnail_url=doc.get("thumbnail_url", ""),
@@ -260,7 +261,11 @@ async def get_dashboard(user: UserInDB = Depends(get_current_user)):
 
 
 @router.get("/library", response_model=list[LibraryItemOut])
-async def get_library(type: str | None = Query(default=None), user: UserInDB = Depends(get_current_user)):
+async def get_library(
+    type: str | None = Query(default=None),
+    life_area: str | None = Query(default=None),
+    user: UserInDB = Depends(get_current_user),
+):
     db = get_database()
     entitlements = await entitlement_service.list_library_entitlements(db, user.id)
 
@@ -271,26 +276,7 @@ async def get_library(type: str | None = Query(default=None), user: UserInDB = D
             continue
         if type and product_doc.get("type") != type:
             continue
-        results.append(
-            LibraryItemOut(
-                product=_product_out(product_doc),
-                source=ent["source"],
-                granted_at=ent["granted_at"],
-                last_opened_at=ent.get("last_opened_at"),
-            )
-        )
-    return results
-
-
-@router.get("/ai-resources", response_model=list[LibraryItemOut])
-async def get_ai_resources(user: UserInDB = Depends(get_current_user)):
-    db = get_database()
-    entitlements = await entitlement_service.list_library_entitlements(db, user.id)
-
-    results: list[LibraryItemOut] = []
-    for ent in entitlements:
-        product_doc = await db.products.find_one({"_id": ent["product_id"], "is_ai_resource": True})
-        if product_doc is None:
+        if life_area and product_doc.get("life_area") != life_area:
             continue
         results.append(
             LibraryItemOut(

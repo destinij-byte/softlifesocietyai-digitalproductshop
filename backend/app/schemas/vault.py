@@ -15,6 +15,7 @@ class ProductOut(BaseModel):
     description: str
     type: str
     collection: str
+    life_area: str
     credit_line: str
     price: float
     thumbnail_url: str

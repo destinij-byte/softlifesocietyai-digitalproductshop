@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.models.product import ProductCollection
+from app.models.product import LifeArea, ProductCollection
 
 
 class ProductCreate(BaseModel):
@@ -10,6 +10,7 @@ class ProductCreate(BaseModel):
     description: str = ""
     type: str
     collection: ProductCollection = "soft_life"
+    life_area: LifeArea = "soft_life"
     credit_line: str = "D. Jones / Soft Life Society"
     price: float
     file_url: str = ""
@@ -27,6 +28,7 @@ class ProductUpdate(BaseModel):
     description: str | None = None
     type: str | None = None
     collection: ProductCollection | None = None
+    life_area: LifeArea | None = None
     credit_line: str | None = None
     price: float | None = None
     file_url: str | None = None

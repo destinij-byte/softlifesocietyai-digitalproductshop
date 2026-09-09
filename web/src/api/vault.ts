@@ -4,6 +4,11 @@ export type MembershipTier = "free" | "vault_member" | "elite" | "founding_membe
 
 export type ProductCollection = "soft_life" | "wealth" | "ceo" | "ai" | "inner_life" | "signature";
 
+// Distinct from ProductCollection: this groups a member's *owned* products
+// for the Dashboard/My Library nav, while ProductCollection organizes the
+// public Shop catalog.
+export type LifeArea = "soft_life" | "goals" | "money" | "ceo_life" | "ai" | "inner_life" | "challenges";
+
 export interface Product {
   id: string;
   slug: string;
@@ -12,6 +17,7 @@ export interface Product {
   description: string;
   type: string;
   collection: ProductCollection;
+  life_area: LifeArea;
   credit_line: string;
   price: number;
   thumbnail_url: string;
@@ -81,10 +87,13 @@ export const vaultApi = {
 
   getDashboard: () => apiRequest<Dashboard>("/vault/dashboard"),
 
-  getLibrary: (type?: string) =>
-    apiRequest<LibraryItem[]>(`/vault/library${type ? `?type=${encodeURIComponent(type)}` : ""}`),
-
-  getAiResources: () => apiRequest<LibraryItem[]>("/vault/ai-resources"),
+  getLibrary: (params?: { type?: string; lifeArea?: string }) => {
+    const query = new URLSearchParams();
+    if (params?.type) query.set("type", params.type);
+    if (params?.lifeArea) query.set("life_area", params.lifeArea);
+    const qs = query.toString();
+    return apiRequest<LibraryItem[]>(`/vault/library${qs ? `?${qs}` : ""}`);
+  },
 
   getDrops: () => apiRequest<Drop[]>("/vault/drops"),
 

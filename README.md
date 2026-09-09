@@ -32,9 +32,15 @@ FastAPI service backed by MongoDB (via Motor). Implements:
 - **The Soft Life Vault** — `products` / `bundles` content collections,
   entitlements-driven access (`entitlements`), Stripe Checkout + webhook →
   `orders` + entitlement grants, signed expiring download URLs, a member
-  dashboard, My Library (filterable by product type), Monthly Drops
-  (locked/unlocked by membership tier), AI Resources, and purchase history.
-  Admin-only CRUD for products/bundles (`/vault/admin/...`).
+  dashboard, My Library (filterable by product type or by life area — "My
+  Soft Life", "My Goals", "My Money", etc.), Monthly Drops (locked/unlocked
+  by membership tier), a public Shop organized by catalog collection, and
+  purchase history. Admin-only CRUD for products/bundles (`/vault/admin/...`).
+  Each product also carries a `life_area` (which Dashboard/My Library section
+  it lives in - distinct from its `collection`, which is the Shop's catalog/
+  accent-color grouping) and an `is_active` flag driving the phased launch
+  (Phase 1's 8 products ship first; the other 10 stay inactive until dripped
+  out later as monthly content).
 
 ### Run it
 
@@ -53,7 +59,7 @@ python -m app.scripts.send_inactivity_nudges
 ```
 
 Seed the Vault's 18 products, 4 AI Collection monthly drops, and 4 bundles
-(Starter / Reset / Full Library / Founding Member Lifetime) — idempotent,
+(Starter / Reset / Full Digital Library / Founding Member) — idempotent,
 safe to re-run:
 
 ```
@@ -97,8 +103,7 @@ GET    /vault/bundles/{id_or_slug}             bundle detail (public)
 POST   /vault/checkout                         Stripe Checkout session for one product or bundle (auth)
 POST   /vault/webhook/stripe                   Stripe webhook -> creates order + grants entitlements
 GET    /vault/dashboard                        welcome message, badge, "New This Month", "Continue Your Journey" (auth)
-GET    /vault/library                          owned products, optional ?type= filter (auth)
-GET    /vault/ai-resources                     owned Soft Life AI Collection prompt packs (auth)
+GET    /vault/library                          owned products, optional ?type= and/or ?life_area= filters (auth)
 GET    /vault/drops                            current + past monthly drops, locked/unlocked by tier (auth)
 POST   /vault/products/{id}/open               mark a product opened, for "Continue Your Journey" (auth + entitled)
 GET    /vault/products/{id}/download           signed, expiring download URL (auth + entitled)
@@ -113,16 +118,19 @@ PATCH  /vault/admin/bundles/{id}                update a bundle (admin)
 A bundle purchase is expanded into one entitlement per product it contains
 (rather than a single shared entitlement) so ownership checks and
 `last_opened_at` tracking stay a simple per-product lookup. Buying the
-Founding Member Lifetime bundle also flips the buyer's `membership_tier` to
+Founding Member bundle also flips the buyer's `membership_tier` to
 `founding_member`.
 
-Recurring subscription tiers (`vault_member` / `elite`) are modeled on the
-`UserInDB` (`subscription_status`, `subscription_renews_at`) and read by
-`/vault/drops`' unlock logic, but there's no subscription price in the
-brief's pricing table, so Stripe Subscription checkout isn't wired up yet —
-today, Monthly Drops access comes from owning a drop product directly or
-being a Founding Member. Add a subscription checkout flow once pricing is
-set.
+Founding Member is marketed as a membership ("she was here first"), but
+under the hood it's still the original one-time Stripe Checkout + lifetime
+entitlement — no recurring billing is wired up. Recurring subscription
+tiers (`vault_member` / `elite`) are modeled on the `UserInDB`
+(`subscription_status`, `subscription_renews_at`) and read by
+`/vault/drops`' unlock logic, but there's no annual/subscription price
+specified anywhere in the brief, so Stripe Subscription checkout isn't
+built yet — today, Monthly Drops access comes from owning a drop product
+directly or being a Founding Member. Build real subscription billing once
+an actual price and renewal structure are decided.
 
 ## Mobile (`mobile/`)
 
@@ -170,25 +178,34 @@ champagne #D6C19A, soft black #171515, espresso #3A2A25, warm gold #B89B5E
 `src/theme/global.css`.
 
 - `pages/LoginPage` / `RegisterPage` — email + password, shared with the app's account system via `/auth`
-- `pages/DashboardPage` — boss/baddie welcome message, membership badge, the
-  📚🎀🗂️✨🤖🎁 tile grid, "New This Month", "Continue Your Journey"
-- `pages/ShopPage` — the full 18-product catalog grouped into its six collections
+- `pages/DashboardPage` — boss/baddie welcome message, membership badge, a
+  7-tile life-area grid (🌸 My Soft Life, 🎯 My Goals, 💰 My Money, 👑 My CEO
+  Life, 🤖 My AI, 💕 My Inner Life, ✨ Challenges — each linking into My
+  Library pre-filtered to that area), "New This Month", "Continue Your Journey"
+- `pages/ShopPage` — the public product catalog grouped into its six collections
   (🌸 Soft Life, 💰 Wealth, 👑 CEO, 🤖 AI, 💕 Inner Life, 👑 Signature), each with
   its own accent treatment via `theme/collections.ts`, a "Hero Products" row,
-  and a buy button per product (individual-product Stripe Checkout)
-- `pages/MyLibraryPage` — owned products grid, filterable by type, opens signed download links
+  and a buy button per product (individual-product Stripe Checkout) — only
+  Phase 1's 8 products are purchasable here today; the rest are seeded but
+  `is_active: false` until they drip out
+- `pages/MyLibraryPage` — owned products grid, filterable by life area (same
+  taxonomy as the Dashboard tiles, via `theme/lifeAreas.ts`) or opened
+  pre-filtered from a Dashboard tile; click a product to open its signed
+  download link
 - `pages/MonthlyDropsPage` — current + past drops, locked/unlocked by membership tier
-- `pages/AiResourcesPage` — owned Soft Life AI Collection prompt packs
-- `pages/BundlesPage` — Starter/Reset/Full Library/Founding Member upgrade cards with savings called out, kicks off Stripe Checkout
+- `pages/BundlesPage` — Starter/Reset/Full Digital Library/Founding Member upgrade cards with savings called out, kicks off Stripe Checkout
 - `pages/OrdersPage` — purchase history
 - `pages/CheckoutSuccessPage` / `CheckoutCancelledPage` — Stripe redirect targets
 - `context/AuthContext` — holds the JWT (`localStorage`), validates it against `/auth/me` on load
 - `components/ProtectedRoute` — redirects to `/login` when signed out
 - `components/NavBar` — wordmark, section nav, "OPEN THE APP" link out to the mobile app, log out
 
-Every product carries a `collection`, `subtitle`, and `credit_line` ("D. Jones
-/ Soft Life Society") so the catalog reads as one boutique rather than 18
-unrelated PDFs — see `backend/app/models/product.py` and the seed script.
+Every product carries both a `collection` (Shop catalog grouping/accent
+color) and a `life_area` (Dashboard/My Library grouping — a distinct axis:
+"what shelf does *she* see this on" vs. "what boutique section is this sold
+in") plus a `subtitle` and `credit_line` ("D. Jones / Soft Life Society") so
+the catalog reads as one boutique rather than 18 unrelated PDFs — see
+`backend/app/models/product.py` and the seed script.
 
 ### Run it
 
@@ -215,10 +232,15 @@ tiers to follow.
 ## Vault catalog
 
 `python -m app.scripts.seed_vault_products` (see **Backend** above) seeds
-the Vault's full catalog per the brief's pricing table: 18 individual
-products ($5–$27), 4 Soft Life AI Collection prompt packs seeded as monthly
-drops, and 4 bundles (Starter $27, Reset $47, Full Library $97, Founding
-Member Lifetime $147).
+the Vault's full catalog per the brief's Production Bible pricing table: 18
+individual products ($7–$37), 4 Soft Life AI Collection prompt packs seeded
+as monthly drops, and 4 bundles (Starter $27, Reset $47, Full Digital
+Library $79 launch price, Founding Member $147).
+
+Only Phase 1's 8 products are `is_active: true` (individually purchasable)
+at seed time — the brief's phased launch plan drips the other 10 out later
+as ongoing monthly content. Flip a product's `is_active` via
+`PATCH /vault/admin/products/{id}` when it's ready to release.
 
 ## Deploying to softlifesocietyai.com
 

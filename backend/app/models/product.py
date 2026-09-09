@@ -10,7 +10,13 @@ ProductType = str  # e.g. "Workbook", "Planner", "Guide", "Prompt Pack", ...
 
 # Catalog collections - each layers its own accent color over the shared
 # ivory/cream + gold product template so the catalog reads as one boutique.
+# Used by the public Shop page.
 ProductCollection = Literal["soft_life", "wealth", "ceo", "ai", "inner_life", "signature"]
+
+# Life areas group a member's *owned* products for the Dashboard/My Library
+# nav - "reads like a luxury digital library, not a file folder." Distinct
+# from ProductCollection, which organizes the public Shop catalog instead.
+LifeArea = Literal["soft_life", "goals", "money", "ceo_life", "ai", "inner_life", "challenges"]
 
 
 class Product(BaseModel):
@@ -23,6 +29,7 @@ class Product(BaseModel):
     description: str = ""
     type: ProductType
     collection: ProductCollection = "soft_life"
+    life_area: LifeArea = "soft_life"
     credit_line: str = "D. Jones / Soft Life Society"
     price: float
     file_url: str = ""

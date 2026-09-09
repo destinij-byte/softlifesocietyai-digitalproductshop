@@ -29,7 +29,6 @@ export function NavBar() {
               <NavLink to="/shop">Shop</NavLink>
               <NavLink to="/library">My Library</NavLink>
               <NavLink to="/drops">Monthly Drops</NavLink>
-              <NavLink to="/ai-resources">AI Resources</NavLink>
               <NavLink to="/upgrade">Upgrade</NavLink>
               <NavLink to="/purchases">My Purchases</NavLink>
             </div>

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
 import { NavBar } from "./components/NavBar";
@@ -10,7 +10,6 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { ShopPage } from "./pages/ShopPage";
 import { MyLibraryPage } from "./pages/MyLibraryPage";
 import { MonthlyDropsPage } from "./pages/MonthlyDropsPage";
-import { AiResourcesPage } from "./pages/AiResourcesPage";
 import { BundlesPage } from "./pages/BundlesPage";
 import { OrdersPage } from "./pages/OrdersPage";
 import { CheckoutSuccessPage } from "./pages/CheckoutSuccessPage";
@@ -59,14 +58,8 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/ai-resources"
-          element={
-            <ProtectedRoute>
-              <AiResourcesPage />
-            </ProtectedRoute>
-          }
-        />
+        {/* My AI is now a My Library filter, not its own page */}
+        <Route path="/ai-resources" element={<Navigate to="/library?area=ai" replace />} />
         <Route
           path="/upgrade"
           element={
