@@ -25,6 +25,7 @@ export function DashboardPage() {
   return (
     <div className="container page stack gap-lg">
       <div className="stack gap-sm">
+        {dashboard.membership_tier === "founding_member" && <span className="founding-label">Founding Member</span>}
         {dashboard.membership_badge && (
           <MembershipBadge badge={dashboard.membership_badge} founding={dashboard.membership_tier === "founding_member"} />
         )}

@@ -247,7 +247,7 @@ async def get_dashboard(user: UserInDB = Depends(get_current_user)):
 
     first_name = user.full_name.split(" ")[0] if user.full_name else ""
     welcome_message = (
-        f"Welcome back, {first_name}. Your Vault missed you." if first_name else "Welcome back, boss. Your Vault missed you."
+        f"Welcome back, {first_name}. Your Society missed you." if first_name else "Welcome back, boss. Your Society missed you."
     )
 
     return DashboardOut(

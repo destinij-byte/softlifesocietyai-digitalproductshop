@@ -9,12 +9,17 @@ export interface CollectionMeta {
   accentColor: string;
 }
 
+// Cream/gold shell throughout, per the light-luxury brand spec - collections
+// differentiate through a signature accent color (tab underlines, icons,
+// dividers, tags), not through swapping the card background to black.
+// "signature" is the one deliberate exception (black + gold, like Academy),
+// reserved for the flagship product.
 export const COLLECTIONS: Record<ProductCollection, CollectionMeta> = {
   soft_life: {
     label: "Soft Life Collection",
     emoji: "🌸",
     cardBg: "var(--cream)",
-    textColor: "var(--ink)",
+    textColor: "var(--espresso)",
     mutedColor: "var(--espresso)",
     accentColor: "var(--blush)",
   },
@@ -29,26 +34,26 @@ export const COLLECTIONS: Record<ProductCollection, CollectionMeta> = {
   ceo: {
     label: "CEO Collection",
     emoji: "👑",
-    cardBg: "var(--ink)",
-    textColor: "var(--ivory)",
-    mutedColor: "var(--champagne)",
-    accentColor: "var(--gold)",
+    cardBg: "var(--soft-pink)",
+    textColor: "var(--espresso)",
+    mutedColor: "var(--espresso)",
+    accentColor: "var(--blush-deep)",
   },
   ai: {
     label: "AI Collection",
     emoji: "🤖",
-    cardBg: "var(--ink)",
-    textColor: "var(--ivory)",
-    mutedColor: "var(--champagne)",
-    accentColor: "var(--champagne)",
+    cardBg: "var(--cream)",
+    textColor: "var(--espresso)",
+    mutedColor: "var(--espresso)",
+    accentColor: "#c9b6e0", /* soft lilac */
   },
   inner_life: {
     label: "Inner Life Collection",
     emoji: "💕",
-    cardBg: "var(--blush)",
-    textColor: "var(--ink)",
+    cardBg: "var(--soft-pink)",
+    textColor: "var(--espresso)",
     mutedColor: "var(--espresso)",
-    accentColor: "var(--ivory)",
+    accentColor: "#c98fa0", /* dusty rose */
   },
   signature: {
     label: "Signature Collection",
