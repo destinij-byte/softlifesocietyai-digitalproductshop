@@ -41,6 +41,7 @@ async def create_indexes():
     await db.entitlements.create_index([("user_id", 1), ("product_id", 1)], unique=True)
     await db.orders.create_index("stripe_payment_id", unique=True)
     await db.orders.create_index("user_id")
+    await db.box_subscriptions.create_index([("user_id", 1), ("box_type", 1)], unique=True)
 
     # Idempotent (upserts by slug) - keeps the Vault catalog in sync with the
     # code on every boot instead of relying on someone remembering to run the

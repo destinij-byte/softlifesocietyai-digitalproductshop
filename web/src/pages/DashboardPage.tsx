@@ -51,7 +51,7 @@ export function DashboardPage() {
                 subtitle={product.subtitle}
                 thumbnailUrl={product.thumbnail_url}
                 locked
-                onClick={() => navigate("/drops")}
+                onClick={() => navigate("/shop")}
               />
             ))}
           </div>
