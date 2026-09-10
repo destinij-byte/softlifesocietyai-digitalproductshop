@@ -1,0 +1,16 @@
+# The Soft Life Vault is a client-side-routed React SPA. Without this,
+# refreshing or direct-linking to any path other than / (e.g. /login,
+# /shop, /library) 404s at the Apache level instead of loading the app -
+# route the request to index.html and let React Router take over.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Real files and directories (assets, this file itself) serve as-is.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Everything else falls back to index.html.
+  RewriteRule ^ index.html [L]
+</IfModule>
