@@ -37,12 +37,17 @@ async def grant_bundle(db, user_id: ObjectId, bundle_doc: dict) -> None:
         await db.users.update_one({"_id": user_id}, {"$set": {"membership_tier": "founding_member"}})
 
 
-async def owned_product_ids(db, user_id: ObjectId) -> set[ObjectId]:
+async def owned_product_ids(db, user_id: ObjectId, is_admin: bool = False) -> set[ObjectId]:
+    if is_admin:
+        docs = await db.products.find({"is_active": True}, {"_id": 1}).to_list(length=None)
+        return {doc["_id"] for doc in docs}
     docs = await db.entitlements.find({"user_id": user_id, "product_id": {"$ne": None}}).to_list(length=None)
     return {doc["product_id"] for doc in docs}
 
 
-async def has_product_access(db, user_id: ObjectId, product_id: ObjectId) -> bool:
+async def has_product_access(db, user_id: ObjectId, product_id: ObjectId, is_admin: bool = False) -> bool:
+    if is_admin:
+        return True
     doc = await db.entitlements.find_one({"user_id": user_id, "product_id": product_id})
     return doc is not None
 
@@ -54,8 +59,15 @@ async def mark_opened(db, user_id: ObjectId, product_id: ObjectId) -> None:
     )
 
 
-async def list_library_entitlements(db, user_id: ObjectId) -> list[dict]:
+async def list_library_entitlements(db, user_id: ObjectId, is_admin: bool = False) -> list[dict]:
     """Owned-product entitlements, most-recently-opened first (never-opened last)."""
+    if is_admin:
+        now = datetime.now(timezone.utc)
+        product_docs = await db.products.find({"is_active": True}, {"_id": 1}).to_list(length=None)
+        return [
+            {"user_id": user_id, "source": "admin", "product_id": doc["_id"], "bundle_id": None, "granted_at": now, "expires_at": None, "last_opened_at": None}
+            for doc in product_docs
+        ]
     docs = await db.entitlements.find({"user_id": user_id, "product_id": {"$ne": None}}).to_list(length=None)
     docs.sort(key=lambda d: d["last_opened_at"] or d["granted_at"], reverse=True)
     return docs

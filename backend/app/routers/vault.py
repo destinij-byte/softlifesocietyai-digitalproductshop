@@ -146,7 +146,7 @@ async def create_checkout(payload: CheckoutRequest, user: UserInDB = Depends(get
 
     if payload.product_id:
         product_doc = await _find_product(db, payload.product_id)
-        if await entitlement_service.has_product_access(db, user.id, product_doc["_id"]):
+        if await entitlement_service.has_product_access(db, user.id, product_doc["_id"], is_admin=user.is_admin):
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Already unlocked, babe")
         session = create_checkout_session_for_product(Product(**product_doc), user)
     else:
@@ -219,7 +219,7 @@ async def _fulfill_order(session: dict, metadata: dict) -> None:
 async def get_dashboard(user: UserInDB = Depends(get_current_user)):
     db = get_database()
 
-    owned_ids = await entitlement_service.owned_product_ids(db, user.id)
+    owned_ids = await entitlement_service.owned_product_ids(db, user.id, is_admin=user.is_admin)
     library_count = len(owned_ids)
 
     latest_drop = await db.products.find_one({"is_monthly_drop": True}, sort=[("drop_month", -1)])
@@ -230,7 +230,7 @@ async def get_dashboard(user: UserInDB = Depends(get_current_user)):
         ).to_list(length=None)
         new_this_month = [_product_out(doc) for doc in drop_docs]
 
-    recent_entitlements = (await entitlement_service.list_library_entitlements(db, user.id))[:6]
+    recent_entitlements = (await entitlement_service.list_library_entitlements(db, user.id, is_admin=user.is_admin))[:6]
     continue_journey: list[LibraryItemOut] = []
     for ent in recent_entitlements:
         product_doc = await db.products.find_one({"_id": ent["product_id"]})
@@ -267,7 +267,7 @@ async def get_library(
     user: UserInDB = Depends(get_current_user),
 ):
     db = get_database()
-    entitlements = await entitlement_service.list_library_entitlements(db, user.id)
+    entitlements = await entitlement_service.list_library_entitlements(db, user.id, is_admin=user.is_admin)
 
     results: list[LibraryItemOut] = []
     for ent in entitlements:
@@ -302,7 +302,7 @@ def _drop_unlocked(user: UserInDB, product_id: ObjectId, owned_ids: set[ObjectId
 @router.get("/drops", response_model=list[DropOut])
 async def get_drops(user: UserInDB = Depends(get_current_user)):
     db = get_database()
-    owned_ids = await entitlement_service.owned_product_ids(db, user.id)
+    owned_ids = await entitlement_service.owned_product_ids(db, user.id, is_admin=user.is_admin)
 
     docs = await db.products.find({"is_monthly_drop": True}).sort("drop_month", -1).to_list(length=None)
     by_month: dict[str, list[dict]] = {}
@@ -321,7 +321,7 @@ async def get_drops(user: UserInDB = Depends(get_current_user)):
 async def open_product(product_id: str, user: UserInDB = Depends(get_current_user)):
     db = get_database()
     pid = _oid(product_id, "product_id")
-    if not await entitlement_service.has_product_access(db, user.id, pid):
+    if not await entitlement_service.has_product_access(db, user.id, pid, is_admin=user.is_admin):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This one's for Vault members only")
     await entitlement_service.mark_opened(db, user.id, pid)
 
@@ -330,7 +330,7 @@ async def open_product(product_id: str, user: UserInDB = Depends(get_current_use
 async def download_product(product_id: str, user: UserInDB = Depends(get_current_user)):
     db = get_database()
     pid = _oid(product_id, "product_id")
-    if not await entitlement_service.has_product_access(db, user.id, pid):
+    if not await entitlement_service.has_product_access(db, user.id, pid, is_admin=user.is_admin):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This one's for Vault members only")
 
     product_doc = await db.products.find_one({"_id": pid})
