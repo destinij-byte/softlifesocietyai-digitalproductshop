@@ -69,6 +69,24 @@ export interface Order {
   created_at: string;
 }
 
+export type BoxType = "skincare" | "lifestyle";
+export type BoxTierKey = "mini" | "classic" | "deluxe";
+
+export interface BoxTier {
+  tier: BoxTierKey;
+  label: string;
+  price_low: number;
+  price_high: number;
+}
+
+export interface Box {
+  box_type: BoxType;
+  label: string;
+  teaser: string;
+  tiers: BoxTier[];
+  subscribed_tier: BoxTierKey | null;
+}
+
 export const vaultApi = {
   listProducts: (type?: string) =>
     apiRequest<Product[]>(`/vault/products${type ? `?type=${encodeURIComponent(type)}` : ""}`, { auth: false }),
@@ -104,4 +122,12 @@ export const vaultApi = {
     apiRequest<{ download_url: string; expires_in_seconds: number }>(`/vault/products/${productId}/download`),
 
   getOrders: () => apiRequest<Order[]>("/vault/orders"),
+
+  getBoxes: () => apiRequest<Box[]>("/vault/boxes"),
+
+  checkoutBox: (payload: { box_type: BoxType; tier: BoxTierKey }) =>
+    apiRequest<{ checkout_url: string; session_id: string }>("/vault/boxes/checkout", {
+      method: "POST",
+      body: payload,
+    }),
 };

@@ -1,69 +1,84 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-import { vaultApi, Drop } from "../api/vault";
-import { ProductCard } from "../components/ProductCard";
+import { vaultApi, Box, BoxTierKey } from "../api/vault";
+import { ApiError } from "../api/client";
 import { Spinner } from "../components/Spinner";
-
-function formatMonth(month: string): string {
-  const [year, m] = month.split("-").map(Number);
-  return new Date(year, m - 1, 1).toLocaleDateString("en-US", { month: "long", year: "numeric" });
-}
+import logo from "../assets/logo.png";
 
 export function MonthlyDropsPage() {
-  const navigate = useNavigate();
-  const [drops, setDrops] = useState<Drop[]>([]);
+  const [boxes, setBoxes] = useState<Box[]>([]);
   const [loading, setLoading] = useState(true);
+  const [busyKey, setBusyKey] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     vaultApi
-      .getDrops()
-      .then(setDrops)
+      .getBoxes()
+      .then(setBoxes)
       .finally(() => setLoading(false));
   }, []);
 
-  async function handleClick(productId: string, unlocked: boolean) {
-    if (!unlocked) {
-      navigate("/upgrade");
-      return;
+  async function handleSubscribe(boxType: Box["box_type"], tier: BoxTierKey) {
+    setError(null);
+    const key = `${boxType}-${tier}`;
+    setBusyKey(key);
+    try {
+      const { checkout_url } = await vaultApi.checkoutBox({ box_type: boxType, tier });
+      window.location.href = checkout_url;
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Something went wrong. Try again in a moment.");
+      setBusyKey(null);
     }
-    const { download_url } = await vaultApi.getDownloadUrl(productId);
-    window.open(download_url, "_blank", "noopener,noreferrer");
   }
 
   if (loading) return <Spinner />;
 
   return (
     <div className="container page stack gap-lg">
-      <h1>Monthly Drops</h1>
+      <div className="stack gap-sm">
+        <h1>The Box</h1>
+        <p className="muted">
+          A little something in the mail every month — hand-packed by Dess. Subscribe by the monthly cutoff to
+          make that month's box; contents rotate, so it's always a bit of a surprise.
+        </p>
+      </div>
 
-      {drops.length === 0 ? (
-        <p className="muted">Nothing here yet — but she's about to have options.</p>
-      ) : (
-        drops.map((drop) => (
-          <section key={drop.month} className="stack gap-md">
-            <div className="row gap-md">
-              <h2>{formatMonth(drop.month)}</h2>
-              {!drop.unlocked && <span className="pill pill-cream">Vault members only</span>}
+      {error && <div className="form-error">{error}</div>}
+
+      <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
+        {boxes.map((box) => (
+          <div key={box.box_type} className="box-card">
+            <img src={logo} alt="" className="brand-logo" />
+            <span className="box-card-question">?</span>
+            <h2>{box.label}</h2>
+            <p className="box-card-teaser">{box.teaser}</p>
+
+            <div className="box-tiers">
+              {box.tiers.map((tier) => {
+                const subscribed = box.subscribed_tier === tier.tier;
+                const key = `${box.box_type}-${tier.tier}`;
+                return (
+                  <div key={tier.tier} className="box-tier-row">
+                    <span style={{ fontWeight: 600 }}>{tier.label}</span>
+                    <span className="row gap-sm">
+                      <span className="box-tier-price">
+                        ${tier.price_low}–${tier.price_high}/mo
+                      </span>
+                      <button
+                        className={`btn btn-sm ${subscribed ? "btn-outline-gold" : "btn-gold"}`}
+                        disabled={subscribed || busyKey === key}
+                        onClick={() => handleSubscribe(box.box_type, tier.tier)}
+                      >
+                        {subscribed ? "Subscribed" : busyKey === key ? "…" : "Subscribe"}
+                      </button>
+                    </span>
+                  </div>
+                );
+              })}
             </div>
-            <div className="grid grid-products">
-              {drop.products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  title={product.title}
-                  type={product.type}
-                  price={product.price}
-                  subtitle={product.subtitle}
-                  thumbnailUrl={product.thumbnail_url}
-                  locked={!drop.unlocked}
-                  owned={drop.unlocked}
-                  onClick={() => handleClick(product.id, drop.unlocked)}
-                />
-              ))}
-            </div>
-          </section>
-        ))
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

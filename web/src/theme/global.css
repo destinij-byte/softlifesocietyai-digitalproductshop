@@ -1,12 +1,15 @@
 :root {
-  /* Quiet luxury + feminine CEO + soft life + modern editorial */
-  --ivory: #f7f2ea;
-  --cream: #f1e9db; /* card surfaces - a hair warmer than ivory, for layering */
-  --blush: #d8b7b2;
-  --champagne: #d6c19a;
-  --gold: #b89b5e; /* used sparingly - lines, borders, icons, CTAs */
-  --ink: #171515; /* soft black - primary text, premium covers */
-  --espresso: #3a2a25; /* secondary text */
+  /* Light luxury: cream + gold + blush editorial, per brand redesign spec */
+  --ivory: #fff9f6; /* page background - "cream" in the brand spec */
+  --cream: #fffcfa; /* card surfaces - a hair warmer than ivory, for layering */
+  --soft-pink: #fceef3; /* alt card fill for product/box cards */
+  --blush: #f6c8d8;
+  --blush-deep: #b8677f; /* blush is too light for text on cream (~1.3:1) - this reads ~4.6:1 */
+  --champagne: #e2c896;
+  --gold: #d4af37; /* borders, icons, CTAs */
+  --gold-deep: #b8912c; /* headline text on light backgrounds - deepened for contrast */
+  --ink: #1a1a1a; /* near-black - rare use, not backgrounds */
+  --espresso: #4a4038; /* primary body text */
 
   --radius-lg: 22px;
   --radius-md: 14px;
@@ -31,7 +34,7 @@ body,
 body {
   margin: 0;
   background: var(--ivory);
-  color: var(--ink);
+  color: var(--espresso);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
@@ -41,7 +44,8 @@ h2,
 h3,
 .display {
   font-family: var(--font-display);
-  color: var(--ink);
+  color: var(--gold-deep);
+  letter-spacing: 0.01em;
   margin: 0;
 }
 
@@ -92,6 +96,7 @@ input {
 
 .card {
   background: var(--cream);
+  border: 1px solid rgba(212, 175, 55, 0.35);
   border-radius: var(--radius-lg);
   padding: 22px;
   box-shadow: var(--shadow-soft);
@@ -106,11 +111,13 @@ input {
 .card-ink {
   background: var(--ink);
   color: var(--ivory);
+  border-color: var(--gold);
 }
 
+.card-ink h1,
 .card-ink h2,
 .card-ink h3 {
-  color: var(--ivory);
+  color: var(--champagne);
 }
 
 .card-ink .muted {
@@ -162,6 +169,17 @@ input {
   background: transparent;
   color: var(--ink);
   border: 1.5px solid var(--ink);
+}
+
+.btn-outline-gold {
+  background: transparent;
+  color: var(--gold-deep);
+  border: 1.5px solid var(--gold);
+}
+
+.btn-outline-gold:not(:disabled):hover {
+  background: var(--gold);
+  color: var(--ink);
 }
 
 .btn-sm {
@@ -322,8 +340,16 @@ input {
 
 /* Nav */
 
+.founding-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blush-deep);
+}
+
 .navbar {
-  height: 76px;
+  height: 84px;
   border-bottom: 1px solid rgba(23, 21, 21, 0.08);
   background: var(--ivory);
   position: sticky;
@@ -340,32 +366,102 @@ input {
   gap: 24px;
 }
 
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  object-fit: cover;
+  animation: spin-3d 5.5s linear infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes spin-3d {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
 .wordmark {
   font-family: var(--font-display);
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: 0.01em;
-  flex-shrink: 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  line-height: 1.2;
+}
+
+.wordmark-tagline {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--espresso);
+  opacity: 0.65;
 }
 
 .nav-links {
   display: flex;
-  gap: 16px;
+  gap: 18px;
   align-items: center;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   flex-wrap: wrap;
 }
 
 .nav-links a {
   opacity: 0.75;
-  transition: opacity 0.15s ease;
+  color: var(--espresso);
+  padding-bottom: 4px;
+  border-bottom: 1.5px solid transparent;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
   opacity: 1;
-  color: var(--espresso); /* gold-on-ivory reads ~2.2:1 - fails contrast; espresso reads ~11:1 */
+  border-bottom-color: var(--gold);
+}
+
+/* Medallion badges - category/life-area tiles */
+
+.medallion {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--blush);
+  border: 2px solid var(--gold);
+  border-top-color: #e8cf8a; /* lighter gold on the top-left edge, for a faked bevel */
+  border-left-color: #e8cf8a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: var(--gold-deep);
+}
+
+.medallion-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--espresso);
+  text-align: center;
 }
 
 /* Product thumbnails */
@@ -404,6 +500,56 @@ input {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* The Box - mystery subscription box cards */
+
+.box-card {
+  background: var(--soft-pink);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.box-card-question {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--gold-deep);
+  line-height: 1;
+}
+
+.box-card-teaser {
+  color: var(--blush-deep);
+  font-size: 13px;
+  max-width: 320px;
+}
+
+.box-tiers {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.box-tier-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.box-tier-row:first-child {
+  border-top: none;
+}
+
+.box-tier-price {
+  color: var(--gold-deep);
+  font-weight: 700;
 }
 
 @media (max-width: 640px) {

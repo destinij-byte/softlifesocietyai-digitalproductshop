@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import logo from "../assets/logo.png";
 
 const APP_LINK = import.meta.env.VITE_APP_LINK ?? "https://softlifesocietyai.com/app";
 
@@ -16,8 +17,12 @@ export function NavBar() {
   return (
     <header className="navbar">
       <div className="container">
-        <NavLink to="/" className="wordmark">
-          The Soft Life Vault
+        <NavLink to="/" className="brand-lockup">
+          <img src={logo} alt="" className="brand-logo" />
+          <span className="wordmark">
+            Soft Life Society AI
+            <span className="wordmark-tagline">Plan your life · Glow daily · Become her</span>
+          </span>
         </NavLink>
 
         {user ? (
@@ -32,10 +37,10 @@ export function NavBar() {
               <NavLink to="/upgrade">Upgrade</NavLink>
               <NavLink to="/purchases">My Purchases</NavLink>
             </div>
-            <a className="btn btn-sm btn-ink" href={APP_LINK} target="_blank" rel="noreferrer">
+            <a className="btn btn-sm btn-gold" href={APP_LINK} target="_blank" rel="noreferrer">
               OPEN THE APP
             </a>
-            <button className="btn btn-sm btn-outline" onClick={handleLogout}>
+            <button className="btn btn-sm btn-outline-gold" onClick={handleLogout}>
               Log out
             </button>
           </nav>

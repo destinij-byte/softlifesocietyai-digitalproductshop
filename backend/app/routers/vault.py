@@ -10,6 +10,9 @@ from app.models.bundle import Bundle
 from app.models.product import Product
 from app.models.user import UserInDB
 from app.schemas.vault import (
+    BoxCheckoutRequest,
+    BoxOut,
+    BoxTierOut,
     BundleOut,
     CheckoutRequest,
     CheckoutResponse,
@@ -21,7 +24,7 @@ from app.schemas.vault import (
     OrderOut,
     ProductOut,
 )
-from app.services import entitlement_service
+from app.services import box_service, entitlement_service
 from app.services.stripe_service import construct_webhook_event
 from app.services.vault_download_service import sign_download_url
 from app.services.vault_stripe_service import (
@@ -156,6 +159,53 @@ async def create_checkout(payload: CheckoutRequest, user: UserInDB = Depends(get
     return CheckoutResponse(checkout_url=session.url, session_id=session.id)
 
 
+# --- The Box (monthly subscription boxes) ---------------------------------
+
+
+@router.get("/boxes", response_model=list[BoxOut])
+async def list_boxes(user: UserInDB = Depends(get_current_user)):
+    db = get_database()
+    subs = await db.box_subscriptions.find({"user_id": user.id, "status": "active"}).to_list(length=None)
+    subscribed_by_type = {sub["box_type"]: sub["tier"] for sub in subs}
+
+    return [
+        BoxOut(
+            box_type=box_type,
+            label=box["label"],
+            teaser=box["teaser"],
+            tiers=[
+                BoxTierOut(
+                    tier=tier,
+                    label=box_service.BOX_TIERS[tier]["label"],
+                    price_low=box_service.BOX_TIERS[tier]["price_low"],
+                    price_high=box_service.BOX_TIERS[tier]["price_high"],
+                )
+                for tier in box_service.TIER_ORDER
+            ],
+            subscribed_tier=subscribed_by_type.get(box_type),
+        )
+        for box_type, box in box_service.BOX_TYPES.items()
+    ]
+
+
+@router.post("/boxes/checkout", response_model=CheckoutResponse)
+async def create_box_checkout(payload: BoxCheckoutRequest, user: UserInDB = Depends(get_current_user)):
+    if payload.box_type not in box_service.BOX_TYPES:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unknown box type")
+    if payload.tier not in box_service.BOX_TIERS:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unknown tier")
+
+    db = get_database()
+    existing = await db.box_subscriptions.find_one(
+        {"user_id": user.id, "box_type": payload.box_type, "status": "active"}
+    )
+    if existing and existing["tier"] == payload.tier:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Already subscribed to this box, babe")
+
+    session = box_service.create_box_checkout_session(payload.box_type, payload.tier, user)
+    return CheckoutResponse(checkout_url=session.url, session_id=session.id)
+
+
 @router.post("/webhook/stripe", status_code=status.HTTP_200_OK)
 async def stripe_webhook(request: Request):
     payload = await request.body()
@@ -171,8 +221,40 @@ async def stripe_webhook(request: Request):
         metadata = session.get("metadata", {})
         if metadata.get("kind") in ("product", "bundle"):
             await _fulfill_order(session, metadata)
+        elif metadata.get("kind") == "box_subscription":
+            await _fulfill_box_subscription(session, metadata)
+    elif event["type"] == "customer.subscription.deleted":
+        subscription = event["data"]["object"]
+        await get_database().box_subscriptions.update_one(
+            {"stripe_subscription_id": subscription["id"]},
+            {"$set": {"status": "canceled", "canceled_at": datetime.now(timezone.utc)}},
+        )
 
     return {"received": True}
+
+
+async def _fulfill_box_subscription(session: dict, metadata: dict) -> None:
+    db = get_database()
+    user_id = ObjectId(metadata["user_id"])
+    box_type = metadata["box_type"]
+    tier = metadata["tier"]
+
+    await db.box_subscriptions.update_one(
+        {"user_id": user_id, "box_type": box_type},
+        {
+            "$set": {
+                "user_id": user_id,
+                "box_type": box_type,
+                "tier": tier,
+                "stripe_customer_id": session.get("customer") or "",
+                "stripe_subscription_id": session.get("subscription") or "",
+                "status": "active",
+                "canceled_at": None,
+            },
+            "$setOnInsert": {"created_at": datetime.now(timezone.utc)},
+        },
+        upsert=True,
+    )
 
 
 async def _fulfill_order(session: dict, metadata: dict) -> None:
@@ -247,7 +329,7 @@ async def get_dashboard(user: UserInDB = Depends(get_current_user)):
 
     first_name = user.full_name.split(" ")[0] if user.full_name else ""
     welcome_message = (
-        f"Welcome back, {first_name}. Your Vault missed you." if first_name else "Welcome back, boss. Your Vault missed you."
+        f"Welcome back, {first_name}. Your Society missed you." if first_name else "Welcome back, boss. Your Society missed you."
     )
 
     return DashboardOut(

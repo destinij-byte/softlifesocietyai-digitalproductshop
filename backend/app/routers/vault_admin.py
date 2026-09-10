@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.database import get_database
 from app.deps import get_current_admin
 from app.models.user import UserInDB
+from app.schemas.vault import BoxSubscriberOut
 from app.schemas.vault_admin import BundleCreate, BundleUpdate, ProductCreate, ProductUpdate
 
 router = APIRouter(prefix="/vault/admin", tags=["vault-admin"])
@@ -77,3 +78,28 @@ async def update_bundle(bundle_id: str, payload: BundleUpdate, _admin: UserInDB 
     if result.matched_count == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bundle not found")
     return {"updated": True}
+
+
+@router.get("/boxes/subscribers", response_model=list[BoxSubscriberOut])
+async def list_box_subscribers(_admin: UserInDB = Depends(get_current_admin)):
+    """Active Box subscribers, for manual monthly fulfillment - packing is
+    hand-done, no 3PL yet."""
+    db = get_database()
+    subs = await db.box_subscriptions.find({"status": "active"}).sort("box_type", 1).to_list(length=None)
+
+    user_ids = {sub["user_id"] for sub in subs}
+    users = await db.users.find({"_id": {"$in": list(user_ids)}}).to_list(length=None)
+    users_by_id = {u["_id"]: u for u in users}
+
+    return [
+        BoxSubscriberOut(
+            user_id=sub["user_id"],
+            email=users_by_id[sub["user_id"]]["email"],
+            full_name=users_by_id[sub["user_id"]].get("full_name", ""),
+            box_type=sub["box_type"],
+            tier=sub["tier"],
+            created_at=sub["created_at"],
+        )
+        for sub in subs
+        if sub["user_id"] in users_by_id
+    ]

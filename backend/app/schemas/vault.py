@@ -96,3 +96,34 @@ class CheckoutResponse(BaseModel):
 class DownloadResponse(BaseModel):
     download_url: str
     expires_in_seconds: int
+
+
+class BoxTierOut(BaseModel):
+    tier: str
+    label: str
+    price_low: int
+    price_high: int
+
+
+class BoxOut(BaseModel):
+    box_type: str
+    label: str
+    teaser: str
+    tiers: list[BoxTierOut]
+    subscribed_tier: str | None
+
+
+class BoxCheckoutRequest(BaseModel):
+    box_type: str
+    tier: str
+
+
+class BoxSubscriberOut(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    user_id: PyObjectId
+    email: str
+    full_name: str
+    box_type: str
+    tier: str
+    created_at: datetime

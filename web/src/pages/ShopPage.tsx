@@ -5,6 +5,7 @@ import { ApiError } from "../api/client";
 import { ProductCard } from "../components/ProductCard";
 import { Spinner } from "../components/Spinner";
 import { COLLECTIONS, COLLECTION_ORDER } from "../theme/collections";
+import { AI_SHELVES, AI_SHELF_ORDER, AI_SHELF_FALLBACK_LABEL } from "../theme/aiShelves";
 
 export function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -43,11 +44,21 @@ export function ShopPage() {
   if (loading) return <Spinner />;
 
   const heroProducts = products.filter((p) => p.is_hero);
-  const byCollection = COLLECTION_ORDER.map((key) => ({
+  const byCollection = COLLECTION_ORDER.filter((key) => key !== "ai").map((key) => ({
     key,
     meta: COLLECTIONS[key],
     products: products.filter((p) => p.collection === key),
   })).filter((group) => group.products.length > 0);
+
+  // AI Collection is presented as named sub-brand shelves rather than one
+  // flat list - see theme/aiShelves.ts.
+  const aiProducts = products.filter((p) => p.collection === "ai");
+  const namedAiShelves = AI_SHELF_ORDER.map((slug) => ({
+    slug,
+    meta: AI_SHELVES[slug],
+    products: aiProducts.filter((p) => p.slug === slug),
+  })).filter((shelf) => shelf.products.length > 0);
+  const unmappedAiProducts = aiProducts.filter((p) => !AI_SHELVES[p.slug]);
 
   return (
     <div className="container page stack gap-lg">
@@ -112,6 +123,65 @@ export function ShopPage() {
           </div>
         </section>
       ))}
+
+      {namedAiShelves.length > 0 && (
+        <section className="stack gap-lg">
+          <div className="stack gap-sm">
+            <h2>🤖 AI Collection</h2>
+            <p className="muted">Prompt packs for every side of her life.</p>
+          </div>
+          {namedAiShelves.map(({ slug, meta, products: shelfProducts }) => (
+            <div key={slug} className="stack gap-md">
+              <h3 style={{ color: meta.accentColor }}>{meta.label}</h3>
+              <div className="grid grid-products">
+                {shelfProducts.map((product) => {
+                  const owned = ownedIds.has(product.id);
+                  return (
+                    <ProductCard
+                      key={product.id}
+                      title={product.title}
+                      subtitle={product.subtitle}
+                      type={product.type}
+                      price={product.price}
+                      thumbnailUrl={product.thumbnail_url}
+                      owned={owned}
+                      busy={busyId === product.id}
+                      collectionMeta={meta}
+                      creditLine={product.credit_line}
+                      onClick={() => handleProductClick(product)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+          {unmappedAiProducts.length > 0 && (
+            <div className="stack gap-md">
+              <h3>{AI_SHELF_FALLBACK_LABEL}</h3>
+              <div className="grid grid-products">
+                {unmappedAiProducts.map((product) => {
+                  const owned = ownedIds.has(product.id);
+                  return (
+                    <ProductCard
+                      key={product.id}
+                      title={product.title}
+                      subtitle={product.subtitle}
+                      type={product.type}
+                      price={product.price}
+                      thumbnailUrl={product.thumbnail_url}
+                      owned={owned}
+                      busy={busyId === product.id}
+                      collectionMeta={COLLECTIONS.ai}
+                      creditLine={product.credit_line}
+                      onClick={() => handleProductClick(product)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
     </div>
   );
 }
