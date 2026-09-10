@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import get_database
 from app.routers import academy, academy_admin, auth, vault, vault_admin
+from app.scripts import seed_vault_products
 
 app = FastAPI(title="Soft Life Society API")
 
@@ -40,6 +41,11 @@ async def create_indexes():
     await db.entitlements.create_index([("user_id", 1), ("product_id", 1)], unique=True)
     await db.orders.create_index("stripe_payment_id", unique=True)
     await db.orders.create_index("user_id")
+
+    # Idempotent (upserts by slug) - keeps the Vault catalog in sync with the
+    # code on every boot instead of relying on someone remembering to run the
+    # seed script by hand against production.
+    await seed_vault_products.run()
 
 
 @app.get("/health")
