@@ -8,6 +8,8 @@ import { ProductCard } from "../components/ProductCard";
 import { Spinner } from "../components/Spinner";
 import { LIFE_AREAS, LIFE_AREA_ORDER } from "../theme/lifeAreas";
 
+const APP_LINK = import.meta.env.VITE_APP_LINK ?? "https://softlifesocietyai.com/app";
+
 export function DashboardPage() {
   const navigate = useNavigate();
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
@@ -30,6 +32,16 @@ export function DashboardPage() {
           <MembershipBadge badge={dashboard.membership_badge} founding={dashboard.membership_tier === "founding_member"} />
         )}
         <h1>{dashboard.welcome_message}</h1>
+      </div>
+
+      <div className="card row-between gap-md" style={{ flexWrap: "wrap" }}>
+        <div className="stack gap-sm">
+          <h3>Your Soft Life Society app</h3>
+          <p className="muted">Courses, community, and everything else that lives outside the Vault.</p>
+        </div>
+        <a className="btn btn-gold" href={APP_LINK} target="_blank" rel="noreferrer">
+          OPEN THE APP
+        </a>
       </div>
 
       <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
