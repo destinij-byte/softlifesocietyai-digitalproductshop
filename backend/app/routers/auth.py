@@ -62,4 +62,5 @@ async def get_me(user: UserInDB = Depends(get_current_user)):
         full_name=user.full_name,
         is_admin=user.is_admin,
         membership_tier=user.membership_tier,
+        created_at=user.created_at,
     )

@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from calendar import monthrange
+from datetime import date, datetime, timezone
 
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
@@ -19,7 +20,9 @@ from app.schemas.vault import (
     DashboardOut,
     DownloadResponse,
     DropOut,
+    GrowthOut,
     LibraryItemOut,
+    MonthPoint,
     OrderItemOut,
     OrderOut,
     ProductOut,
@@ -340,6 +343,62 @@ async def get_dashboard(user: UserInDB = Depends(get_current_user)):
         new_this_month=new_this_month,
         continue_your_journey=continue_journey,
     )
+
+
+_MONTH_ABBR = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+def _last_n_months(n: int) -> list[tuple[int, int]]:
+    today = datetime.now(timezone.utc).date()
+    year, month = today.year, today.month
+    months: list[tuple[int, int]] = []
+    for _ in range(n):
+        months.append((year, month))
+        month -= 1
+        if month == 0:
+            month = 12
+            year -= 1
+    return list(reversed(months))
+
+
+@router.get("/dashboard/growth", response_model=GrowthOut)
+async def get_growth(user: UserInDB = Depends(get_current_user)):
+    """Real per-user history for the growth widget - money is cumulative $
+    spent in the Vault (orders), goals is cumulative goals set (Luna), and
+    wellness is % of days each month with a Challenge check-in (Luna). Not a
+    proxy for the user's actual finances/life outside this app - just what
+    this app can honestly observe about them."""
+    db = get_database()
+    today = datetime.now(timezone.utc).date()
+
+    orders = await db.orders.find({"user_id": user.id}).to_list(length=None)
+    goals = await db.goals.find({"user_id": user.id}).to_list(length=None)
+    logs = await db.challenge_logs.find({"user_id": user.id}).to_list(length=None)
+
+    money_points: list[MonthPoint] = []
+    goals_points: list[MonthPoint] = []
+    wellness_points: list[MonthPoint] = []
+
+    for year, month in _last_n_months(6):
+        month_start = date(year, month, 1)
+        month_end = date(year, month, monthrange(year, month)[1])
+        label = _MONTH_ABBR[month]
+
+        spent = sum(o["amount"] for o in orders if o["created_at"].date() <= month_end)
+        money_points.append(MonthPoint(month=label, value=round(spent, 2)))
+
+        goal_count = sum(1 for g in goals if g["created_at"].date() <= month_end)
+        goals_points.append(MonthPoint(month=label, value=goal_count))
+
+        if month_start > today:
+            consistency = 0.0
+        else:
+            days_elapsed = (min(month_end, today) - month_start).days + 1
+            check_in_days = {l["date"] for l in logs if l["date"].startswith(f"{year:04d}-{month:02d}")}
+            consistency = round(min(len(check_in_days) / days_elapsed, 1.0) * 100, 1) if days_elapsed > 0 else 0.0
+        wellness_points.append(MonthPoint(month=label, value=consistency))
+
+    return GrowthOut(money=money_points, goals=goals_points, wellness=wellness_points)
 
 
 @router.get("/library", response_model=list[LibraryItemOut])

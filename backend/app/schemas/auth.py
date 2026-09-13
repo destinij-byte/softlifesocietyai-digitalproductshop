@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, ConfigDict, EmailStr
 
 from app.utils.objectid import PyObjectId
@@ -27,3 +29,4 @@ class MeResponse(BaseModel):
     full_name: str
     is_admin: bool
     membership_tier: str
+    created_at: datetime

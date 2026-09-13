@@ -127,3 +127,14 @@ class BoxSubscriberOut(BaseModel):
     box_type: str
     tier: str
     created_at: datetime
+
+
+class MonthPoint(BaseModel):
+    month: str
+    value: float
+
+
+class GrowthOut(BaseModel):
+    money: list[MonthPoint]
+    goals: list[MonthPoint]
+    wellness: list[MonthPoint]

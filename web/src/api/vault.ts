@@ -69,6 +69,17 @@ export interface Order {
   created_at: string;
 }
 
+export interface MonthPoint {
+  month: string;
+  value: number;
+}
+
+export interface Growth {
+  money: MonthPoint[];
+  goals: MonthPoint[];
+  wellness: MonthPoint[];
+}
+
 export type BoxType = "skincare" | "lifestyle";
 export type BoxTierKey = "mini" | "classic" | "deluxe";
 
@@ -104,6 +115,8 @@ export const vaultApi = {
     }),
 
   getDashboard: () => apiRequest<Dashboard>("/vault/dashboard"),
+
+  getGrowth: () => apiRequest<Growth>("/vault/dashboard/growth"),
 
   getLibrary: (params?: { type?: string; lifeArea?: string }) => {
     const query = new URLSearchParams();
