@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Soft Life Society AI",
+    "slug": "soft-life-society-ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFF9F6"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "ai.softlifesociety.app"
+    },
+    "android": {
+      "package": "ai.softlifesociety.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFF9F6"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    }
+  }
+}

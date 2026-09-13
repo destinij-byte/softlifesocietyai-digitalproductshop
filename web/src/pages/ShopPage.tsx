@@ -53,12 +53,16 @@ export function ShopPage() {
   // AI Collection is presented as named sub-brand shelves rather than one
   // flat list - see theme/aiShelves.ts.
   const aiProducts = products.filter((p) => p.collection === "ai");
-  const namedAiShelves = AI_SHELF_ORDER.map((slug) => ({
-    slug,
-    meta: AI_SHELVES[slug],
-    products: aiProducts.filter((p) => p.slug === slug),
-  })).filter((shelf) => shelf.products.length > 0);
-  const unmappedAiProducts = aiProducts.filter((p) => !AI_SHELVES[p.slug]);
+  const namedAiShelves = AI_SHELF_ORDER.map((key) => {
+    const def = AI_SHELVES[key];
+    return {
+      key,
+      meta: def.meta,
+      products: aiProducts.filter((p) => def.slugs.includes(p.slug)),
+    };
+  }).filter((shelf) => shelf.products.length > 0);
+  const shelvedSlugs = new Set(AI_SHELF_ORDER.flatMap((key) => AI_SHELVES[key].slugs));
+  const unmappedAiProducts = aiProducts.filter((p) => !shelvedSlugs.has(p.slug));
 
   return (
     <div className="container page stack gap-lg">
@@ -130,8 +134,8 @@ export function ShopPage() {
             <h2>🤖 AI Collection</h2>
             <p className="muted">Prompt packs for every side of her life.</p>
           </div>
-          {namedAiShelves.map(({ slug, meta, products: shelfProducts }) => (
-            <div key={slug} className="stack gap-md">
+          {namedAiShelves.map(({ key, meta, products: shelfProducts }) => (
+            <div key={key} className="stack gap-md">
               <h3 style={{ color: meta.accentColor }}>{meta.label}</h3>
               <div className="grid grid-products">
                 {shelfProducts.map((product) => {

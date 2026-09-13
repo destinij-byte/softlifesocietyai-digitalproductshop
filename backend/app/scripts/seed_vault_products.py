@@ -48,6 +48,53 @@ PRODUCTS = [
     {"slug": "ultimate-soft-life-planner", "title": "The Ultimate Soft Life Planner", "subtitle": "Every tool she needs, in one luxe planner.", "type": "All-in-One", "collection": "signature", "life_area": "goals", "price": 37, "is_hero": True},
 ]
 
+# 🤖 AI Collection sub-brand lineups - each shelf on the Shop's AI Collection
+# (see web/src/theme/aiShelves.ts) previously mapped to a single prompt pack.
+# These are the full product lines for those named shelves, seeded here so
+# the shelves show a real catalog instead of one item each. All live in the
+# "ai" collection / "ai" life area, matching the existing drops above.
+AI_BRAND_PRODUCTS = [
+    # 💗 Her New Era AI shelf (alongside existing "dating-relationships-ai-prompt-pack")
+    {"slug": "her-new-era-30-day-life-reset", "title": "The 30-Day Life Reset System", "subtitle": "A full month to reset your habits, mindset, and momentum.", "type": "Workbook", "price": 19, "is_hero": True},
+    {"slug": "her-new-era-identity-reset", "title": "The Identity & Self-Concept Reset", "subtitle": "A 14-day plan to rebuild how you see yourself.", "type": "Workbook", "price": 17},
+    {"slug": "her-new-era-habit-builder", "title": "The Habit & Routine Builder", "subtitle": "Build routines that actually stick.", "type": "Workbook", "price": 17},
+    {"slug": "her-new-era-confidence-rebuild", "title": "The Confidence Rebuild System", "subtitle": "A 21-day challenge to rebuild real confidence.", "type": "Challenge Workbook", "price": 19},
+    {"slug": "her-new-era-goal-to-action-planner", "title": "The Goal-to-Action Life Planner", "subtitle": "Turn her goals into an actual plan.", "type": "Planner", "price": 17},
+    {"slug": "her-new-era-future-self-ai-kit", "title": "The Future Self AI Planning Kit", "subtitle": "AI prompts to plan the next version of her life.", "type": "Prompt Pack", "price": 15, "is_ai_resource": True},
+    # 👑 CEO Girl AI shelf (alongside existing "ceo-ai-prompt-pack")
+    {"slug": "ceo-girl-idea-finder", "title": "Business Idea Finder + AI Validation Kit", "subtitle": "Find and validate a real business idea with AI.", "type": "Workbook", "price": 19},
+    {"slug": "ceo-girl-offer-builder", "title": "The Offer Builder System", "subtitle": "Build an offer people actually want to buy.", "type": "Workbook", "price": 19},
+    {"slug": "ceo-girl-ideal-customer-profile", "title": "The Ideal Customer AI Profile Kit", "subtitle": "Know exactly who she's building for.", "type": "Workbook", "price": 15},
+    {"slug": "ceo-girl-pricing-calculator", "title": "Digital Product Pricing Calculator + Guide", "subtitle": "Price her digital products with confidence.", "type": "Guide", "price": 15},
+    {"slug": "ceo-girl-30-day-launch-system", "title": "The 30-Day Business Launch System", "subtitle": "A day-by-day plan to launch in 30 days.", "type": "Workbook", "price": 22, "is_hero": True},
+    {"slug": "ceo-girl-content-marketing-kit", "title": "Small Business Content & Marketing Kit", "subtitle": "Market her small business without the overwhelm.", "type": "Toolkit", "price": 19},
+    # 💸 Money Muse AI shelf (alongside existing "money-ai-prompt-pack")
+    {"slug": "money-muse-money-reset-workbook", "title": "The Money Reset Workbook", "subtitle": "A full reset on her relationship with money.", "type": "Workbook", "price": 17, "is_hero": True},
+    {"slug": "money-muse-ultimate-budget-planner", "title": "The Ultimate Budget Planner", "subtitle": "Budgeting that actually fits her life.", "type": "Planner", "price": 17},
+    {"slug": "money-muse-debt-freedom-tracker", "title": "The Debt Freedom Tracker", "subtitle": "Track her path to being debt-free.", "type": "Workbook", "price": 17},
+    {"slug": "money-muse-savings-goal-planner", "title": "The Savings Goal Planner", "subtitle": "Plan and track every savings goal.", "type": "Planner", "price": 12},
+    {"slug": "money-muse-ai-prompt-pack", "title": "The Money Muse AI Prompt Pack", "subtitle": "AI prompts for getting her money right.", "type": "Prompt Pack", "price": 15, "is_ai_resource": True},
+    # 🎬 Creator Muse AI shelf (alongside existing "content-creator-ai-prompt-pack")
+    {"slug": "creator-muse-30-day-content-calendar", "title": "The 30-Day Content Calendar", "subtitle": "A full month of content, planned out.", "type": "Workbook", "price": 17, "is_hero": True},
+    {"slug": "creator-muse-hooks-templates", "title": "500+ Hooks & Hook Templates", "subtitle": "Never stare at a blank caption box again.", "type": "Guide", "price": 15},
+    {"slug": "creator-muse-caption-vault", "title": "The Caption Vault", "subtitle": "Captions ready to copy, paste, and post.", "type": "Guide", "price": 12},
+    {"slug": "creator-muse-reels-tiktok-script-pack", "title": "Reels & TikTok Script Pack", "subtitle": "Full hook-body-CTA scripts, ready to film.", "type": "Workbook", "price": 19},
+    {"slug": "creator-muse-ai-prompt-pack", "title": "The Creator Muse AI Prompt Pack", "subtitle": "AI prompts for the girl building her brand.", "type": "Prompt Pack", "price": 15, "is_ai_resource": True},
+    # 🏡 Home Reset AI shelf (alongside existing "home-lifestyle-ai-prompt-pack")
+    {"slug": "home-reset-whole-home-reset", "title": "The Whole Home Reset", "subtitle": "A room-by-room method for resetting her whole home.", "type": "Workbook", "price": 19, "is_hero": True},
+    {"slug": "home-reset-declutter-challenge", "title": "The Declutter Challenge", "subtitle": "A 14-day zone-by-zone declutter challenge.", "type": "Challenge Workbook", "price": 15},
+    {"slug": "home-reset-cleaning-system", "title": "The Cleaning System", "subtitle": "A daily, weekly, and monthly cleaning rotation.", "type": "Guide", "price": 15},
+    {"slug": "home-reset-room-organization-planner", "title": "The Room Organization Planner", "subtitle": "A reusable method for organizing any room.", "type": "Planner", "price": 15},
+    {"slug": "home-reset-moving-planner", "title": "The Moving Planner", "subtitle": "From 8 weeks out to move-in day, fully mapped.", "type": "Planner", "price": 17},
+    # 🎓 Study Muse AI shelf - new shelf, no existing product yet
+    {"slug": "study-muse-ai-schedule-builder", "title": "The AI Study Schedule Builder", "subtitle": "Turn your exam date and subjects into a real schedule with AI.", "type": "Planner", "price": 15, "is_ai_resource": True, "is_hero": True},
+    {"slug": "study-muse-exam-prep-system", "title": "The Exam Prep System", "subtitle": "A complete method for walking into any exam prepared.", "type": "Workbook", "price": 17},
+    {"slug": "study-muse-30-day-exam-countdown", "title": "The 30-Day Exam Countdown", "subtitle": "A day-by-day structure for the month before your exam.", "type": "Planner", "price": 15},
+    {"slug": "study-muse-active-recall-study-kit", "title": "The Active Recall & Study Method Kit", "subtitle": "The research-backed techniques that actually build memory.", "type": "Guide", "price": 15},
+    {"slug": "study-muse-finals-week-survival-system", "title": "The Finals Week Survival System", "subtitle": "A triage system for the week everything is due at once.", "type": "Guide", "price": 12},
+    {"slug": "study-muse-ai-prompt-kit", "title": "The Study AI Prompt Kit", "subtitle": "Prompts that turn AI into a study partner.", "type": "Prompt Pack", "price": 12, "is_ai_resource": True},
+]
+
 # Future AI Collection additions, seeded as the Vault's Monthly Drops so
 # "New This Month" / "Monthly Drops" has real data to show.
 AI_COLLECTION_DROPS = [
@@ -182,11 +229,16 @@ async def run() -> None:
             db,
             {**drop, "type": "Prompt Pack", "price": 12, "is_ai_resource": True, "is_monthly_drop": True},
         )
+    for product in AI_BRAND_PRODUCTS:
+        await _upsert_product(db, {**product, "collection": "ai", "life_area": "ai"})
 
     for bundle in BUNDLES:
         await _upsert_bundle(db, bundle)
 
-    print(f"Seeded {len(PRODUCTS)} products, {len(AI_COLLECTION_DROPS)} monthly drops, {len(BUNDLES)} bundles.")
+    print(
+        f"Seeded {len(PRODUCTS)} products, {len(AI_COLLECTION_DROPS)} monthly drops, "
+        f"{len(AI_BRAND_PRODUCTS)} AI brand shelf products, {len(BUNDLES)} bundles."
+    )
 
 
 if __name__ == "__main__":
