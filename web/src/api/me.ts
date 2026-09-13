@@ -7,6 +7,7 @@ export interface Me {
   full_name: string;
   is_admin: boolean;
   membership_tier: MembershipTier;
+  created_at: string;
 }
 
 export const meApi = {

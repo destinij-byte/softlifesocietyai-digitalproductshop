@@ -93,6 +93,19 @@ AI_BRAND_PRODUCTS = [
     {"slug": "study-muse-active-recall-study-kit", "title": "The Active Recall & Study Method Kit", "subtitle": "The research-backed techniques that actually build memory.", "type": "Guide", "price": 15},
     {"slug": "study-muse-finals-week-survival-system", "title": "The Finals Week Survival System", "subtitle": "A triage system for the week everything is due at once.", "type": "Guide", "price": 12},
     {"slug": "study-muse-ai-prompt-kit", "title": "The Study AI Prompt Kit", "subtitle": "Prompts that turn AI into a study partner.", "type": "Prompt Pack", "price": 12, "is_ai_resource": True},
+    # 🌴 Florida Property AI shelf - new shelf, vacation-rental hosting angle.
+    # General frameworks/systems only, same as every other shelf - no
+    # specific tax/legal/licensing claims stated as fact anywhere here.
+    # is_active=False on all 6: the lineup (titles/prices) is approved, but
+    # unlike the other 33, none of these have actual workbook content or a
+    # PDF written yet - flip to True per-product via PATCH /vault/admin/
+    # products/{id} once each one is real.
+    {"slug": "florida-property-short-term-rental-launch-kit", "title": "The Short-Term Rental Launch Kit", "subtitle": "Everything to set up her first vacation rental the right way.", "type": "Workbook", "price": 19, "is_hero": True, "is_active": False},
+    {"slug": "florida-property-host-pricing-revenue-planner", "title": "The Host Pricing & Revenue Planner", "subtitle": "Price her nights with a system, not a guess.", "type": "Planner", "price": 17, "is_active": False},
+    {"slug": "florida-property-5-star-guest-experience-playbook", "title": "The 5-Star Guest Experience Playbook", "subtitle": "Turn one-time guests into repeat bookings and reviews.", "type": "Guide", "price": 15, "is_active": False},
+    {"slug": "florida-property-systems-turnover-checklist", "title": "The Property Systems & Turnover Checklist", "subtitle": "A repeatable system for every guest turnover.", "type": "Workbook", "price": 17, "is_active": False},
+    {"slug": "florida-property-rental-investment-tracker", "title": "The Rental Property Investment Tracker", "subtitle": "Track income, expenses, and ROI on every property.", "type": "Planner", "price": 15, "is_active": False},
+    {"slug": "florida-property-ai-prompt-pack", "title": "The Florida Property AI Prompt Pack", "subtitle": "AI prompts for listings, guest messages, and pricing strategy.", "type": "Prompt Pack", "price": 15, "is_ai_resource": True, "is_active": False},
 ]
 
 # Future AI Collection additions, seeded as the Vault's Monthly Drops so

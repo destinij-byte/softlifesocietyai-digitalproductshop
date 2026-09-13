@@ -2,16 +2,24 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { vaultApi, Dashboard } from "../api/vault";
+import { useAuth } from "../context/AuthContext";
 import { MembershipBadge } from "../components/MembershipBadge";
 import { VaultTile } from "../components/VaultTile";
 import { ProductCard } from "../components/ProductCard";
 import { Spinner } from "../components/Spinner";
+import { SoftLifeGrowthGraph } from "../components/SoftLifeGrowthGraph";
 import { LIFE_AREAS, LIFE_AREA_ORDER } from "../theme/lifeAreas";
+
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
 
 const APP_LINK = import.meta.env.VITE_APP_LINK ?? "https://softlifesocietyai.com/app";
 
 export function DashboardPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -91,6 +99,13 @@ export function DashboardPage() {
           </div>
         )}
       </section>
+
+      {user && (
+        <SoftLifeGrowthGraph
+          userName={user.full_name.split(" ")[0] || "boss"}
+          joinedMonth={MONTH_NAMES[new Date(user.created_at).getMonth()]}
+        />
+      )}
     </div>
   );
 }
