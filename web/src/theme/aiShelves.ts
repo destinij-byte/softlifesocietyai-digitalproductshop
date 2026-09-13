@@ -89,6 +89,20 @@ export const AI_SHELVES: Record<string, AiShelfDef> = {
       "study-muse-ai-prompt-kit",
     ],
   },
+  "florida-property": {
+    // Lineup approved; products seed with is_active=False until each one's
+    // actual workbook content/PDF exists - see seed_vault_products.py. This
+    // shelf simply won't render until at least one of them goes active.
+    meta: shelf("Florida Property", "🌴", "#7fb8b0"),
+    slugs: [
+      "florida-property-short-term-rental-launch-kit",
+      "florida-property-host-pricing-revenue-planner",
+      "florida-property-5-star-guest-experience-playbook",
+      "florida-property-systems-turnover-checklist",
+      "florida-property-rental-investment-tracker",
+      "florida-property-ai-prompt-pack",
+    ],
+  },
 };
 
 export const AI_SHELF_ORDER = [
@@ -98,6 +112,7 @@ export const AI_SHELF_ORDER = [
   "her-new-era",
   "home-reset",
   "study-muse",
+  "florida-property",
 ];
 
 export const AI_SHELF_FALLBACK_LABEL = "AI Prompts";
