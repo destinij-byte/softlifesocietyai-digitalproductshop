@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { vaultApi, Bundle } from "../api/vault";
+import { useAuth } from "../context/AuthContext";
 import { BundleCard } from "../components/BundleCard";
 import { Spinner } from "../components/Spinner";
 import { ApiError } from "../api/client";
 
+// Public storefront - bundle data is already a public endpoint. Only
+// checkout needs a logged-in user.
 export function BundlesPage() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [bundles, setBundles] = useState<Bundle[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkingOutId, setCheckingOutId] = useState<string | null>(null);
@@ -19,6 +25,10 @@ export function BundlesPage() {
   }, []);
 
   async function handleBuy(bundle: Bundle) {
+    if (!user) {
+      navigate("/register", { state: { from: "/upgrade" } });
+      return;
+    }
     setError(null);
     setCheckingOutId(bundle.id);
     try {
@@ -52,6 +62,7 @@ export function BundlesPage() {
             savings={bundle.savings}
             productCount={bundle.products.length}
             isFoundingMember={bundle.is_founding_member}
+            isBestValue={bundle.slug === "full-library"}
             loading={checkingOutId === bundle.id}
             onBuy={() => handleBuy(bundle)}
           />
