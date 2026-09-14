@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 import { NavBar } from "./components/NavBar";
 import { Footer } from "./components/Footer";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -11,6 +12,8 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { ShopPage } from "./pages/ShopPage";
+import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { CartPage } from "./pages/CartPage";
 import { MyLibraryPage } from "./pages/MyLibraryPage";
 import { MonthlyDropsPage } from "./pages/MonthlyDropsPage";
 import { BundlesPage } from "./pages/BundlesPage";
@@ -56,6 +59,8 @@ function AppRoutes() {
       {/* The Vault and Upgrade are the public storefront - browsable without
           an account; checkout itself still requires login. */}
       <Route path="/shop" element={<ShopPage />} />
+      <Route path="/shop/:slug" element={<ProductDetailPage />} />
+      <Route path="/cart" element={<CartPage />} />
       <Route path="/upgrade" element={<BundlesPage />} />
 
       <Route
@@ -93,9 +98,11 @@ function AppRoutes() {
 export default function App() {
   return (
     <AuthProvider>
-      <NavBar />
-      <AppRoutes />
-      <Footer />
+      <CartProvider>
+        <NavBar />
+        <AppRoutes />
+        <Footer />
+      </CartProvider>
     </AuthProvider>
   );
 }

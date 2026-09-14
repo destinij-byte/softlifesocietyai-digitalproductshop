@@ -114,6 +114,12 @@ export const vaultApi = {
       body: payload,
     }),
 
+  checkoutCart: (items: { product_id?: string; bundle_id?: string }[]) =>
+    apiRequest<{ checkout_url: string; session_id: string }>("/vault/cart/checkout", {
+      method: "POST",
+      body: { items },
+    }),
+
   getDashboard: () => apiRequest<Dashboard>("/vault/dashboard"),
 
   getGrowth: () => apiRequest<Growth>("/vault/dashboard/growth"),

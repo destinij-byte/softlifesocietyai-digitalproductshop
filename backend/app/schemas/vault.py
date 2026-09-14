@@ -93,6 +93,15 @@ class CheckoutResponse(BaseModel):
     session_id: str
 
 
+class CartItemIn(BaseModel):
+    product_id: str | None = None
+    bundle_id: str | None = None
+
+
+class CartCheckoutRequest(BaseModel):
+    items: list[CartItemIn] = Field(default_factory=list)
+
+
 class DownloadResponse(BaseModel):
     download_url: str
     expires_in_seconds: int

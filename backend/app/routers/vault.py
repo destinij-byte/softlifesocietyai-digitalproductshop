@@ -1,3 +1,4 @@
+import json
 from calendar import monthrange
 from datetime import date, datetime, timezone
 
@@ -15,6 +16,7 @@ from app.schemas.vault import (
     BoxOut,
     BoxTierOut,
     BundleOut,
+    CartCheckoutRequest,
     CheckoutRequest,
     CheckoutResponse,
     DashboardOut,
@@ -32,6 +34,7 @@ from app.services.stripe_service import construct_webhook_event
 from app.services.vault_download_service import sign_download_url
 from app.services.vault_stripe_service import (
     create_checkout_session_for_bundle,
+    create_checkout_session_for_cart,
     create_checkout_session_for_product,
 )
 
@@ -162,6 +165,52 @@ async def create_checkout(payload: CheckoutRequest, user: UserInDB = Depends(get
     return CheckoutResponse(checkout_url=session.url, session_id=session.id)
 
 
+@router.post("/cart/checkout", response_model=CheckoutResponse)
+async def create_cart_checkout(payload: CartCheckoutRequest, user: UserInDB = Depends(get_current_user)):
+    if not payload.items:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cart is empty")
+
+    db = get_database()
+    cart_items: list[dict] = []
+
+    for item in payload.items:
+        if not item.product_id and not item.bundle_id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Each cart item needs a product_id or bundle_id")
+        if item.product_id and item.bundle_id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cart item can't be both a product and a bundle")
+
+        if item.product_id:
+            product_doc = await _find_product(db, item.product_id)
+            if await entitlement_service.has_product_access(db, user.id, product_doc["_id"], is_admin=user.is_admin):
+                continue  # already unlocked - skip rather than blocking the whole cart
+            cart_items.append(
+                {
+                    "type": "product",
+                    "id": str(product_doc["_id"]),
+                    "name": product_doc["title"],
+                    "description": product_doc.get("description", ""),
+                    "price": product_doc["price"],
+                }
+            )
+        else:
+            bundle_doc = await _find_bundle(db, item.bundle_id)
+            cart_items.append(
+                {
+                    "type": "bundle",
+                    "id": str(bundle_doc["_id"]),
+                    "name": bundle_doc["name"],
+                    "description": bundle_doc.get("description", ""),
+                    "price": bundle_doc["price"],
+                }
+            )
+
+    if not cart_items:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Everything in your cart is already unlocked, babe")
+
+    session = create_checkout_session_for_cart(cart_items, user)
+    return CheckoutResponse(checkout_url=session.url, session_id=session.id)
+
+
 # --- The Box (monthly subscription boxes) ---------------------------------
 
 
@@ -222,7 +271,7 @@ async def stripe_webhook(request: Request):
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
         metadata = session.get("metadata", {})
-        if metadata.get("kind") in ("product", "bundle"):
+        if metadata.get("kind") in ("product", "bundle", "cart"):
             await _fulfill_order(session, metadata)
         elif metadata.get("kind") == "box_subscription":
             await _fulfill_box_subscription(session, metadata)
@@ -278,13 +327,31 @@ async def _fulfill_order(session: dict, metadata: dict) -> None:
             return
         await entitlement_service.grant_product_entitlement(db, user_id, product_id)
         items = [{"type": "product", "product_id": product_id, "bundle_id": None, "title": product_doc["title"], "price": product_doc["price"]}]
-    else:
+    elif metadata["kind"] == "bundle":
         bundle_id = ObjectId(metadata["bundle_id"])
         bundle_doc = await db.bundles.find_one({"_id": bundle_id})
         if bundle_doc is None:
             return
         await entitlement_service.grant_bundle(db, user_id, bundle_doc)
         items = [{"type": "bundle", "product_id": None, "bundle_id": bundle_id, "title": bundle_doc["name"], "price": bundle_doc["price"]}]
+    else:  # cart - multiple products/bundles in one checkout
+        items = []
+        for entry in json.loads(metadata.get("items", "[]")):
+            entry_id = ObjectId(entry["id"])
+            if entry["type"] == "product":
+                product_doc = await db.products.find_one({"_id": entry_id})
+                if product_doc is None:
+                    continue
+                await entitlement_service.grant_product_entitlement(db, user_id, entry_id)
+                items.append({"type": "product", "product_id": entry_id, "bundle_id": None, "title": product_doc["title"], "price": product_doc["price"]})
+            else:
+                bundle_doc = await db.bundles.find_one({"_id": entry_id})
+                if bundle_doc is None:
+                    continue
+                await entitlement_service.grant_bundle(db, user_id, bundle_doc)
+                items.append({"type": "bundle", "product_id": None, "bundle_id": entry_id, "title": bundle_doc["name"], "price": bundle_doc["price"]})
+        if not items:
+            return
 
     await db.orders.insert_one(
         {

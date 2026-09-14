@@ -1,3 +1,5 @@
+import json
+
 import stripe
 
 from app.config import settings
@@ -49,4 +51,34 @@ def create_checkout_session_for_bundle(bundle: Bundle, user: UserInDB) -> stripe
         price=bundle.price,
         user=user,
         metadata={"kind": "bundle", "bundle_id": str(bundle.id), "user_id": str(user.id)},
+    )
+
+
+def create_checkout_session_for_cart(cart_items: list[dict], user: UserInDB) -> stripe.checkout.Session:
+    """cart_items: [{"type": "product"|"bundle", "id": str, "name": str, "description": str, "price": float}, ...]"""
+    line_items = [
+        {
+            "price_data": {
+                "currency": "usd",
+                "unit_amount": round(item["price"] * 100),
+                "product_data": {
+                    "name": item["name"],
+                    "description": item["description"][:500],
+                },
+            },
+            "quantity": 1,
+        }
+        for item in cart_items
+    ]
+    # Stripe metadata values are capped at 500 chars each - keep only what
+    # the webhook needs (type + id) to re-resolve and fulfill each item.
+    metadata_items = json.dumps([{"type": item["type"], "id": item["id"]} for item in cart_items])
+    return stripe.checkout.Session.create(
+        mode="payment",
+        payment_method_types=["card"],
+        customer_email=user.email,
+        line_items=line_items,
+        metadata={"kind": "cart", "user_id": str(user.id), "items": metadata_items},
+        success_url=f"{settings.vault_stripe_success_url}?session_id={{CHECKOUT_SESSION_ID}}",
+        cancel_url=settings.vault_stripe_cancel_url,
     )

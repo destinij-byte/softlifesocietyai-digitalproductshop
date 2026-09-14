@@ -31,25 +31,26 @@ export function ShopPage() {
   }, [user]);
 
   async function handleProductClick(product: Product) {
-    if (!user) {
-      navigate("/register", { state: { from: "/shop" } });
-      return;
-    }
-    setError(null);
-    setBusyId(product.id);
-    try {
-      if (ownedIds.has(product.id)) {
+    // Owned products still open the download instantly; anything she doesn't
+    // own yet goes to the preview page first, not straight into checkout.
+    if (ownedIds.has(product.id)) {
+      if (!user) {
+        navigate("/register", { state: { from: "/shop" } });
+        return;
+      }
+      setError(null);
+      setBusyId(product.id);
+      try {
         const { download_url } = await vaultApi.getDownloadUrl(product.id);
         window.open(download_url, "_blank", "noopener,noreferrer");
-      } else {
-        const { checkout_url } = await vaultApi.checkout({ product_id: product.id });
-        window.location.href = checkout_url;
+      } catch (err) {
+        setError(err instanceof ApiError ? err.message : "Something went wrong. Try again in a moment.");
+      } finally {
+        setBusyId(null);
       }
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Something went wrong. Try again in a moment.");
-    } finally {
-      setBusyId(null);
+      return;
     }
+    navigate(`/shop/${product.slug}`);
   }
 
   if (loading) return <Spinner />;
