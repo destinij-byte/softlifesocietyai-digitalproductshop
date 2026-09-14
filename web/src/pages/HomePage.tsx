@@ -1,13 +1,38 @@
+import { SVGProps } from "react";
 import { Link } from "react-router-dom";
 
 import { FadeInSection } from "../components/FadeInSection";
 import { FaqAccordion, FaqItem } from "../components/FaqAccordion";
+import {
+  IconAscend,
+  IconBloom,
+  IconCompass,
+  IconCoin,
+  IconCrown,
+  IconFlame,
+  IconHeart,
+  IconKey,
+  IconSpark,
+  IconSun,
+  IconTarget,
+} from "../components/icons/LineIcons";
 import { LIFE_AREAS, LIFE_AREA_ORDER } from "../theme/lifeAreas";
+import type { LifeArea } from "../api/vault";
+
+const LIFE_AREA_ICONS: Record<LifeArea, (props: SVGProps<SVGSVGElement>) => JSX.Element> = {
+  soft_life: IconBloom,
+  goals: IconTarget,
+  money: IconCoin,
+  ceo_life: IconCrown,
+  ai: IconSpark,
+  inner_life: IconHeart,
+  challenges: IconFlame,
+};
 
 const WHAT_IS_CARDS = [
-  { title: "Plan Your Life", body: "Organize the goals, routines, and plans that move you forward." },
-  { title: "Glow Daily", body: "Build habits, confidence, wellness, and rituals that make you feel like yourself again." },
-  { title: "Become Her", body: "Turn the woman you envision into the woman you consistently choose to be." },
+  { title: "Plan Your Life", body: "Organize the goals, routines, and plans that move you forward.", Icon: IconCompass },
+  { title: "Glow Daily", body: "Build habits, confidence, wellness, and rituals that make you feel like yourself again.", Icon: IconSun },
+  { title: "Become Her", body: "Turn the woman you envision into the woman you consistently choose to be.", Icon: IconAscend },
 ];
 
 const STEPS = [
@@ -70,7 +95,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
 ];
 
-const ORBIT_RADIUS = 150;
+const ORBIT_RADIUS = 160;
 
 export function HomePage() {
   return (
@@ -92,24 +117,25 @@ export function HomePage() {
               EXPLORE THE VAULT
             </Link>
           </div>
-          <p className="hero-trust">AI-powered. Goal-driven. Designed for your next era.</p>
+          <p className="hero-trust">AI-POWERED &nbsp;·&nbsp; GOAL-DRIVEN &nbsp;·&nbsp; DESIGNED FOR YOUR NEXT ERA</p>
 
           <div className="hero-orbit" aria-hidden="true">
             <div className="hero-orbit-ring" />
             <div className="hero-orbit-center">
-              <span style={{ fontSize: 26 }}>✨</span>
+              <IconKey style={{ width: 30, height: 30 }} />
             </div>
             {LIFE_AREA_ORDER.map((key, i) => {
               const angle = (i * (360 / LIFE_AREA_ORDER.length) - 90) * (Math.PI / 180);
               const x = Math.round(Math.cos(angle) * ORBIT_RADIUS);
               const y = Math.round(Math.sin(angle) * ORBIT_RADIUS);
+              const Icon = LIFE_AREA_ICONS[key];
               return (
                 <div
                   key={key}
                   className="hero-orbit-node"
                   style={{ left: "50%", top: "50%", transform: `translate(-50%, -50%) translate(${x}px, ${y}px)` }}
                 >
-                  {LIFE_AREAS[key].emoji}
+                  <Icon style={{ width: 20, height: 20 }} />
                 </div>
               );
             })}
@@ -130,11 +156,14 @@ export function HomePage() {
               </p>
             </div>
             <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
-              {WHAT_IS_CARDS.map((card) => (
-                <div className="card card-hover" key={card.title}>
-                  <h3>{card.title}</h3>
+              {WHAT_IS_CARDS.map(({ title, body, Icon }) => (
+                <div className="card card-hover" key={title}>
+                  <span className="icon-badge">
+                    <Icon style={{ width: 22, height: 22 }} />
+                  </span>
+                  <h3 style={{ marginTop: 16 }}>{title}</h3>
                   <p className="muted" style={{ marginTop: 10 }}>
-                    {card.body}
+                    {body}
                   </p>
                 </div>
               ))}
@@ -143,23 +172,35 @@ export function HomePage() {
         </section>
       </FadeInSection>
 
-      {/* Society Ecosystem */}
+      {/* Society Ecosystem - deliberately dark: the one section that should
+          feel like a private members' club, not a soft pastel page. */}
       <FadeInSection>
-        <section className="section" id="society" style={{ background: "var(--soft-pink)" }}>
+        <section className="section" id="society" style={{ background: "var(--ink)", color: "var(--ivory)" }}>
           <div className="container">
             <div className="section-head">
-              <h2>The Society Ecosystem</h2>
-              <p className="muted" style={{ marginTop: 14 }}>Seven pillars. One intentional system.</p>
+              <span className="hero-eyebrow" style={{ color: "var(--champagne)" }}>
+                The Ecosystem
+              </span>
+              <h2 style={{ color: "var(--champagne)", marginTop: 10 }}>Seven pillars. One society.</h2>
             </div>
             <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
-              {LIFE_AREA_ORDER.map((key) => (
-                <Link to="/register" className="card card-hover pillar-card" key={key}>
-                  <span className="medallion">{LIFE_AREAS[key].emoji}</span>
-                  <h3 style={{ fontSize: 19 }}>{LIFE_AREAS[key].label}</h3>
-                  <p className="muted" style={{ fontSize: 13.5 }}>{LIFE_AREAS[key].description}</p>
-                  <span className="pillar-card-link">Inside the Society →</span>
-                </Link>
-              ))}
+              {LIFE_AREA_ORDER.map((key) => {
+                const Icon = LIFE_AREA_ICONS[key];
+                return (
+                  <Link to="/register" className="pillar-card-dark" key={key}>
+                    <span className="icon-badge icon-badge-dark">
+                      <Icon style={{ width: 22, height: 22 }} />
+                    </span>
+                    <h3 style={{ fontSize: 18, color: "var(--ivory)", marginTop: 14 }}>{LIFE_AREAS[key].label}</h3>
+                    <p style={{ fontSize: 13.5, color: "var(--ivory)", opacity: 0.65, marginTop: 6 }}>
+                      {LIFE_AREAS[key].description}
+                    </p>
+                    <span className="pillar-card-link" style={{ color: "var(--champagne)" }}>
+                      Inside the Society →
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -189,7 +230,7 @@ export function HomePage() {
       <FadeInSection>
         <section className="section" style={{ background: "var(--ink)", color: "var(--ivory)" }}>
           <div className="container" style={{ textAlign: "center", maxWidth: 680, margin: "0 auto" }}>
-            <p style={{ fontSize: 20, fontFamily: "var(--font-display)", color: "var(--champagne)", lineHeight: 1.5 }}>
+            <p style={{ fontSize: 22, fontFamily: "var(--font-display)", color: "var(--champagne)", lineHeight: 1.5 }}>
               Not another planner. Not another productivity app. Not another generic AI chatbot.
             </p>
             <p style={{ marginTop: 18, fontSize: 16, opacity: 0.85, lineHeight: 1.6 }}>
@@ -213,36 +254,38 @@ export function HomePage() {
 
       {/* Email capture */}
       <FadeInSection>
-        <section className="section" style={{ background: "var(--soft-pink)" }}>
-          <div className="container" style={{ textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
-            <h2>Your next era starts here.</h2>
-            <p className="muted" style={{ marginTop: 12 }}>
-              Join the Society list for first access to new drops, exclusive resources, launch
-              offers, and updates.
-            </p>
-            <form
-              className="row gap-sm"
-              style={{ marginTop: 24, justifyContent: "center", flexWrap: "wrap" }}
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <input
-                type="email"
-                required
-                placeholder="Enter your email"
-                aria-label="Email address"
-                style={{
-                  border: "1.5px solid var(--blush)",
-                  background: "#fff",
-                  borderRadius: "var(--radius-md)",
-                  padding: "12px 16px",
-                  fontSize: 15,
-                  minWidth: 240,
-                }}
-              />
-              <button className="btn btn-gold" type="submit">
-                JOIN THE LIST
-              </button>
-            </form>
+        <section className="section">
+          <div className="container">
+            <div className="email-capture-card">
+              <h2>Your next era starts here.</h2>
+              <p className="muted" style={{ marginTop: 12 }}>
+                Join the Society list for first access to new drops, exclusive resources, launch
+                offers, and updates.
+              </p>
+              <form
+                className="row gap-sm"
+                style={{ marginTop: 24, justifyContent: "center", flexWrap: "wrap" }}
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <input
+                  type="email"
+                  required
+                  placeholder="Enter your email"
+                  aria-label="Email address"
+                  style={{
+                    border: "1.5px solid var(--blush)",
+                    background: "#fff",
+                    borderRadius: "var(--radius-md)",
+                    padding: "12px 16px",
+                    fontSize: 15,
+                    minWidth: 240,
+                  }}
+                />
+                <button className="btn btn-gold" type="submit">
+                  JOIN THE LIST
+                </button>
+              </form>
+            </div>
           </div>
         </section>
       </FadeInSection>
