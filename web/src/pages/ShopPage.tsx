@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { vaultApi, Product } from "../api/vault";
 import { ApiError } from "../api/client";
+import { useAuth } from "../context/AuthContext";
 import { ProductCard } from "../components/ProductCard";
 import { Spinner } from "../components/Spinner";
 import { COLLECTIONS, COLLECTION_ORDER } from "../theme/collections";
 import { AI_SHELVES, AI_SHELF_ORDER, AI_SHELF_FALLBACK_LABEL } from "../theme/aiShelves";
 
+// Public storefront - the Vault is browsable without an account (product
+// data is already a public endpoint). Only "already owned" state and
+// checkout need a logged-in user.
 export function ShopPage() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [ownedIds, setOwnedIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
@@ -15,15 +22,19 @@ export function ShopPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([vaultApi.listProducts(), vaultApi.getLibrary()])
+    Promise.all([vaultApi.listProducts(), user ? vaultApi.getLibrary() : Promise.resolve([])])
       .then(([allProducts, library]) => {
         setProducts(allProducts);
         setOwnedIds(new Set(library.map((item) => item.product.id)));
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [user]);
 
   async function handleProductClick(product: Product) {
+    if (!user) {
+      navigate("/register", { state: { from: "/shop" } });
+      return;
+    }
     setError(null);
     setBusyId(product.id);
     try {
