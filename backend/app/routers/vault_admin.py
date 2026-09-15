@@ -7,7 +7,14 @@ from app.database import get_database
 from app.deps import get_current_admin
 from app.models.user import UserInDB
 from app.schemas.vault import BoxSubscriberOut
-from app.schemas.vault_admin import BundleCreate, BundleUpdate, ProductCreate, ProductUpdate
+from app.schemas.vault_admin import (
+    AdminOrderOut,
+    AdminUserOut,
+    BundleCreate,
+    BundleUpdate,
+    ProductCreate,
+    ProductUpdate,
+)
 
 router = APIRouter(prefix="/vault/admin", tags=["vault-admin"])
 
@@ -78,6 +85,57 @@ async def update_bundle(bundle_id: str, payload: BundleUpdate, _admin: UserInDB 
     if result.matched_count == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bundle not found")
     return {"updated": True}
+
+
+@router.get("/users", response_model=list[AdminUserOut])
+async def list_all_users(_admin: UserInDB = Depends(get_current_admin)):
+    """Business/account visibility for the site owner - every user's
+    account, membership, and subscription status. Deliberately excludes
+    private in-app content (goals, routines, journal entries, Luna chats)."""
+    db = get_database()
+    docs = await db.users.find({}).sort("created_at", -1).to_list(length=None)
+    return [
+        AdminUserOut(
+            id=doc["_id"],
+            email=doc["email"],
+            full_name=doc.get("full_name", ""),
+            is_admin=doc.get("is_admin", False),
+            membership_tier=doc.get("membership_tier", "free"),
+            subscription_status=doc.get("subscription_status", "none"),
+            created_at=doc["created_at"],
+        )
+        for doc in docs
+    ]
+
+
+@router.get("/orders", response_model=list[AdminOrderOut])
+async def list_all_orders(_admin: UserInDB = Depends(get_current_admin)):
+    """Every order across every user, most recent first - for tracking
+    sales without touching any user's private app content."""
+    db = get_database()
+    orders = await db.orders.find({}).sort("created_at", -1).to_list(length=None)
+
+    user_ids = {order["user_id"] for order in orders}
+    users = await db.users.find({"_id": {"$in": list(user_ids)}}).to_list(length=None)
+    users_by_id = {u["_id"]: u for u in users}
+
+    results = []
+    for order in orders:
+        user_doc = users_by_id.get(order["user_id"])
+        if user_doc is None:
+            continue
+        results.append(
+            AdminOrderOut(
+                id=order["_id"],
+                user_id=order["user_id"],
+                user_email=user_doc["email"],
+                user_full_name=user_doc.get("full_name", ""),
+                items=order.get("items", []),
+                amount=order["amount"],
+                created_at=order["created_at"],
+            )
+        )
+    return results
 
 
 @router.get("/boxes/subscribers", response_model=list[BoxSubscriberOut])

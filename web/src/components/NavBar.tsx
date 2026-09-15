@@ -51,6 +51,7 @@ export function NavBar() {
     { to: "/drops", label: "Monthly Drops" },
     { to: "/upgrade", label: "Upgrade" },
     { to: "/purchases", label: "My Purchases" },
+    ...(user?.is_admin ? [{ to: "/admin", label: "Admin" }] : []),
   ];
 
   const guestItems: NavItem[] = [

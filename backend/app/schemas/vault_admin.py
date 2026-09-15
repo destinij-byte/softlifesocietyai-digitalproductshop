@@ -1,6 +1,9 @@
-from pydantic import BaseModel
+from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict
 
 from app.models.product import LifeArea, ProductCollection
+from app.utils.objectid import PyObjectId
 
 
 class ProductCreate(BaseModel):
@@ -59,3 +62,38 @@ class BundleUpdate(BaseModel):
     includes_app_access: bool | None = None
     is_founding_member: bool | None = None
     is_active: bool | None = None
+
+
+# --- Business/operator visibility - never exposes private app content
+# (goals, routines, journal entries, Luna chats) - accounts, memberships,
+# and purchases only. ---------------------------------------------------
+
+
+class AdminUserOut(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    id: PyObjectId
+    email: str
+    full_name: str
+    is_admin: bool
+    membership_tier: str
+    subscription_status: str
+    created_at: datetime
+
+
+class AdminOrderItemOut(BaseModel):
+    type: str
+    title: str
+    price: float
+
+
+class AdminOrderOut(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    id: PyObjectId
+    user_id: PyObjectId
+    user_email: str
+    user_full_name: str
+    items: list[AdminOrderItemOut]
+    amount: float
+    created_at: datetime
