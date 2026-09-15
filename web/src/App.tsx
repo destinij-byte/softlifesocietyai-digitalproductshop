@@ -5,6 +5,7 @@ import { CartProvider } from "./context/CartContext";
 import { NavBar } from "./components/NavBar";
 import { Footer } from "./components/Footer";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AdminRoute } from "./components/AdminRoute";
 import { Spinner } from "./components/Spinner";
 
 import { HomePage } from "./pages/HomePage";
@@ -20,6 +21,7 @@ import { BundlesPage } from "./pages/BundlesPage";
 import { OrdersPage } from "./pages/OrdersPage";
 import { CheckoutSuccessPage } from "./pages/CheckoutSuccessPage";
 import { CheckoutCancelledPage } from "./pages/CheckoutCancelledPage";
+import { AdminPage } from "./pages/AdminPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { PrivacyPolicyPage } from "./pages/legal/PrivacyPolicyPage";
 import { TermsPage } from "./pages/legal/TermsPage";
@@ -87,6 +89,14 @@ function AppRoutes() {
           <ProtectedRoute>
             <OrdersPage />
           </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AdminPage />
+          </AdminRoute>
         }
       />
 
