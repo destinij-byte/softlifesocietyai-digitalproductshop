@@ -1,9 +1,11 @@
 import json
 from calendar import monthrange
 from datetime import date, datetime, timezone
+from pathlib import Path
 
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi.responses import FileResponse
 
 from app.config import settings
 from app.database import get_database
@@ -31,7 +33,7 @@ from app.schemas.vault import (
 )
 from app.services import box_service, entitlement_service
 from app.services.stripe_service import construct_webhook_event
-from app.services.vault_download_service import sign_download_url
+from app.services.vault_download_service import sign_download_url, verify_download_token
 from app.services.vault_stripe_service import (
     create_checkout_session_for_bundle,
     create_checkout_session_for_cart,
@@ -39,6 +41,8 @@ from app.services.vault_stripe_service import (
 )
 
 router = APIRouter(prefix="/vault", tags=["vault"])
+
+STATIC_VAULT_DIR = Path(__file__).resolve().parent.parent / "static" / "vault"
 
 MEMBERSHIP_BADGES: dict[str, str] = {
     "founding_member": "👑 Founding Member — she was here first.",
@@ -546,8 +550,31 @@ async def download_product(product_id: str, user: UserInDB = Depends(get_current
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not available")
 
     await entitlement_service.mark_opened(db, user.id, pid)
-    signed_url = sign_download_url(str(pid), product_doc["file_url"])
+    # The signed URL points at our own /vault/files endpoint (not file_url
+    # directly) so the entitlement check above is actually enforced on every
+    # download, not just on issuing the link - file_url alone is never
+    # exposed to the client.
+    signed_url = sign_download_url(str(pid), f"{settings.api_public_base_url}/vault/files")
     return DownloadResponse(download_url=signed_url, expires_in_seconds=settings.vault_download_expire_seconds)
+
+
+@router.get("/files")
+async def serve_file(token: str):
+    try:
+        product_id = verify_download_token(token)
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="This link has expired. Go back to My Library and download again.")
+
+    db = get_database()
+    product_doc = await db.products.find_one({"_id": ObjectId(product_id)})
+    if product_doc is None or not product_doc.get("file_url"):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not available")
+
+    file_path = STATIC_VAULT_DIR / f"{product_doc['slug']}.pdf"
+    if not file_path.is_file():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not available")
+
+    return FileResponse(file_path, filename=f"{product_doc['title']}.pdf", media_type="application/pdf")
 
 
 @router.get("/orders", response_model=list[OrderOut])
