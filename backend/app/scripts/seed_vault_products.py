@@ -18,8 +18,14 @@ true via PATCH /vault/admin/products/{id} as each one releases.
 
 import asyncio
 from datetime import datetime, timezone
+from pathlib import Path
 
 from app.database import get_database
+
+# Real product files live here, named "{slug}.pdf" - only products with a
+# file actually present get a working file_url; everything else stays empty
+# ("not available yet") rather than pointing at a fake/dead placeholder URL.
+STATIC_VAULT_DIR = Path(__file__).resolve().parent.parent / "static" / "vault"
 
 PRODUCTS = [
     # 🌸 Soft Life Collection (#1-10) - blush + cream + champagne
@@ -185,7 +191,7 @@ async def _upsert_product(db, data: dict) -> None:
         "life_area": data.get("life_area", "ai"),
         "credit_line": data.get("credit_line", "D. Jones / Soft Life Society"),
         "price": data["price"],
-        "file_url": data.get("file_url", f"https://files.softlifesociety.ai/vault/{data['slug']}.pdf"),
+        "file_url": data.get("file_url") or (f"local:vault/{data['slug']}.pdf" if (STATIC_VAULT_DIR / f"{data['slug']}.pdf").is_file() else ""),
         "thumbnail_url": data.get("thumbnail_url", ""),
         "is_ai_resource": data.get("is_ai_resource", False),
         "is_monthly_drop": data.get("is_monthly_drop", False),

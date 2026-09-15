@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     vault_stripe_cancel_url: str = "https://vault.softlifesociety.ai/checkout/cancelled"
     vault_download_secret: str = "change-me-vault"
     vault_download_expire_seconds: int = 900
+    # This API's own public origin - used to build the signed download link
+    # returned to the client, since files are served by this backend itself.
+    api_public_base_url: str = "https://api.softlifesocietyai.com"
 
     # Comma-separated list of origins allowed to call this API from a browser,
     # e.g. "https://academy.softlifesocietyai.com,https://softlifesocietyai.com"
