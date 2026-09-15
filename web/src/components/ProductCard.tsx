@@ -12,6 +12,8 @@ interface ProductCardProps {
   collectionMeta?: CollectionMeta;
   creditLine?: string;
   onClick?: () => void;
+  onAddToCart?: () => void;
+  inCart?: boolean;
 }
 
 export function ProductCard({
@@ -26,12 +28,25 @@ export function ProductCard({
   collectionMeta,
   creditLine,
   onClick,
+  onAddToCart,
+  inCart,
 }: ProductCardProps) {
   return (
-    <button
+    <div
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={busy ? undefined : onClick}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
       className="card card-hover stack gap-sm"
-      onClick={onClick}
-      disabled={busy}
       style={{
         textAlign: "left",
         border: "none",
@@ -80,6 +95,19 @@ export function ProductCard({
           {creditLine}
         </span>
       )}
-    </button>
+      {onAddToCart && !owned && !locked && (
+        <button
+          className="btn btn-sm btn-outline-gold"
+          disabled={inCart}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAddToCart();
+          }}
+          style={{ marginTop: 4 }}
+        >
+          {inCart ? "In your cart" : "Add to Cart"}
+        </button>
+      )}
+    </div>
   );
 }

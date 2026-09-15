@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { vaultApi, Product } from "../api/vault";
 import { ApiError } from "../api/client";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 import { ProductCard } from "../components/ProductCard";
 import { Spinner } from "../components/Spinner";
 import { COLLECTIONS, COLLECTION_ORDER } from "../theme/collections";
@@ -14,6 +15,7 @@ import { AI_SHELVES, AI_SHELF_ORDER, AI_SHELF_FALLBACK_LABEL } from "../theme/ai
 // checkout need a logged-in user.
 export function ShopPage() {
   const { user } = useAuth();
+  const cart = useCart();
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [ownedIds, setOwnedIds] = useState<Set<string>>(new Set());
@@ -51,6 +53,10 @@ export function ShopPage() {
       return;
     }
     navigate(`/shop/${product.slug}`);
+  }
+
+  function handleAddToCart(product: Product) {
+    cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: product.thumbnail_url });
   }
 
   if (loading) return <Spinner />;
@@ -105,6 +111,8 @@ export function ShopPage() {
                   collectionMeta={meta}
                   creditLine={product.credit_line}
                   onClick={() => handleProductClick(product)}
+                  onAddToCart={() => handleAddToCart(product)}
+                  inCart={cart.has(product.id)}
                 />
               );
             })}
@@ -133,6 +141,8 @@ export function ShopPage() {
                   collectionMeta={meta}
                   creditLine={product.credit_line}
                   onClick={() => handleProductClick(product)}
+                  onAddToCart={() => handleAddToCart(product)}
+                  inCart={cart.has(product.id)}
                 />
               );
             })}
@@ -165,6 +175,8 @@ export function ShopPage() {
                       collectionMeta={meta}
                       creditLine={product.credit_line}
                       onClick={() => handleProductClick(product)}
+                      onAddToCart={() => handleAddToCart(product)}
+                      inCart={cart.has(product.id)}
                     />
                   );
                 })}
@@ -190,6 +202,8 @@ export function ShopPage() {
                       collectionMeta={COLLECTIONS.ai}
                       creditLine={product.credit_line}
                       onClick={() => handleProductClick(product)}
+                      onAddToCart={() => handleAddToCart(product)}
+                      inCart={cart.has(product.id)}
                     />
                   );
                 })}
