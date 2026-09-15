@@ -2,6 +2,8 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
+import { IconBag } from "./icons/LineIcons";
 import logo from "../assets/logo.png";
 
 const APP_LINK = import.meta.env.VITE_APP_LINK ?? "https://softlifesocietyai.com/app";
@@ -32,6 +34,7 @@ function NavItemLink({ item, onClick }: { item: NavItem; onClick?: () => void })
 
 export function NavBar() {
   const { user, logout } = useAuth();
+  const cart = useCart();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -100,6 +103,11 @@ export function NavBar() {
               OPEN THE APP
             </a>
           )}
+
+          <NavLink to="/cart" className="nav-cart-link" aria-label="Cart" onClick={() => setMenuOpen(false)}>
+            <IconBag style={{ width: 22, height: 22 }} />
+            {cart.count > 0 && <span className="nav-cart-badge">{cart.count}</span>}
+          </NavLink>
 
           <button
             className="nav-burger"

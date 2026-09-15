@@ -114,3 +114,12 @@ export function IconKey(props: IconProps) {
     </svg>
   );
 }
+
+export function IconBag(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M6 8h12l1 13H5L6 8Z" />
+      <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
+    </svg>
+  );
+}

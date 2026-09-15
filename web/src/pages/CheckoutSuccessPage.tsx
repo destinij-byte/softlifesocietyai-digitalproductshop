@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import { useCart } from "../context/CartContext";
+
 export function CheckoutSuccessPage() {
+  const cart = useCart();
+
+  useEffect(() => {
+    cart.clear();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="center-page">
       <div className="card stack gap-md" style={{ maxWidth: 440, textAlign: "center", alignItems: "center" }}>
