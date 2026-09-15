@@ -24,12 +24,13 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 async def register(payload: RegisterRequest):
     db = get_database()
-    existing = await db.users.find_one({"email": payload.email})
+    email = payload.email.strip().lower()
+    existing = await db.users.find_one({"email": email})
     if existing is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
 
     doc = {
-        "email": payload.email,
+        "email": email,
         "hashed_password": hash_password(payload.password),
         "full_name": payload.full_name,
         "is_admin": False,
@@ -46,7 +47,8 @@ async def register(payload: RegisterRequest):
 @router.post("/login", response_model=TokenResponse)
 async def login(payload: LoginRequest):
     db = get_database()
-    doc = await db.users.find_one({"email": payload.email})
+    email = payload.email.strip().lower()
+    doc = await db.users.find_one({"email": email})
     if doc is None or not verify_password(payload.password, doc["hashed_password"]):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     user = UserInDB(**doc)
