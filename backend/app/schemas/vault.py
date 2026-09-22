@@ -110,8 +110,7 @@ class DownloadResponse(BaseModel):
 class BoxTierOut(BaseModel):
     tier: str
     label: str
-    price_low: int
-    price_high: int
+    price: int
 
 
 class BoxOut(BaseModel):

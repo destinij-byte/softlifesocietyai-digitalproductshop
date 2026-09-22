@@ -233,8 +233,7 @@ async def list_boxes(user: UserInDB = Depends(get_current_user)):
                 BoxTierOut(
                     tier=tier,
                     label=box_service.BOX_TIERS[tier]["label"],
-                    price_low=box_service.BOX_TIERS[tier]["price_low"],
-                    price_high=box_service.BOX_TIERS[tier]["price_high"],
+                    price=box_service.BOX_TIERS[tier]["price"],
                 )
                 for tier in box_service.TIER_ORDER
             ],

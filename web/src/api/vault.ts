@@ -86,8 +86,7 @@ export type BoxTierKey = "mini" | "classic" | "deluxe";
 export interface BoxTier {
   tier: BoxTierKey;
   label: string;
-  price_low: number;
-  price_high: number;
+  price: number;
 }
 
 export interface Box {
