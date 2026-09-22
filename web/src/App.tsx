@@ -7,6 +7,7 @@ import { Footer } from "./components/Footer";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AdminRoute } from "./components/AdminRoute";
 import { Spinner } from "./components/Spinner";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
@@ -110,7 +111,9 @@ export default function App() {
     <AuthProvider>
       <CartProvider>
         <NavBar />
-        <AppRoutes />
+        <ErrorBoundary>
+          <AppRoutes />
+        </ErrorBoundary>
         <Footer />
       </CartProvider>
     </AuthProvider>

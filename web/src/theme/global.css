@@ -502,6 +502,55 @@ input {
   }
 }
 
+.vault-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  min-height: 30vh;
+  padding: 48px 24px;
+}
+
+.vault-status p {
+  margin: 0;
+  color: var(--espresso);
+}
+
+.skeleton-card {
+  background: var(--cream);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-lg);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  position: relative;
+}
+
+.skeleton-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(212, 175, 55, 0.06) 30%, rgba(212, 175, 55, 0.18) 50%, rgba(212, 175, 55, 0.06) 70%);
+  background-size: 200% 100%;
+  animation: skeleton-sheen 1.6s ease-in-out infinite;
+}
+
+@keyframes skeleton-sheen {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
 /* The Box - mystery subscription box cards */
 
 .box-card {
