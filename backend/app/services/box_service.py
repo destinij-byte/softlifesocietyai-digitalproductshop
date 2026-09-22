@@ -1,13 +1,11 @@
 """The Box - Skincare and Lifestyle monthly subscription boxes.
 
-Draft pricing per the brand redesign spec's price ranges (Mini $19-24,
-Classic $34-39, Deluxe $54-64) - picked the middle of each range as a
-placeholder. Contents genuinely rotate month to month (hand-packed, not
-fulfilled by a 3PL yet), so there's no per-box product row - just a price
-per tier, billed via a Stripe subscription using inline price_data rather
-than pre-created Stripe Price objects, so this file is the source of truth
-for pricing until real cost-of-goods is known. Update PRICE_CENTS here (and
-nowhere else) once that's finalized.
+Contents genuinely rotate month to month (hand-packed, not fulfilled by a
+3PL yet), so there's no per-box product row - just a fixed price per tier,
+billed via a Stripe subscription using inline price_data rather than
+pre-created Stripe Price objects, so this file is the source of truth for
+pricing. Update BOX_TIERS here (and nowhere else) to change what a tier
+costs.
 """
 
 import stripe
@@ -29,9 +27,9 @@ BOX_TYPES: dict[str, dict] = {
 }
 
 BOX_TIERS: dict[str, dict] = {
-    "mini": {"label": "Mini", "price_low": 19, "price_high": 24, "price_cents": 2200},
-    "classic": {"label": "Classic", "price_low": 34, "price_high": 39, "price_cents": 3700},
-    "deluxe": {"label": "Deluxe", "price_low": 54, "price_high": 64, "price_cents": 5900},
+    "mini": {"label": "Mini", "price": 22, "price_cents": 2200},
+    "classic": {"label": "Classic", "price": 37, "price_cents": 3700},
+    "deluxe": {"label": "Deluxe", "price": 59, "price_cents": 5900},
 }
 
 TIER_ORDER = ["mini", "classic", "deluxe"]

@@ -57,9 +57,7 @@ export function MonthlyDropsPage() {
                   <div key={tier.tier} className="box-tier-row">
                     <span style={{ fontWeight: 600 }}>{tier.label}</span>
                     <span className="row gap-sm">
-                      <span className="box-tier-price">
-                        ${tier.price_low}–${tier.price_high}/mo
-                      </span>
+                      <span className="box-tier-price">${tier.price}/mo</span>
                       <button
                         className={`btn btn-sm ${subscribed ? "btn-outline-gold" : "btn-gold"}`}
                         disabled={subscribed || busyKey === key}
