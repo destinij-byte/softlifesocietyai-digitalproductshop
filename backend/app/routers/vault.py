@@ -9,7 +9,7 @@ from fastapi.responses import FileResponse
 
 from app.config import settings
 from app.database import get_database
-from app.deps import get_current_user
+from app.deps import get_current_user, get_optional_user
 from app.models.bundle import Bundle
 from app.models.product import Product
 from app.models.user import UserInDB
@@ -219,10 +219,15 @@ async def create_cart_checkout(payload: CartCheckoutRequest, user: UserInDB = De
 
 
 @router.get("/boxes", response_model=list[BoxOut])
-async def list_boxes(user: UserInDB = Depends(get_current_user)):
+async def list_boxes(user: UserInDB | None = Depends(get_optional_user)):
+    # Public - anyone can browse tiers and pricing. Only a logged-in user
+    # needs "already subscribed" state, so anonymous visitors just get an
+    # empty subscribed_by_type instead of a 401.
     db = get_database()
-    subs = await db.box_subscriptions.find({"user_id": user.id, "status": "active"}).to_list(length=None)
-    subscribed_by_type = {sub["box_type"]: sub["tier"] for sub in subs}
+    subscribed_by_type: dict[str, str] = {}
+    if user is not None:
+        subs = await db.box_subscriptions.find({"user_id": user.id, "status": "active"}).to_list(length=None)
+        subscribed_by_type = {sub["box_type"]: sub["tier"] for sub in subs}
 
     return [
         BoxOut(

@@ -59,26 +59,20 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      {/* The Vault and Upgrade are the public storefront - browsable without
-          an account; checkout itself still requires login. */}
+      {/* The Vault, Upgrade, and The Box are the public storefront -
+          browsable without an account; checkout itself still requires
+          login. */}
       <Route path="/shop" element={<ShopPage />} />
       <Route path="/shop/:slug" element={<ProductDetailPage />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/upgrade" element={<BundlesPage />} />
+      <Route path="/drops" element={<MonthlyDropsPage />} />
 
       <Route
         path="/library"
         element={
           <ProtectedRoute>
             <MyLibraryPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/drops"
-        element={
-          <ProtectedRoute>
-            <MonthlyDropsPage />
           </ProtectedRoute>
         }
       />

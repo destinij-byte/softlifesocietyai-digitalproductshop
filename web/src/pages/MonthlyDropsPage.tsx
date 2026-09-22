@@ -1,12 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { vaultApi, Box, BoxTierKey } from "../api/vault";
 import { ApiError } from "../api/client";
+import { useAuth } from "../context/AuthContext";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { VaultLoadingGrid, VaultErrorState } from "../components/VaultStatus";
 import logo from "../assets/logo.png";
 
+// Public storefront - box/tier/pricing data is already a public endpoint.
+// Only the actual subscribe checkout needs a logged-in user.
 export function MonthlyDropsPage() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const { data: boxes, loading, error, retry } = useAsyncData(() => vaultApi.getBoxes(), {
     cacheKey: "sls_cache_boxes",
   });
@@ -14,6 +20,10 @@ export function MonthlyDropsPage() {
   const [actionError, setActionError] = useState<string | null>(null);
 
   async function handleSubscribe(boxType: Box["box_type"], tier: BoxTierKey) {
+    if (!user) {
+      navigate("/register", { state: { from: "/drops" } });
+      return;
+    }
     setActionError(null);
     const key = `${boxType}-${tier}`;
     setBusyKey(key);

@@ -5,8 +5,11 @@ import { vaultApi, Product } from "../api/vault";
 import { ApiError } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { useAsyncData } from "../hooks/useAsyncData";
 import { Spinner } from "../components/Spinner";
+import { ProductCard } from "../components/ProductCard";
 import { COLLECTIONS } from "../theme/collections";
+import catalogFallback from "../data/catalogFallback.json";
 
 export function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -21,6 +24,13 @@ export function ProductDetailPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [justAdded, setJustAdded] = useState(false);
+
+  // Reuses the same cached/bundled catalog snapshot as the Shop, so
+  // "You might also like" doesn't need its own network round trip.
+  const { data: allProducts } = useAsyncData(() => vaultApi.listProducts(), {
+    cacheKey: "sls_cache_products",
+    fallback: catalogFallback as Product[],
+  });
 
   useEffect(() => {
     if (!slug) return;
@@ -95,6 +105,13 @@ export function ProductDetailPage() {
 
   const meta = COLLECTIONS[product.collection];
   const inCart = cart.has(product.id);
+  const relatedProducts = (allProducts ?? [])
+    .filter((p) => p.collection === product.collection && p.id !== product.id)
+    .slice(0, 4);
+
+  function handleAddRelatedToCart(related: Product) {
+    cart.addItem({ type: "product", id: related.id, title: related.title, price: related.price, thumbnailUrl: related.thumbnail_url });
+  }
 
   return (
     <div className="container page stack gap-lg" style={{ maxWidth: 900 }}>
@@ -153,6 +170,29 @@ export function ProductDetailPage() {
           </div>
         </div>
       </div>
+
+      {relatedProducts.length > 0 && (
+        <section className="stack gap-md">
+          <h2>You might also like</h2>
+          <div className="grid grid-products">
+            {relatedProducts.map((related) => (
+              <ProductCard
+                key={related.id}
+                title={related.title}
+                subtitle={related.subtitle}
+                type={related.type}
+                price={related.price}
+                thumbnailUrl={related.thumbnail_url}
+                collectionMeta={COLLECTIONS[related.collection]}
+                creditLine={related.credit_line}
+                onClick={() => navigate(`/shop/${related.slug}`)}
+                onAddToCart={() => handleAddRelatedToCart(related)}
+                inCart={cart.has(related.id)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

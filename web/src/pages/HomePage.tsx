@@ -1,8 +1,14 @@
 import { SVGProps } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
+import { vaultApi, Product } from "../api/vault";
+import { useAsyncData } from "../hooks/useAsyncData";
+import { useCart } from "../context/CartContext";
 import { FadeInSection } from "../components/FadeInSection";
 import { FaqAccordion, FaqItem } from "../components/FaqAccordion";
+import { ProductCard } from "../components/ProductCard";
+import { BundleCard } from "../components/BundleCard";
+import { COLLECTIONS } from "../theme/collections";
 import {
   IconAscend,
   IconBloom,
@@ -18,6 +24,7 @@ import {
 } from "../components/icons/LineIcons";
 import { LIFE_AREAS, LIFE_AREA_ORDER } from "../theme/lifeAreas";
 import type { LifeArea } from "../api/vault";
+import catalogFallback from "../data/catalogFallback.json";
 
 const LIFE_AREA_ICONS: Record<LifeArea, (props: SVGProps<SVGSVGElement>) => JSX.Element> = {
   soft_life: IconBloom,
@@ -98,6 +105,22 @@ const FAQ_ITEMS: FaqItem[] = [
 const ORBIT_RADIUS = 160;
 
 export function HomePage() {
+  const navigate = useNavigate();
+  const cart = useCart();
+  const { data: products } = useAsyncData(() => vaultApi.listProducts(), {
+    cacheKey: "sls_cache_products",
+    fallback: catalogFallback as Product[],
+  });
+  const { data: bundles } = useAsyncData(() => vaultApi.listBundles(), {
+    cacheKey: "sls_cache_bundles",
+  });
+  const heroProducts = (products ?? []).filter((p) => p.is_hero).slice(0, 4);
+  const starterBundle = (bundles ?? []).find((b) => b.slug === "starter-bundle");
+
+  function handleAddToCart(product: Product) {
+    cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: product.thumbnail_url });
+  }
+
   return (
     <div>
       {/* Hero */}
@@ -143,6 +166,57 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* Featured Products - a taste of the Vault before she has to join */}
+      {(heroProducts.length > 0 || starterBundle) && (
+        <FadeInSection>
+          <section className="section">
+            <div className="container">
+              <div className="section-head">
+                <h2>From the Vault</h2>
+                <p className="muted" style={{ marginTop: 14, fontSize: 15.5 }}>
+                  A few favorites — browse the full Shop for everything.
+                </p>
+              </div>
+              <div className="grid grid-products">
+                {heroProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    title={product.title}
+                    subtitle={product.subtitle}
+                    type={product.type}
+                    price={product.price}
+                    thumbnailUrl={product.thumbnail_url}
+                    collectionMeta={COLLECTIONS[product.collection]}
+                    creditLine={product.credit_line}
+                    onClick={() => navigate(`/shop/${product.slug}`)}
+                    onAddToCart={() => handleAddToCart(product)}
+                    inCart={cart.has(product.id)}
+                  />
+                ))}
+              </div>
+              {starterBundle && (
+                <div style={{ maxWidth: 360, margin: "32px auto 0" }}>
+                  <BundleCard
+                    name={starterBundle.name}
+                    description={starterBundle.description}
+                    price={starterBundle.price}
+                    individualTotal={starterBundle.individual_total}
+                    savings={starterBundle.savings}
+                    productCount={starterBundle.products.length}
+                    onBuy={() => navigate("/register", { state: { from: "/upgrade" } })}
+                  />
+                </div>
+              )}
+              <div className="row" style={{ justifyContent: "center", marginTop: 28 }}>
+                <Link to="/shop" className="btn btn-outline-gold">
+                  BROWSE THE FULL SHOP
+                </Link>
+              </div>
+            </div>
+          </section>
+        </FadeInSection>
+      )}
+
       {/* What is Soft Life Society */}
       <FadeInSection>
         <section className="section">
@@ -187,7 +261,7 @@ export function HomePage() {
               {LIFE_AREA_ORDER.map((key) => {
                 const Icon = LIFE_AREA_ICONS[key];
                 return (
-                  <Link to="/register" className="pillar-card-dark" key={key}>
+                  <Link to={`/shop?area=${key}`} className="pillar-card-dark" key={key}>
                     <span className="icon-badge icon-badge-dark">
                       <Icon style={{ width: 22, height: 22 }} />
                     </span>
@@ -196,7 +270,7 @@ export function HomePage() {
                       {LIFE_AREAS[key].description}
                     </p>
                     <span className="pillar-card-link" style={{ color: "var(--champagne)" }}>
-                      Inside the Society →
+                      Shop this pillar →
                     </span>
                   </Link>
                 );
