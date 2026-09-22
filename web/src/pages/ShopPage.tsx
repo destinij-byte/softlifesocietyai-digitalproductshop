@@ -5,10 +5,12 @@ import { vaultApi, Product } from "../api/vault";
 import { ApiError } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { useAsyncData } from "../hooks/useAsyncData";
 import { ProductCard } from "../components/ProductCard";
-import { Spinner } from "../components/Spinner";
+import { VaultLoadingGrid, VaultErrorState } from "../components/VaultStatus";
 import { COLLECTIONS, COLLECTION_ORDER } from "../theme/collections";
 import { AI_SHELVES, AI_SHELF_ORDER, AI_SHELF_FALLBACK_LABEL } from "../theme/aiShelves";
+import catalogFallback from "../data/catalogFallback.json";
 
 // Public storefront - the Vault is browsable without an account (product
 // data is already a public endpoint). Only "already owned" state and
@@ -17,19 +19,31 @@ export function ShopPage() {
   const { user } = useAuth();
   const cart = useCart();
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>([]);
+  const {
+    data: products,
+    loading,
+    error,
+    retry,
+  } = useAsyncData(() => vaultApi.listProducts(), {
+    cacheKey: "sls_cache_products",
+    fallback: catalogFallback as Product[],
+  });
   const [ownedIds, setOwnedIds] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([vaultApi.listProducts(), user ? vaultApi.getLibrary() : Promise.resolve([])])
-      .then(([allProducts, library]) => {
-        setProducts(allProducts);
-        setOwnedIds(new Set(library.map((item) => item.product.id)));
-      })
-      .finally(() => setLoading(false));
+    if (!user) {
+      setOwnedIds(new Set());
+      return;
+    }
+    vaultApi
+      .getLibrary()
+      .then((library) => setOwnedIds(new Set(library.map((item) => item.product.id))))
+      .catch(() => {
+        // Ownership state is a nice-to-have here - the Shop still works
+        // without it, so a failure shouldn't block the page.
+      });
   }, [user]);
 
   async function handleProductClick(product: Product) {
@@ -40,13 +54,13 @@ export function ShopPage() {
         navigate("/register", { state: { from: "/shop" } });
         return;
       }
-      setError(null);
+      setActionError(null);
       setBusyId(product.id);
       try {
         const { download_url } = await vaultApi.getDownloadUrl(product.id);
         window.open(download_url, "_blank", "noopener,noreferrer");
       } catch (err) {
-        setError(err instanceof ApiError ? err.message : "Something went wrong. Try again in a moment.");
+        setActionError(err instanceof ApiError ? err.message : "Something went wrong. Try again in a moment.");
       } finally {
         setBusyId(null);
       }
@@ -59,18 +73,20 @@ export function ShopPage() {
     cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: product.thumbnail_url });
   }
 
-  if (loading) return <Spinner />;
+  if (loading) return <VaultLoadingGrid title="The Shop" />;
+  if (error) return <VaultErrorState title="The Shop" message={error} onRetry={retry} />;
 
-  const heroProducts = products.filter((p) => p.is_hero);
+  const list = products ?? [];
+  const heroProducts = list.filter((p) => p.is_hero);
   const byCollection = COLLECTION_ORDER.filter((key) => key !== "ai").map((key) => ({
     key,
     meta: COLLECTIONS[key],
-    products: products.filter((p) => p.collection === key),
+    products: list.filter((p) => p.collection === key),
   })).filter((group) => group.products.length > 0);
 
   // AI Collection is presented as named sub-brand shelves rather than one
   // flat list - see theme/aiShelves.ts.
-  const aiProducts = products.filter((p) => p.collection === "ai");
+  const aiProducts = list.filter((p) => p.collection === "ai");
   const namedAiShelves = AI_SHELF_ORDER.map((key) => {
     const def = AI_SHELVES[key];
     return {
@@ -89,7 +105,7 @@ export function ShopPage() {
         <p className="muted">One boutique, six collections. Everything she needs, a la carte or bundled.</p>
       </div>
 
-      {error && <div className="form-error">{error}</div>}
+      {actionError && <div className="form-error">{actionError}</div>}
 
       {heroProducts.length > 0 && (
         <section className="stack gap-md">

@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { vaultApi, Dashboard } from "../api/vault";
+import { vaultApi } from "../api/vault";
 import { useAuth } from "../context/AuthContext";
+import { useAsyncData } from "../hooks/useAsyncData";
 import { MembershipBadge } from "../components/MembershipBadge";
 import { VaultTile } from "../components/VaultTile";
 import { ProductCard } from "../components/ProductCard";
-import { Spinner } from "../components/Spinner";
+import { VaultLoading, VaultError } from "../components/VaultStatus";
 import { SoftLifeGrowthGraph } from "../components/SoftLifeGrowthGraph";
 import { LIFE_AREAS, LIFE_AREA_ORDER } from "../theme/lifeAreas";
 
@@ -20,17 +20,14 @@ const APP_LINK = import.meta.env.VITE_APP_LINK ?? "https://softlifesocietyai.com
 export function DashboardPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [dashboard, setDashboard] = useState<Dashboard | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Cache key is scoped per-user so a shared device never flashes one
+  // account's dashboard while a different account's fresh copy loads.
+  const { data: dashboard, loading, error, retry } = useAsyncData(() => vaultApi.getDashboard(), {
+    cacheKey: user ? `sls_cache_dashboard_${user.id}` : undefined,
+  });
 
-  useEffect(() => {
-    vaultApi
-      .getDashboard()
-      .then(setDashboard)
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading || !dashboard) return <Spinner />;
+  if (error) return <VaultError message={error} onRetry={retry} />;
+  if (loading || !dashboard) return <VaultLoading />;
 
   return (
     <div className="container page stack gap-lg">

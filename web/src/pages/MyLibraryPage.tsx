@@ -1,27 +1,26 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { vaultApi, LibraryItem, LifeArea } from "../api/vault";
+import { useAuth } from "../context/AuthContext";
+import { useAsyncData } from "../hooks/useAsyncData";
 import { ProductCard } from "../components/ProductCard";
-import { Spinner } from "../components/Spinner";
+import { VaultLoadingGrid, VaultErrorState } from "../components/VaultStatus";
 import { LIFE_AREAS, LIFE_AREA_ORDER } from "../theme/lifeAreas";
 
 export function MyLibraryPage() {
+  const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeArea = (searchParams.get("area") as LifeArea | null) ?? undefined;
 
-  const [items, setItems] = useState<LibraryItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Cache key is scoped per-user so a shared device never flashes one
+  // account's library while a different account's fresh copy loads.
+  const { data: items, loading, error, retry } = useAsyncData(() => vaultApi.getLibrary(), {
+    cacheKey: user ? `sls_cache_library_${user.id}` : undefined,
+  });
   const [openingId, setOpeningId] = useState<string | null>(null);
 
-  useEffect(() => {
-    vaultApi
-      .getLibrary()
-      .then(setItems)
-      .finally(() => setLoading(false));
-  }, []);
-
-  const filtered = activeArea ? items.filter((item) => item.product.life_area === activeArea) : items;
+  const filtered = activeArea ? (items ?? []).filter((item) => item.product.life_area === activeArea) : items ?? [];
 
   function setArea(area: LifeArea | undefined) {
     setSearchParams(area ? { area } : {});
@@ -37,7 +36,8 @@ export function MyLibraryPage() {
     }
   }
 
-  if (loading) return <Spinner />;
+  if (loading) return <VaultLoadingGrid title="My Library" />;
+  if (error) return <VaultErrorState title="My Library" message={error} onRetry={retry} />;
 
   return (
     <div className="container page stack gap-lg">

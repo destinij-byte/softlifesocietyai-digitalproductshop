@@ -1,37 +1,33 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { vaultApi, Box, BoxTierKey } from "../api/vault";
 import { ApiError } from "../api/client";
-import { Spinner } from "../components/Spinner";
+import { useAsyncData } from "../hooks/useAsyncData";
+import { VaultLoadingGrid, VaultErrorState } from "../components/VaultStatus";
 import logo from "../assets/logo.png";
 
 export function MonthlyDropsPage() {
-  const [boxes, setBoxes] = useState<Box[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: boxes, loading, error, retry } = useAsyncData(() => vaultApi.getBoxes(), {
+    cacheKey: "sls_cache_boxes",
+  });
   const [busyKey, setBusyKey] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    vaultApi
-      .getBoxes()
-      .then(setBoxes)
-      .finally(() => setLoading(false));
-  }, []);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   async function handleSubscribe(boxType: Box["box_type"], tier: BoxTierKey) {
-    setError(null);
+    setActionError(null);
     const key = `${boxType}-${tier}`;
     setBusyKey(key);
     try {
       const { checkout_url } = await vaultApi.checkoutBox({ box_type: boxType, tier });
       window.location.href = checkout_url;
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Something went wrong. Try again in a moment.");
+      setActionError(err instanceof ApiError ? err.message : "Something went wrong. Try again in a moment.");
       setBusyKey(null);
     }
   }
 
-  if (loading) return <Spinner />;
+  if (loading) return <VaultLoadingGrid title="The Box" gridClassName="grid-bundles" count={2} />;
+  if (error) return <VaultErrorState title="The Box" message={error} onRetry={retry} />;
 
   return (
     <div className="container page stack gap-lg">
@@ -43,10 +39,10 @@ export function MonthlyDropsPage() {
         </p>
       </div>
 
-      {error && <div className="form-error">{error}</div>}
+      {actionError && <div className="form-error">{actionError}</div>}
 
       <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
-        {boxes.map((box) => (
+        {(boxes ?? []).map((box) => (
           <div key={box.box_type} className="box-card">
             <img src={logo} alt="" className="brand-logo" />
             <span className="box-card-question">?</span>
