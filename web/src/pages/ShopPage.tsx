@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { vaultApi, Product } from "../api/vault";
+import { vaultApi, LifeArea, Product } from "../api/vault";
 import { ApiError } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { ProductCard } from "../components/ProductCard";
 import { VaultLoadingGrid, VaultErrorState } from "../components/VaultStatus";
-import { COLLECTIONS, COLLECTION_ORDER } from "../theme/collections";
+import { COLLECTIONS, COLLECTION_ORDER, CollectionMeta } from "../theme/collections";
 import { AI_SHELVES, AI_SHELF_ORDER, AI_SHELF_FALLBACK_LABEL } from "../theme/aiShelves";
+import { LIFE_AREAS } from "../theme/lifeAreas";
 import catalogFallback from "../data/catalogFallback.json";
 
 // Public storefront - the Vault is browsable without an account (product
@@ -19,6 +20,8 @@ export function ShopPage() {
   const { user } = useAuth();
   const cart = useCart();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const activeArea = (searchParams.get("area") as LifeArea | null) ?? undefined;
   const {
     data: products,
     loading,
@@ -73,10 +76,60 @@ export function ShopPage() {
     cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: product.thumbnail_url });
   }
 
+  function renderCard(product: Product, meta: CollectionMeta = COLLECTIONS[product.collection]) {
+    return (
+      <ProductCard
+        key={product.id}
+        title={product.title}
+        subtitle={product.subtitle}
+        type={product.type}
+        price={product.price}
+        thumbnailUrl={product.thumbnail_url}
+        owned={ownedIds.has(product.id)}
+        busy={busyId === product.id}
+        collectionMeta={meta}
+        creditLine={product.credit_line}
+        onClick={() => handleProductClick(product)}
+        onAddToCart={() => handleAddToCart(product)}
+        inCart={cart.has(product.id)}
+      />
+    );
+  }
+
   if (loading) return <VaultLoadingGrid title="The Shop" />;
   if (error) return <VaultErrorState title="The Shop" message={error} onRetry={retry} />;
 
   const list = products ?? [];
+
+  // A life-area filter (from a homepage pillar link, e.g. /shop?area=money)
+  // shows one flat, filtered grid instead of the full collection/shelf
+  // breakdown below - simpler to scan for "just show me this pillar."
+  if (activeArea) {
+    const filtered = list.filter((p) => p.life_area === activeArea);
+    const areaMeta = LIFE_AREAS[activeArea];
+    return (
+      <div className="container page stack gap-lg">
+        <div className="stack gap-sm">
+          <a href="/shop" className="muted" style={{ fontSize: 14 }}>
+            ← All of the Shop
+          </a>
+          <h1>
+            {areaMeta.emoji} {areaMeta.label}
+          </h1>
+          <p className="muted">{areaMeta.description}</p>
+        </div>
+
+        {actionError && <div className="form-error">{actionError}</div>}
+
+        {filtered.length === 0 ? (
+          <p className="muted">Nothing here yet — but she's about to have options.</p>
+        ) : (
+          <div className="grid grid-products">{filtered.map((product) => renderCard(product))}</div>
+        )}
+      </div>
+    );
+  }
+
   const heroProducts = list.filter((p) => p.is_hero);
   const byCollection = COLLECTION_ORDER.filter((key) => key !== "ai").map((key) => ({
     key,
@@ -110,29 +163,7 @@ export function ShopPage() {
       {heroProducts.length > 0 && (
         <section className="stack gap-md">
           <h2>Hero Products</h2>
-          <div className="grid grid-products">
-            {heroProducts.map((product) => {
-              const meta = COLLECTIONS[product.collection];
-              const owned = ownedIds.has(product.id);
-              return (
-                <ProductCard
-                  key={product.id}
-                  title={product.title}
-                  subtitle={product.subtitle}
-                  type={product.type}
-                  price={product.price}
-                  thumbnailUrl={product.thumbnail_url}
-                  owned={owned}
-                  busy={busyId === product.id}
-                  collectionMeta={meta}
-                  creditLine={product.credit_line}
-                  onClick={() => handleProductClick(product)}
-                  onAddToCart={() => handleAddToCart(product)}
-                  inCart={cart.has(product.id)}
-                />
-              );
-            })}
-          </div>
+          <div className="grid grid-products">{heroProducts.map((product) => renderCard(product))}</div>
         </section>
       )}
 
@@ -141,28 +172,7 @@ export function ShopPage() {
           <h2>
             {meta.emoji} {meta.label}
           </h2>
-          <div className="grid grid-products">
-            {collectionProducts.map((product) => {
-              const owned = ownedIds.has(product.id);
-              return (
-                <ProductCard
-                  key={product.id}
-                  title={product.title}
-                  subtitle={product.subtitle}
-                  type={product.type}
-                  price={product.price}
-                  thumbnailUrl={product.thumbnail_url}
-                  owned={owned}
-                  busy={busyId === product.id}
-                  collectionMeta={meta}
-                  creditLine={product.credit_line}
-                  onClick={() => handleProductClick(product)}
-                  onAddToCart={() => handleAddToCart(product)}
-                  inCart={cart.has(product.id)}
-                />
-              );
-            })}
-          </div>
+          <div className="grid grid-products">{collectionProducts.map((product) => renderCard(product, meta))}</div>
         </section>
       ))}
 
@@ -175,55 +185,13 @@ export function ShopPage() {
           {namedAiShelves.map(({ key, meta, products: shelfProducts }) => (
             <div key={key} className="stack gap-md">
               <h3 style={{ color: meta.accentColor }}>{meta.label}</h3>
-              <div className="grid grid-products">
-                {shelfProducts.map((product) => {
-                  const owned = ownedIds.has(product.id);
-                  return (
-                    <ProductCard
-                      key={product.id}
-                      title={product.title}
-                      subtitle={product.subtitle}
-                      type={product.type}
-                      price={product.price}
-                      thumbnailUrl={product.thumbnail_url}
-                      owned={owned}
-                      busy={busyId === product.id}
-                      collectionMeta={meta}
-                      creditLine={product.credit_line}
-                      onClick={() => handleProductClick(product)}
-                      onAddToCart={() => handleAddToCart(product)}
-                      inCart={cart.has(product.id)}
-                    />
-                  );
-                })}
-              </div>
+              <div className="grid grid-products">{shelfProducts.map((product) => renderCard(product, meta))}</div>
             </div>
           ))}
           {unmappedAiProducts.length > 0 && (
             <div className="stack gap-md">
               <h3>{AI_SHELF_FALLBACK_LABEL}</h3>
-              <div className="grid grid-products">
-                {unmappedAiProducts.map((product) => {
-                  const owned = ownedIds.has(product.id);
-                  return (
-                    <ProductCard
-                      key={product.id}
-                      title={product.title}
-                      subtitle={product.subtitle}
-                      type={product.type}
-                      price={product.price}
-                      thumbnailUrl={product.thumbnail_url}
-                      owned={owned}
-                      busy={busyId === product.id}
-                      collectionMeta={COLLECTIONS.ai}
-                      creditLine={product.credit_line}
-                      onClick={() => handleProductClick(product)}
-                      onAddToCart={() => handleAddToCart(product)}
-                      inCart={cart.has(product.id)}
-                    />
-                  );
-                })}
-              </div>
+              <div className="grid grid-products">{unmappedAiProducts.map((product) => renderCard(product, COLLECTIONS.ai))}</div>
             </div>
           )}
         </section>

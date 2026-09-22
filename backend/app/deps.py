@@ -30,6 +30,25 @@ async def get_current_user(
     return UserInDB(**doc)
 
 
+async def get_optional_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
+) -> UserInDB | None:
+    """Like get_current_user, but for endpoints that are browsable while
+    logged out (pricing pages) and only need the user for extras like
+    "already subscribed" state - a missing or invalid token just means
+    "anonymous visitor", not a 401."""
+    if credentials is None:
+        return None
+    user_id = decode_access_token(credentials.credentials)
+    if user_id is None or not ObjectId.is_valid(user_id):
+        return None
+    db = get_database()
+    doc = await db.users.find_one({"_id": ObjectId(user_id)})
+    if doc is None:
+        return None
+    return UserInDB(**doc)
+
+
 async def get_current_admin(
     user: UserInDB = Depends(get_current_user),
 ) -> UserInDB:
