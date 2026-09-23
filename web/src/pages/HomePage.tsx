@@ -6,6 +6,7 @@ import { useAsyncData } from "../hooks/useAsyncData";
 import { useCart } from "../context/CartContext";
 import { FadeInSection } from "../components/FadeInSection";
 import { FaqAccordion, FaqItem } from "../components/FaqAccordion";
+import { TestimonialsSection } from "../components/TestimonialsSection";
 import { ProductCard } from "../components/ProductCard";
 import { BundleCard } from "../components/BundleCard";
 import { COLLECTIONS } from "../theme/collections";
@@ -312,6 +313,12 @@ export function HomePage() {
             </p>
           </div>
         </section>
+      </FadeInSection>
+
+      {/* Testimonials - sample/placeholder copy for launch; see
+          data/testimonials.ts to swap in real customer testimonials later. */}
+      <FadeInSection>
+        <TestimonialsSection />
       </FadeInSection>
 
       {/* FAQ */}
