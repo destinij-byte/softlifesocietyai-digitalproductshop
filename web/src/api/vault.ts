@@ -100,6 +100,23 @@ export interface Box {
   subscribed_tier: BoxTierKey | null;
 }
 
+export interface Review {
+  id: string;
+  rating: number;
+  title: string;
+  body: string;
+  display_name: string;
+  verified_purchase: boolean;
+  incentivized: boolean;
+  created_at: string;
+}
+
+export interface ProductReviews {
+  average_rating: number | null;
+  count: number;
+  reviews: Review[];
+}
+
 export const vaultApi = {
   listProducts: (type?: string) =>
     apiRequest<Product[]>(`/vault/products${type ? `?type=${encodeURIComponent(type)}` : ""}`, { auth: false }),
@@ -148,6 +165,15 @@ export const vaultApi = {
 
   checkoutBox: (payload: { box_type: BoxType; tier: BoxTierKey }) =>
     apiRequest<{ checkout_url: string; session_id: string }>("/vault/boxes/checkout", {
+      method: "POST",
+      body: payload,
+    }),
+
+  getProductReviews: (idOrSlug: string) =>
+    apiRequest<ProductReviews>(`/vault/products/${idOrSlug}/reviews`, { auth: false }),
+
+  submitReview: (productId: string, payload: { rating: number; title: string; body: string; display_name: string }) =>
+    apiRequest<{ id: string }>(`/vault/products/${productId}/reviews`, {
       method: "POST",
       body: payload,
     }),

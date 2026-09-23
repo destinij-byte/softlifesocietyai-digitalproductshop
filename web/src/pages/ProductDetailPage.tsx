@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { vaultApi, Product } from "../api/vault";
+import { vaultApi, Product, ProductReviews } from "../api/vault";
 import { ApiError } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { Spinner } from "../components/Spinner";
 import { ProductCard } from "../components/ProductCard";
+import { StarRating } from "../components/StarRating";
 import { COLLECTIONS } from "../theme/collections";
 import catalogFallback from "../data/catalogFallback.json";
+
+const EMPTY_REVIEWS: ProductReviews = { average_rating: null, count: 0, reviews: [] };
 
 export function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -31,6 +34,11 @@ export function ProductDetailPage() {
     cacheKey: "sls_cache_products",
     fallback: catalogFallback as Product[],
   });
+
+  const { data: reviewsData } = useAsyncData(
+    () => (product ? vaultApi.getProductReviews(product.id) : Promise.resolve(EMPTY_REVIEWS)),
+    { deps: [product?.id] }
+  );
 
   useEffect(() => {
     if (!slug) return;
@@ -144,9 +152,44 @@ export function ProductDetailPage() {
             </span>
             <h1 style={{ fontSize: 34 }}>{product.title}</h1>
             {product.subtitle && <p className="muted" style={{ fontSize: 16 }}>{product.subtitle}</p>}
+            {reviewsData && reviewsData.count > 0 && (
+              <div className="row gap-sm" style={{ alignItems: "center" }}>
+                <StarRating rating={reviewsData.average_rating ?? 0} />
+                <span className="muted" style={{ fontSize: 13 }}>
+                  {reviewsData.average_rating} ({reviewsData.count} review{reviewsData.count === 1 ? "" : "s"})
+                </span>
+              </div>
+            )}
           </div>
 
-          <p style={{ fontSize: 15.5, lineHeight: 1.7 }}>{product.description}</p>
+          {product.best_for || product.outcome ? (
+            <div className="stack gap-sm">
+              {product.description && <p style={{ fontSize: 15.5, lineHeight: 1.7 }}>{product.description}</p>}
+              {product.best_for && (
+                <p style={{ fontSize: 14.5, lineHeight: 1.6 }}>
+                  <strong>Best for:</strong> {product.best_for}
+                </p>
+              )}
+              {product.outcome && (
+                <p style={{ fontSize: 14.5, lineHeight: 1.6 }}>
+                  <strong>She walks away with:</strong> {product.outcome}
+                </p>
+              )}
+            </div>
+          ) : (
+            <p style={{ fontSize: 15.5, lineHeight: 1.7 }}>{product.description}</p>
+          )}
+
+          {product.whats_inside.length > 0 && (
+            <div className="stack gap-sm">
+              <strong style={{ fontSize: 14.5 }}>What&apos;s inside</strong>
+              <ul style={{ margin: 0, paddingLeft: 20, fontSize: 14.5, lineHeight: 1.7 }}>
+                {product.whats_inside.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {product.credit_line && (
             <p className="muted" style={{ fontSize: 12, letterSpacing: "0.03em" }}>
@@ -170,6 +213,41 @@ export function ProductDetailPage() {
           </div>
         </div>
       </div>
+
+      {reviewsData && reviewsData.reviews.length > 0 && (
+        <section className="stack gap-md">
+          <h2>Reviews</h2>
+          <div className="stack gap-sm">
+            {reviewsData.reviews.map((review) => (
+              <div key={review.id} className="card stack gap-sm">
+                <div className="row-between" style={{ alignItems: "flex-start" }}>
+                  <div className="stack" style={{ gap: 4 }}>
+                    <StarRating rating={review.rating} />
+                    {review.title && <strong style={{ fontSize: 15 }}>{review.title}</strong>}
+                  </div>
+                  <span className="muted" style={{ fontSize: 12 }}>
+                    {new Date(review.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                  </span>
+                </div>
+                {review.body && <p style={{ fontSize: 14, lineHeight: 1.6 }}>{review.body}</p>}
+                <div className="row gap-sm" style={{ flexWrap: "wrap" }}>
+                  <span className="muted" style={{ fontSize: 12.5 }}>— {review.display_name || "A member"}</span>
+                  {review.verified_purchase && (
+                    <span className="pill pill-cream" style={{ fontSize: 11 }}>
+                      Verified purchase
+                    </span>
+                  )}
+                  {review.incentivized && (
+                    <span className="pill pill-cream" style={{ fontSize: 11 }}>
+                      Received this product free for an honest review
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {relatedProducts.length > 0 && (
         <section className="stack gap-md">

@@ -30,8 +30,30 @@ export interface AdminBoxSubscriber {
   created_at: string;
 }
 
+export interface AdminReview {
+  id: string;
+  product_id: string;
+  product_title: string;
+  user_email: string;
+  rating: number;
+  title: string;
+  body: string;
+  display_name: string;
+  verified_purchase: boolean;
+  incentivized: boolean;
+  status: "pending" | "approved" | "rejected";
+  created_at: string;
+}
+
 export const adminApi = {
   listUsers: () => apiRequest<AdminUser[]>("/vault/admin/users"),
   listOrders: () => apiRequest<AdminOrder[]>("/vault/admin/orders"),
   listBoxSubscribers: () => apiRequest<AdminBoxSubscriber[]>("/vault/admin/boxes/subscribers"),
+  listReviews: (status?: string) =>
+    apiRequest<AdminReview[]>(`/vault/admin/reviews${status ? `?status=${status}` : ""}`),
+  updateReviewStatus: (reviewId: string, status: "approved" | "rejected") =>
+    apiRequest<{ updated: boolean }>(`/vault/admin/reviews/${reviewId}`, {
+      method: "PATCH",
+      body: { status },
+    }),
 };

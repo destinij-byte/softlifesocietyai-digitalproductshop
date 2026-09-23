@@ -5,6 +5,7 @@ import { vaultApi, LibraryItem, LifeArea } from "../api/vault";
 import { useAuth } from "../context/AuthContext";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { ProductCard } from "../components/ProductCard";
+import { ReviewModal } from "../components/ReviewModal";
 import { VaultLoadingGrid, VaultErrorState } from "../components/VaultStatus";
 import { LIFE_AREAS, LIFE_AREA_ORDER } from "../theme/lifeAreas";
 
@@ -19,6 +20,7 @@ export function MyLibraryPage() {
     cacheKey: user ? `sls_cache_library_${user.id}` : undefined,
   });
   const [openingId, setOpeningId] = useState<string | null>(null);
+  const [reviewingItem, setReviewingItem] = useState<LibraryItem | null>(null);
 
   const filtered = activeArea ? (items ?? []).filter((item) => item.product.life_area === activeArea) : items ?? [];
 
@@ -68,19 +70,31 @@ export function MyLibraryPage() {
       ) : (
         <div className="grid grid-products">
           {filtered.map((item) => (
-            <ProductCard
-              key={item.product.id}
-              title={item.product.title}
-              type={item.product.type}
-              price={item.product.price}
-              subtitle={item.product.subtitle}
-              thumbnailUrl={item.product.thumbnail_url}
-              owned
-              busy={openingId === item.product.id}
-              onClick={() => handleOpen(item)}
-            />
+            <div key={item.product.id} className="stack" style={{ gap: 6 }}>
+              <ProductCard
+                title={item.product.title}
+                type={item.product.type}
+                price={item.product.price}
+                subtitle={item.product.subtitle}
+                thumbnailUrl={item.product.thumbnail_url}
+                owned
+                busy={openingId === item.product.id}
+                onClick={() => handleOpen(item)}
+              />
+              <button className="btn btn-sm btn-outline-gold" onClick={() => setReviewingItem(item)}>
+                Leave a review
+              </button>
+            </div>
           ))}
         </div>
+      )}
+
+      {reviewingItem && (
+        <ReviewModal
+          productId={reviewingItem.product.id}
+          productTitle={reviewingItem.product.title}
+          onClose={() => setReviewingItem(null)}
+        />
       )}
     </div>
   );

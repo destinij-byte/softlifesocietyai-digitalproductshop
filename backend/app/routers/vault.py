@@ -30,6 +30,9 @@ from app.schemas.vault import (
     OrderItemOut,
     OrderOut,
     ProductOut,
+    ProductReviewsOut,
+    ReviewCreate,
+    ReviewOut,
 )
 from app.services import box_service, entitlement_service
 from app.services.stripe_service import construct_webhook_event
@@ -132,6 +135,57 @@ async def get_product(id_or_slug: str):
     db = get_database()
     doc = await _find_product(db, id_or_slug)
     return _product_out(doc)
+
+
+@router.post("/products/{product_id}/reviews", status_code=status.HTTP_201_CREATED)
+async def create_review(product_id: str, payload: ReviewCreate, user: UserInDB = Depends(get_current_user)):
+    db = get_database()
+    if not ObjectId.is_valid(product_id):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid product id")
+    product_oid = ObjectId(product_id)
+
+    if not await entitlement_service.has_product_access(db, user.id, product_oid, user.is_admin):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only review products you own")
+
+    if await db.reviews.find_one({"product_id": product_oid, "user_id": user.id}):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="You've already reviewed this product")
+
+    doc = {
+        "product_id": product_oid,
+        "user_id": user.id,
+        "rating": payload.rating,
+        "title": payload.title,
+        "body": payload.body,
+        "display_name": payload.display_name or (user.full_name.split(" ")[0] if user.full_name else "A member"),
+        "verified_purchase": True,
+        "incentivized": False,
+        "status": "pending",
+        "created_at": datetime.now(timezone.utc),
+    }
+    result = await db.reviews.insert_one(doc)
+    return {"id": str(result.inserted_id)}
+
+
+@router.get("/products/{id_or_slug}/reviews", response_model=ProductReviewsOut)
+async def get_product_reviews(id_or_slug: str):
+    db = get_database()
+    product_doc = await _find_product(db, id_or_slug)
+    docs = await db.reviews.find({"product_id": product_doc["_id"], "status": "approved"}).sort("created_at", -1).to_list(length=None)
+    reviews = [
+        ReviewOut(
+            id=doc["_id"],
+            rating=doc["rating"],
+            title=doc.get("title", ""),
+            body=doc.get("body", ""),
+            display_name=doc.get("display_name", ""),
+            verified_purchase=doc.get("verified_purchase", True),
+            incentivized=doc.get("incentivized", False),
+            created_at=doc["created_at"],
+        )
+        for doc in docs
+    ]
+    average = round(sum(r.rating for r in reviews) / len(reviews), 1) if reviews else None
+    return ProductReviewsOut(average_rating=average, count=len(reviews), reviews=reviews)
 
 
 @router.get("/bundles", response_model=list[BundleOut])

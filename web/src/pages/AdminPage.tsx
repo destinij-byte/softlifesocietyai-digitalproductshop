@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { adminApi, AdminUser, AdminOrder, AdminBoxSubscriber } from "../api/admin";
+import { adminApi, AdminUser, AdminOrder, AdminBoxSubscriber, AdminReview } from "../api/admin";
 import { Spinner } from "../components/Spinner";
+import { StarRating } from "../components/StarRating";
 
-type Tab = "users" | "orders" | "boxes";
+type Tab = "users" | "orders" | "boxes" | "reviews";
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -14,6 +15,8 @@ export function AdminPage() {
   const [users, setUsers] = useState<AdminUser[] | null>(null);
   const [orders, setOrders] = useState<AdminOrder[] | null>(null);
   const [boxSubscribers, setBoxSubscribers] = useState<AdminBoxSubscriber[] | null>(null);
+  const [reviews, setReviews] = useState<AdminReview[] | null>(null);
+  const [reviewBusyId, setReviewBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,8 +27,22 @@ export function AdminPage() {
       adminApi.listOrders().then(setOrders).catch(() => setError("Couldn't load orders."));
     } else if (tab === "boxes" && boxSubscribers === null) {
       adminApi.listBoxSubscribers().then(setBoxSubscribers).catch(() => setError("Couldn't load Box subscribers."));
+    } else if (tab === "reviews" && reviews === null) {
+      adminApi.listReviews().then(setReviews).catch(() => setError("Couldn't load reviews."));
     }
-  }, [tab, users, orders, boxSubscribers]);
+  }, [tab, users, orders, boxSubscribers, reviews]);
+
+  async function handleReviewStatus(reviewId: string, status: "approved" | "rejected") {
+    setReviewBusyId(reviewId);
+    try {
+      await adminApi.updateReviewStatus(reviewId, status);
+      setReviews((prev) => prev?.map((r) => (r.id === reviewId ? { ...r, status } : r)) ?? null);
+    } catch {
+      setError("Couldn't update that review. Try again in a moment.");
+    } finally {
+      setReviewBusyId(null);
+    }
+  }
 
   const totalRevenue = orders?.reduce((sum, o) => sum + o.amount, 0) ?? null;
 
@@ -45,6 +62,9 @@ export function AdminPage() {
         </button>
         <button className={`btn btn-sm ${tab === "boxes" ? "btn-gold" : "btn-outline-gold"}`} onClick={() => setTab("boxes")}>
           Box Subscribers {boxSubscribers ? `(${boxSubscribers.length})` : ""}
+        </button>
+        <button className={`btn btn-sm ${tab === "reviews" ? "btn-gold" : "btn-outline-gold"}`} onClick={() => setTab("reviews")}>
+          Reviews {reviews ? `(${reviews.filter((r) => r.status === "pending").length} pending)` : ""}
         </button>
       </div>
 
@@ -129,6 +149,66 @@ export function AdminPage() {
                   <span className="pill pill-cream" style={{ textTransform: "capitalize" }}>{s.box_type}</span>
                   <span className="pill" style={{ background: "var(--champagne)", color: "var(--ink)", textTransform: "capitalize" }}>{s.tier}</span>
                 </div>
+              </div>
+            ))}
+          </div>
+        )
+      )}
+
+      {tab === "reviews" && (
+        reviews === null ? (
+          <Spinner />
+        ) : reviews.length === 0 ? (
+          <p className="muted">No reviews yet.</p>
+        ) : (
+          <div className="stack gap-sm">
+            {reviews.map((r) => (
+              <div key={r.id} className="card stack gap-sm">
+                <div className="row-between" style={{ alignItems: "flex-start" }}>
+                  <div className="stack" style={{ gap: 2 }}>
+                    <strong>{r.product_title}</strong>
+                    <span className="muted" style={{ fontSize: 13 }}>{r.user_email}</span>
+                  </div>
+                  <div className="stack" style={{ gap: 4, alignItems: "flex-end" }}>
+                    <StarRating rating={r.rating} />
+                    <span className="muted" style={{ fontSize: 12 }}>{formatDate(r.created_at)}</span>
+                  </div>
+                </div>
+                {r.title && <strong style={{ fontSize: 14.5 }}>{r.title}</strong>}
+                {r.body && <p style={{ fontSize: 14, lineHeight: 1.6 }}>{r.body}</p>}
+                <div className="row gap-sm" style={{ flexWrap: "wrap", alignItems: "center" }}>
+                  <span className="muted" style={{ fontSize: 12.5 }}>— {r.display_name || "A member"}</span>
+                  {r.verified_purchase && <span className="pill pill-cream" style={{ fontSize: 11 }}>Verified purchase</span>}
+                  {r.incentivized && <span className="pill pill-cream" style={{ fontSize: 11 }}>Incentivized</span>}
+                  <span
+                    className="pill"
+                    style={{
+                      fontSize: 11,
+                      textTransform: "capitalize",
+                      background: r.status === "approved" ? "var(--champagne)" : r.status === "rejected" ? "var(--blush)" : "var(--cream)",
+                    }}
+                  >
+                    {r.status}
+                  </span>
+                </div>
+                {r.status === "pending" && (
+                  <div className="row gap-sm">
+                    <button
+                      className="btn btn-sm btn-gold"
+                      disabled={reviewBusyId === r.id}
+                      onClick={() => handleReviewStatus(r.id, "approved")}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-gold"
+                      disabled={reviewBusyId === r.id}
+                      onClick={() => handleReviewStatus(r.id, "rejected")}
+                    >
+                      Reject
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

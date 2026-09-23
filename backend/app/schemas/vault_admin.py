@@ -103,3 +103,24 @@ class AdminOrderOut(BaseModel):
     items: list[AdminOrderItemOut]
     amount: float
     created_at: datetime
+
+
+class AdminReviewOut(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    id: PyObjectId
+    product_id: PyObjectId
+    product_title: str
+    user_email: str
+    rating: int
+    title: str
+    body: str
+    display_name: str
+    verified_purchase: bool
+    incentivized: bool
+    status: str
+    created_at: datetime
+
+
+class ReviewStatusUpdate(BaseModel):
+    status: str  # "approved" | "rejected"
