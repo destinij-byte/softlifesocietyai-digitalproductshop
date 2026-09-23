@@ -15,6 +15,9 @@ export interface Product {
   title: string;
   subtitle: string;
   description: string;
+  best_for: string;
+  outcome: string;
+  whats_inside: string[];
   type: string;
   collection: ProductCollection;
   life_area: LifeArea;
