@@ -15,6 +15,7 @@ def _create_session(*, name: str, description: str, price: float, user: UserInDB
         mode="payment",
         payment_method_types=["card"],
         customer_email=user.email,
+        allow_promotion_codes=True,
         line_items=[
             {
                 "price_data": {
@@ -77,6 +78,7 @@ def create_checkout_session_for_cart(cart_items: list[dict], user: UserInDB) -> 
         mode="payment",
         payment_method_types=["card"],
         customer_email=user.email,
+        allow_promotion_codes=True,
         line_items=line_items,
         metadata={"kind": "cart", "user_id": str(user.id), "items": metadata_items},
         success_url=f"{settings.vault_stripe_success_url}?session_id={{CHECKOUT_SESSION_ID}}",
