@@ -115,7 +115,7 @@ export function HomePage() {
     cacheKey: "sls_cache_bundles",
   });
   const heroProducts = (products ?? []).filter((p) => p.is_hero).slice(0, 4);
-  const starterBundle = (bundles ?? []).find((b) => b.slug === "starter-bundle");
+  const featuredBundle = (bundles ?? []).find((b) => b.slug === "full-library");
 
   function handleAddToCart(product: Product) {
     cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: product.thumbnail_url });
@@ -167,7 +167,7 @@ export function HomePage() {
       </section>
 
       {/* Featured Products - a taste of the Vault before she has to join */}
-      {(heroProducts.length > 0 || starterBundle) && (
+      {(heroProducts.length > 0 || featuredBundle) && (
         <FadeInSection>
           <section className="section">
             <div className="container">
@@ -194,15 +194,15 @@ export function HomePage() {
                   />
                 ))}
               </div>
-              {starterBundle && (
+              {featuredBundle && (
                 <div style={{ maxWidth: 360, margin: "32px auto 0" }}>
                   <BundleCard
-                    name={starterBundle.name}
-                    description={starterBundle.description}
-                    price={starterBundle.price}
-                    individualTotal={starterBundle.individual_total}
-                    savings={starterBundle.savings}
-                    productCount={starterBundle.products.length}
+                    name={featuredBundle.name}
+                    description={featuredBundle.description}
+                    price={featuredBundle.price}
+                    individualTotal={featuredBundle.individual_total}
+                    savings={featuredBundle.savings}
+                    productCount={featuredBundle.products.length}
                     onBuy={() => navigate("/register", { state: { from: "/upgrade" } })}
                   />
                 </div>

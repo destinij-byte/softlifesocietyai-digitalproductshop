@@ -1,7 +1,6 @@
-"""Seed The Soft Life Vault's 18 individual products, 4 AI Collection monthly
-drops, and 4 bundles (Starter / Reset / Full Library / Founding Member
-Lifetime), per the Production Bible pricing table and phased launch plan in
-the project brief.
+"""Seed The Soft Life Vault's 55 active products, 4 AI Collection monthly
+drops, and 11 bundles, per the Production Bible pricing table and phased
+launch plan in the project brief.
 
     python -m app.scripts.seed_vault_products
 
@@ -10,10 +9,18 @@ Idempotent - upserts by slug, safe to re-run. Content/business fields
 applied here if explicitly set below - otherwise a live value set later
 via PATCH /vault/admin/products/{id} or the copy-import script survives
 future boots instead of being reset to whatever this file said originally.
+Bundles follow the same rule for is_active (see _upsert_bundle).
 
 Phase 1 was the original 18-product launch; all 10 originally-held-back
 "Phase 2" products have since been published (real files attached,
 descriptions imported) and are is_active=True below like everything else.
+
+Bundles: Starter Bundle and Reset Bundle are discontinued (is_active=False,
+kept here rather than deleted so existing buyers' entitlements are
+unaffected). The Soft Life Library (renamed from "Full Digital Library"),
+Everything Vault, Founding Member (now all 55 products), and 6 new named
+collections (Money Muse / Home Reset / Study Muse / Creator Muse / Her New
+Era / CEO Girl) replace them per the pricing update.
 """
 
 import asyncio
@@ -140,29 +147,151 @@ RESET_BUNDLE_SLUGS = [
     "soft-life-goal-setting-workbook",
 ]
 
+# The 17-product Soft Life Library is every PRODUCTS item except the AI
+# prompt pack (which belongs to the Creator Muse Collection instead).
+SOFT_LIFE_LIBRARY_SLUGS = [p["slug"] for p in PRODUCTS if p["slug"] != "content-creator-ai-prompt-pack"]
+
+MONEY_MUSE_COLLECTION_SLUGS = [
+    "money-ai-prompt-pack",
+    "money-muse-ai-prompt-pack",
+    "money-muse-debt-freedom-tracker",
+    "money-muse-money-reset-workbook",
+    "money-muse-savings-goal-planner",
+    "money-muse-ultimate-budget-planner",
+]
+
+HOME_RESET_COLLECTION_SLUGS = [
+    "home-lifestyle-ai-prompt-pack",
+    "home-reset-cleaning-system",
+    "home-reset-declutter-challenge",
+    "home-reset-moving-planner",
+    "home-reset-room-organization-planner",
+    "home-reset-whole-home-reset",
+]
+
+STUDY_MUSE_COLLECTION_SLUGS = [
+    "study-muse-30-day-exam-countdown",
+    "study-muse-active-recall-study-kit",
+    "study-muse-ai-prompt-kit",
+    "study-muse-ai-schedule-builder",
+    "study-muse-exam-prep-system",
+    "study-muse-finals-week-survival-system",
+]
+
+CREATOR_MUSE_COLLECTION_SLUGS = [
+    "content-creator-ai-prompt-pack",
+    "creator-muse-30-day-content-calendar",
+    "creator-muse-ai-prompt-pack",
+    "creator-muse-caption-vault",
+    "creator-muse-hooks-templates",
+    "creator-muse-reels-tiktok-script-pack",
+]
+
+HER_NEW_ERA_COLLECTION_SLUGS = [
+    "dating-relationships-ai-prompt-pack",
+    "her-new-era-30-day-life-reset",
+    "her-new-era-confidence-rebuild",
+    "her-new-era-future-self-ai-kit",
+    "her-new-era-goal-to-action-planner",
+    "her-new-era-habit-builder",
+    "her-new-era-identity-reset",
+]
+
+CEO_GIRL_COLLECTION_SLUGS = [
+    "ceo-ai-prompt-pack",
+    "ceo-girl-30-day-launch-system",
+    "ceo-girl-content-marketing-kit",
+    "ceo-girl-idea-finder",
+    "ceo-girl-ideal-customer-profile",
+    "ceo-girl-offer-builder",
+    "ceo-girl-pricing-calculator",
+]
+
+# All 55 active (non-Florida-Property) product slugs, for Everything Vault
+# and Founding Member.
+ALL_PRODUCT_SLUGS = (
+    [p["slug"] for p in PRODUCTS]
+    + [d["slug"] for d in AI_COLLECTION_DROPS]
+    + [p["slug"] for p in AI_BRAND_PRODUCTS if not p["slug"].startswith("florida-property-")]
+)
+
 BUNDLES = [
     {
+        # Discontinued - kept here (rather than deleted) with is_active
+        # explicitly False so existing buyers' entitlements are unaffected.
         "slug": "starter-bundle",
         "name": "Starter Bundle",
         "description": "Five essentials to start her soft life era. A $54 value.",
         "price": 27,
         "product_slugs": STARTER_BUNDLE_SLUGS,
+        "is_active": False,
     },
     {
+        # Discontinued - see starter-bundle note above.
         "slug": "reset-bundle",
         "name": "Reset Bundle",
         "description": "Six resources for whenever she needs to hit reset. A $94 value.",
         "price": 47,
         "product_slugs": RESET_BUNDLE_SLUGS,
+        "is_active": False,
     },
     {
-        # Launch price - brief calls for $79-$97 at launch, raised to $127
-        # later. Adjust here (and in Stripe) when that changes.
+        # Renamed from "Full Digital Library" - same slug, so existing
+        # links/entitlements keep working.
         "slug": "full-library",
-        "name": "Full Digital Library",
-        "description": "All 18 products. Every tool, unlocked. A $270+ value - launch pricing, going up to $127 later.",
-        "price": 79,
-        "product_slugs": [p["slug"] for p in PRODUCTS],
+        "name": "The Soft Life Library",
+        "description": "17 of her favorite Soft Life essentials in one collection. A $358 value.",
+        "price": 127,
+        "product_slugs": SOFT_LIFE_LIBRARY_SLUGS,
+    },
+    {
+        "slug": "money-muse-collection",
+        "name": "Money Muse Collection",
+        "description": "Six tools for getting her money right. A $120 value.",
+        "price": 67,
+        "product_slugs": MONEY_MUSE_COLLECTION_SLUGS,
+    },
+    {
+        "slug": "home-reset-collection",
+        "name": "Home Reset Collection",
+        "description": "Six tools for resetting her whole home. A $132 value.",
+        "price": 67,
+        "product_slugs": HOME_RESET_COLLECTION_SLUGS,
+    },
+    {
+        "slug": "study-muse-collection",
+        "name": "Study Muse Collection",
+        "description": "Six tools for walking into every exam prepared. A $137 value.",
+        "price": 67,
+        "product_slugs": STUDY_MUSE_COLLECTION_SLUGS,
+    },
+    {
+        "slug": "creator-muse-collection",
+        "name": "Creator Muse Collection",
+        "description": "Six tools for turning her content into a brand. A $140 value.",
+        "price": 67,
+        "product_slugs": CREATOR_MUSE_COLLECTION_SLUGS,
+    },
+    {
+        "slug": "her-new-era-collection",
+        "name": "Her New Era Collection",
+        "description": "Seven tools for stepping into her next chapter. A $149 value.",
+        "price": 77,
+        "product_slugs": HER_NEW_ERA_COLLECTION_SLUGS,
+    },
+    {
+        "slug": "ceo-girl-collection",
+        "name": "CEO Girl Collection",
+        "description": "Seven tools for building her empire. A $151 value.",
+        "price": 77,
+        "product_slugs": CEO_GIRL_COLLECTION_SLUGS,
+    },
+    {
+        "slug": "everything-vault",
+        "name": "Everything Vault",
+        "description": "All 55 products. Every tool, unlocked. A $1,187 value.",
+        "price": 247,
+        "product_slugs": ALL_PRODUCT_SLUGS,
     },
     {
         # Positioned in marketing copy as a founding membership, but still
@@ -171,9 +300,9 @@ BUNDLES = [
         # an actual annual price/renewal structure is decided.
         "slug": "founding-member-lifetime",
         "name": "Founding Member",
-        "description": "Full Library + app access + AI + Vault + founding-only bonuses, forever. She was here first.",
-        "price": 147,
-        "product_slugs": [p["slug"] for p in PRODUCTS],
+        "description": "All 55 products + app access + AI + Vault + founding-only bonuses, forever. She was here first.",
+        "price": 347,
+        "product_slugs": ALL_PRODUCT_SLUGS,
         "includes_app_access": True,
         "is_founding_member": True,
     },
@@ -237,15 +366,20 @@ async def _upsert_bundle(db, data: dict) -> None:
         "product_ids": product_ids,
         "includes_app_access": data.get("includes_app_access", False),
         "is_founding_member": data.get("is_founding_member", False),
-        "is_active": True,
         "updated_at": now,
     }
     existing = await db.bundles.find_one({"slug": data["slug"]})
     if existing:
+        # Same rule as products: only touch is_active here if this file
+        # explicitly sets it, so a later admin change (once bundles get
+        # their own PATCH endpoint) isn't silently reverted on next boot.
+        if "is_active" in data:
+            doc["is_active"] = data["is_active"]
         bundle_id = existing["_id"]
         await db.bundles.update_one({"_id": bundle_id}, {"$set": doc})
     else:
         doc["slug"] = data["slug"]
+        doc["is_active"] = data.get("is_active", True)
         doc["created_at"] = now
         result = await db.bundles.insert_one(doc)
         bundle_id = result.inserted_id
