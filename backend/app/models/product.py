@@ -26,7 +26,10 @@ class Product(BaseModel):
     slug: str
     title: str
     subtitle: str = ""
-    description: str = ""
+    description: str = ""  # "Helps with"
+    best_for: str = ""
+    outcome: str = ""  # "She walks away with"
+    whats_inside: list[str] = Field(default_factory=list)
     type: ProductType
     collection: ProductCollection = "soft_life"
     life_area: LifeArea = "soft_life"

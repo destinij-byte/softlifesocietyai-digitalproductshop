@@ -13,6 +13,9 @@ class ProductOut(BaseModel):
     title: str
     subtitle: str
     description: str
+    best_for: str
+    outcome: str
+    whats_inside: list[str]
     type: str
     collection: str
     life_area: str

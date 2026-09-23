@@ -11,6 +11,9 @@ class ProductCreate(BaseModel):
     title: str
     subtitle: str = ""
     description: str = ""
+    best_for: str = ""
+    outcome: str = ""
+    whats_inside: list[str] = []
     type: str
     collection: ProductCollection = "soft_life"
     life_area: LifeArea = "soft_life"
@@ -29,6 +32,9 @@ class ProductUpdate(BaseModel):
     title: str | None = None
     subtitle: str | None = None
     description: str | None = None
+    best_for: str | None = None
+    outcome: str | None = None
+    whats_inside: list[str] | None = None
     type: str | None = None
     collection: ProductCollection | None = None
     life_area: LifeArea | None = None

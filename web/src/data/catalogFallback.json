@@ -14,7 +14,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "soft-life-blueprint",
-    "id": "6aa333ee2ba278f20b0c618d"
+    "id": "6aa333ee2ba278f20b0c618d",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Soft Life Reset",
@@ -31,7 +34,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "soft-life-reset",
-    "id": "6aa333ef2ba278f20b0c618e"
+    "id": "6aa333ef2ba278f20b0c618e",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "30-Day Soft Life Challenge",
@@ -48,7 +54,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "30-day-soft-life-challenge",
-    "id": "6aa333ef2ba278f20b0c6190"
+    "id": "6aa333ef2ba278f20b0c6190",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Soft Life Money Makeover",
@@ -65,7 +74,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "soft-life-money-makeover",
-    "id": "6aa333f02ba278f20b0c6197"
+    "id": "6aa333f02ba278f20b0c6197",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Soft Life CEO Starter Kit",
@@ -82,7 +94,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "soft-life-ceo-starter-kit",
-    "id": "6aa333f02ba278f20b0c6199"
+    "id": "6aa333f02ba278f20b0c6199",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "100 Soft Life AI Prompts",
@@ -99,7 +114,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "100-soft-life-ai-prompts",
-    "id": "6aa333f02ba278f20b0c619a"
+    "id": "6aa333f02ba278f20b0c619a",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Content Creator AI Prompt Pack",
@@ -116,7 +134,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "content-creator-ai-prompt-pack",
-    "id": "6aa333f02ba278f20b0c619b"
+    "id": "6aa333f02ba278f20b0c619b",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Ultimate Soft Life Planner",
@@ -133,7 +154,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "ultimate-soft-life-planner",
-    "id": "6aa333f12ba278f20b0c619e"
+    "id": "6aa333f12ba278f20b0c619e",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "CEO AI Prompt Pack",
@@ -150,7 +174,10 @@
     "is_hero": false,
     "drop_month": "2026-09",
     "slug": "ceo-ai-prompt-pack",
-    "id": "6aa333f12ba278f20b0c619f"
+    "id": "6aa333f12ba278f20b0c619f",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Money AI Prompt Pack",
@@ -167,7 +194,10 @@
     "is_hero": false,
     "drop_month": "2026-08",
     "slug": "money-ai-prompt-pack",
-    "id": "6aa333f12ba278f20b0c61a0"
+    "id": "6aa333f12ba278f20b0c61a0",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Dating & Relationships AI Prompt Pack",
@@ -184,7 +214,10 @@
     "is_hero": false,
     "drop_month": "2026-07",
     "slug": "dating-relationships-ai-prompt-pack",
-    "id": "6aa333f12ba278f20b0c61a1"
+    "id": "6aa333f12ba278f20b0c61a1",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Home & Lifestyle AI Prompt Pack",
@@ -201,7 +234,10 @@
     "is_hero": false,
     "drop_month": "2026-06",
     "slug": "home-lifestyle-ai-prompt-pack",
-    "id": "6aa333f12ba278f20b0c61a2"
+    "id": "6aa333f12ba278f20b0c61a2",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The 30-Day Life Reset System",
@@ -218,7 +254,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "her-new-era-30-day-life-reset",
-    "id": "6aa6cf911ad8d772cc7667f6"
+    "id": "6aa6cf911ad8d772cc7667f6",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Identity & Self-Concept Reset",
@@ -235,7 +274,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "her-new-era-identity-reset",
-    "id": "6aa6cf911ad8d772cc7667f7"
+    "id": "6aa6cf911ad8d772cc7667f7",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Habit & Routine Builder",
@@ -252,7 +294,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "her-new-era-habit-builder",
-    "id": "6aa6cf911ad8d772cc7667f8"
+    "id": "6aa6cf911ad8d772cc7667f8",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Confidence Rebuild System",
@@ -269,7 +314,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "her-new-era-confidence-rebuild",
-    "id": "6aa6cf911ad8d772cc7667f9"
+    "id": "6aa6cf911ad8d772cc7667f9",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Goal-to-Action Life Planner",
@@ -286,7 +334,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "her-new-era-goal-to-action-planner",
-    "id": "6aa6cf911ad8d772cc7667fa"
+    "id": "6aa6cf911ad8d772cc7667fa",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Future Self AI Planning Kit",
@@ -303,7 +354,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "her-new-era-future-self-ai-kit",
-    "id": "6aa6cf921ad8d772cc7667fb"
+    "id": "6aa6cf921ad8d772cc7667fb",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Business Idea Finder + AI Validation Kit",
@@ -320,7 +374,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "ceo-girl-idea-finder",
-    "id": "6aa6cf921ad8d772cc7667fc"
+    "id": "6aa6cf921ad8d772cc7667fc",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Offer Builder System",
@@ -337,7 +394,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "ceo-girl-offer-builder",
-    "id": "6aa6cf921ad8d772cc7667fd"
+    "id": "6aa6cf921ad8d772cc7667fd",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Ideal Customer AI Profile Kit",
@@ -354,7 +414,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "ceo-girl-ideal-customer-profile",
-    "id": "6aa6cf921ad8d772cc7667fe"
+    "id": "6aa6cf921ad8d772cc7667fe",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Digital Product Pricing Calculator + Guide",
@@ -371,7 +434,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "ceo-girl-pricing-calculator",
-    "id": "6aa6cf921ad8d772cc7667ff"
+    "id": "6aa6cf921ad8d772cc7667ff",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The 30-Day Business Launch System",
@@ -388,7 +454,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "ceo-girl-30-day-launch-system",
-    "id": "6aa6cf921ad8d772cc766800"
+    "id": "6aa6cf921ad8d772cc766800",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Small Business Content & Marketing Kit",
@@ -405,7 +474,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "ceo-girl-content-marketing-kit",
-    "id": "6aa6cf921ad8d772cc766801"
+    "id": "6aa6cf921ad8d772cc766801",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Money Reset Workbook",
@@ -422,7 +494,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "money-muse-money-reset-workbook",
-    "id": "6aa6cf931ad8d772cc766802"
+    "id": "6aa6cf931ad8d772cc766802",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Ultimate Budget Planner",
@@ -439,7 +514,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "money-muse-ultimate-budget-planner",
-    "id": "6aa6cf931ad8d772cc766803"
+    "id": "6aa6cf931ad8d772cc766803",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Debt Freedom Tracker",
@@ -456,7 +534,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "money-muse-debt-freedom-tracker",
-    "id": "6aa6cf931ad8d772cc766804"
+    "id": "6aa6cf931ad8d772cc766804",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Savings Goal Planner",
@@ -473,7 +554,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "money-muse-savings-goal-planner",
-    "id": "6aa6cf931ad8d772cc766805"
+    "id": "6aa6cf931ad8d772cc766805",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Money Muse AI Prompt Pack",
@@ -490,7 +574,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "money-muse-ai-prompt-pack",
-    "id": "6aa6cf931ad8d772cc766806"
+    "id": "6aa6cf931ad8d772cc766806",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The 30-Day Content Calendar",
@@ -507,7 +594,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "creator-muse-30-day-content-calendar",
-    "id": "6aa6cf931ad8d772cc766807"
+    "id": "6aa6cf931ad8d772cc766807",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "500+ Hooks & Hook Templates",
@@ -524,7 +614,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "creator-muse-hooks-templates",
-    "id": "6aa6cf931ad8d772cc766808"
+    "id": "6aa6cf931ad8d772cc766808",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Caption Vault",
@@ -541,7 +634,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "creator-muse-caption-vault",
-    "id": "6aa6cf941ad8d772cc766809"
+    "id": "6aa6cf941ad8d772cc766809",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "Reels & TikTok Script Pack",
@@ -558,7 +654,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "creator-muse-reels-tiktok-script-pack",
-    "id": "6aa6cf941ad8d772cc76680a"
+    "id": "6aa6cf941ad8d772cc76680a",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Creator Muse AI Prompt Pack",
@@ -575,7 +674,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "creator-muse-ai-prompt-pack",
-    "id": "6aa6cf941ad8d772cc76680b"
+    "id": "6aa6cf941ad8d772cc76680b",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Whole Home Reset",
@@ -592,7 +694,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "home-reset-whole-home-reset",
-    "id": "6aa6cf941ad8d772cc76680c"
+    "id": "6aa6cf941ad8d772cc76680c",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Declutter Challenge",
@@ -609,7 +714,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "home-reset-declutter-challenge",
-    "id": "6aa6cf941ad8d772cc76680d"
+    "id": "6aa6cf941ad8d772cc76680d",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Cleaning System",
@@ -626,7 +734,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "home-reset-cleaning-system",
-    "id": "6aa6cf941ad8d772cc76680e"
+    "id": "6aa6cf941ad8d772cc76680e",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Room Organization Planner",
@@ -643,7 +754,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "home-reset-room-organization-planner",
-    "id": "6aa6cf941ad8d772cc76680f"
+    "id": "6aa6cf941ad8d772cc76680f",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Moving Planner",
@@ -660,7 +774,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "home-reset-moving-planner",
-    "id": "6aa6cf951ad8d772cc766810"
+    "id": "6aa6cf951ad8d772cc766810",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The AI Study Schedule Builder",
@@ -677,7 +794,10 @@
     "is_hero": true,
     "drop_month": null,
     "slug": "study-muse-ai-schedule-builder",
-    "id": "6aa6cf951ad8d772cc766811"
+    "id": "6aa6cf951ad8d772cc766811",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Exam Prep System",
@@ -694,7 +814,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "study-muse-exam-prep-system",
-    "id": "6aa6cf951ad8d772cc766812"
+    "id": "6aa6cf951ad8d772cc766812",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The 30-Day Exam Countdown",
@@ -711,7 +834,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "study-muse-30-day-exam-countdown",
-    "id": "6aa6cf951ad8d772cc766813"
+    "id": "6aa6cf951ad8d772cc766813",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Active Recall & Study Method Kit",
@@ -728,7 +854,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "study-muse-active-recall-study-kit",
-    "id": "6aa6cf951ad8d772cc766814"
+    "id": "6aa6cf951ad8d772cc766814",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Finals Week Survival System",
@@ -745,7 +874,10 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "study-muse-finals-week-survival-system",
-    "id": "6aa6cf951ad8d772cc766815"
+    "id": "6aa6cf951ad8d772cc766815",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   },
   {
     "title": "The Study AI Prompt Kit",
@@ -762,6 +894,9 @@
     "is_hero": false,
     "drop_month": null,
     "slug": "study-muse-ai-prompt-kit",
-    "id": "6aa6cf951ad8d772cc766816"
+    "id": "6aa6cf951ad8d772cc766816",
+    "best_for": "",
+    "outcome": "",
+    "whats_inside": []
   }
 ]

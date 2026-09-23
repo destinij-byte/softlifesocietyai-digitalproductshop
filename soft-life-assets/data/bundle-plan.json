@@ -1,0 +1,151 @@
+{
+  "note": "Recommended bundle plan. Values are the real sum of individual prices. Prices are recommendations; owner must approve before any change.",
+  "fix_existing": [
+    {
+      "slug": "starter-bundle",
+      "keep_price": 27,
+      "new_description": "Five essentials to start her soft life era.",
+      "show_value_from": "individual_total"
+    },
+    {
+      "slug": "reset-bundle",
+      "keep_price": 47,
+      "new_description": "Six resources for whenever she needs to hit reset.",
+      "show_value_from": "individual_total"
+    },
+    {
+      "slug": "full-library",
+      "rename_to": "The Soft Life Library",
+      "keep_price": 79,
+      "new_description": "The 18 soft-life essentials, every core tool unlocked. Launch pricing.",
+      "show_value_from": "individual_total"
+    },
+    {
+      "slug": "founding-member-lifetime",
+      "keep_price": 147,
+      "new_description": "Everything in the Vault (all 55 products), plus app access, Luna your AI coach, and founding-only bonuses, forever. She was here first.",
+      "change": "include ALL active products (55) instead of 18"
+    }
+  ],
+  "new_bundles": [
+    {
+      "slug": "everything-vault",
+      "name": "The Everything Vault",
+      "price": 127,
+      "description": "Every product in the Vault, all 55, in one unlock.",
+      "includes": "ALL active products",
+      "approx_value": 874
+    },
+    {
+      "slug": "her-new-era-collection",
+      "name": "Her New Era Collection",
+      "price": 47,
+      "approx_value": 116,
+      "includes_line": "Her New Era",
+      "product_slugs": [
+        "dating-relationships-ai-prompt-pack",
+        "her-new-era-30-day-life-reset",
+        "her-new-era-identity-reset",
+        "her-new-era-habit-builder",
+        "her-new-era-confidence-rebuild",
+        "her-new-era-goal-to-action-planner",
+        "her-new-era-future-self-ai-kit"
+      ]
+    },
+    {
+      "slug": "money-muse-collection",
+      "name": "Money Muse Collection",
+      "price": 37,
+      "approx_value": 90,
+      "includes_line": "Money Muse",
+      "product_slugs": [
+        "money-ai-prompt-pack",
+        "money-muse-money-reset-workbook",
+        "money-muse-ultimate-budget-planner",
+        "money-muse-debt-freedom-tracker",
+        "money-muse-savings-goal-planner",
+        "money-muse-ai-prompt-pack"
+      ]
+    },
+    {
+      "slug": "ceo-girl-collection",
+      "name": "CEO Girl Collection",
+      "price": 47,
+      "approx_value": 121,
+      "includes_line": "CEO Girl",
+      "product_slugs": [
+        "ceo-ai-prompt-pack",
+        "ceo-girl-idea-finder",
+        "ceo-girl-offer-builder",
+        "ceo-girl-ideal-customer-profile",
+        "ceo-girl-pricing-calculator",
+        "ceo-girl-30-day-launch-system",
+        "ceo-girl-content-marketing-kit"
+      ]
+    },
+    {
+      "slug": "creator-muse-collection",
+      "name": "Creator Muse Collection",
+      "price": 39,
+      "approx_value": 97,
+      "includes_line": "Creator Muse",
+      "product_slugs": [
+        "content-creator-ai-prompt-pack",
+        "creator-muse-30-day-content-calendar",
+        "creator-muse-hooks-templates",
+        "creator-muse-caption-vault",
+        "creator-muse-reels-tiktok-script-pack",
+        "creator-muse-ai-prompt-pack"
+      ]
+    },
+    {
+      "slug": "home-reset-collection",
+      "name": "Home Reset Collection",
+      "price": 37,
+      "approx_value": 93,
+      "includes_line": "Home Reset",
+      "product_slugs": [
+        "home-lifestyle-ai-prompt-pack",
+        "home-reset-whole-home-reset",
+        "home-reset-declutter-challenge",
+        "home-reset-cleaning-system",
+        "home-reset-room-organization-planner",
+        "home-reset-moving-planner"
+      ]
+    },
+    {
+      "slug": "study-muse-collection",
+      "name": "Study Muse Collection",
+      "price": 37,
+      "approx_value": 86,
+      "includes_line": "Study Muse",
+      "product_slugs": [
+        "study-muse-ai-schedule-builder",
+        "study-muse-exam-prep-system",
+        "study-muse-30-day-exam-countdown",
+        "study-muse-active-recall-study-kit",
+        "study-muse-finals-week-survival-system",
+        "study-muse-ai-prompt-kit"
+      ]
+    }
+  ],
+  "publish_hidden_products": [
+    "that-girl-daily-planner",
+    "soft-life-morning-routine-guide",
+    "soft-life-night-routine-guide",
+    "weekly-reset-checklist",
+    "monthly-soft-life-reset",
+    "soft-life-goal-setting-workbook",
+    "dream-life-vision-planner",
+    "soft-life-budget-planner",
+    "soft-life-journal",
+    "affirmations-for-her"
+  ],
+  "promo_codes": [
+    {
+      "code": "BLUEPRINT15",
+      "percent_off": 15,
+      "note": "Printed inside The Soft Life Blueprint v2 PDF. Create in Stripe (or site discount system) before uploading the new PDF."
+    }
+  ]
+}
