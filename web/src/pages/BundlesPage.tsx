@@ -35,7 +35,7 @@ export function BundlesPage() {
     }
   }
 
-  if (loading) return <VaultLoadingGrid title="Upgrade Your Vault" gridClassName="grid-bundles" count={4} />;
+  if (loading) return <VaultLoadingGrid title="Upgrade Your Vault" gridClassName="grid-bundles" count={9} />;
   if (error) return <VaultErrorState title="Upgrade Your Vault" message={error} onRetry={retry} />;
 
   return (
