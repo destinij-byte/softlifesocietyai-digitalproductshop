@@ -149,3 +149,29 @@ class GrowthOut(BaseModel):
     money: list[MonthPoint]
     goals: list[MonthPoint]
     wellness: list[MonthPoint]
+
+
+class ReviewCreate(BaseModel):
+    rating: int = Field(ge=1, le=5)
+    title: str = ""
+    body: str = ""
+    display_name: str = ""
+
+
+class ReviewOut(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    id: PyObjectId
+    rating: int
+    title: str
+    body: str
+    display_name: str
+    verified_purchase: bool
+    incentivized: bool
+    created_at: datetime
+
+
+class ProductReviewsOut(BaseModel):
+    average_rating: float | None
+    count: int
+    reviews: list[ReviewOut]

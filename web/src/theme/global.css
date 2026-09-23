@@ -310,7 +310,8 @@ input {
   opacity: 0.75;
 }
 
-.field input {
+.field input,
+.field textarea {
   border: 1.5px solid var(--blush);
   background: #fff;
   border-radius: var(--radius-md);
@@ -321,7 +322,13 @@ input {
   transition: border-color 0.15s ease;
 }
 
-.field input:focus {
+.field textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+.field input:focus,
+.field textarea:focus {
   border-color: var(--gold);
 }
 

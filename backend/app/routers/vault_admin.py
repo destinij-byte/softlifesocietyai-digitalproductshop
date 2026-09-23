@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from bson import ObjectId
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.database import get_database
 from app.deps import get_current_admin
@@ -9,11 +9,13 @@ from app.models.user import UserInDB
 from app.schemas.vault import BoxSubscriberOut
 from app.schemas.vault_admin import (
     AdminOrderOut,
+    AdminReviewOut,
     AdminUserOut,
     BundleCreate,
     BundleUpdate,
     ProductCreate,
     ProductUpdate,
+    ReviewStatusUpdate,
 )
 
 router = APIRouter(prefix="/vault/admin", tags=["vault-admin"])
@@ -161,3 +163,52 @@ async def list_box_subscribers(_admin: UserInDB = Depends(get_current_admin)):
         for sub in subs
         if sub["user_id"] in users_by_id
     ]
+
+
+@router.get("/reviews", response_model=list[AdminReviewOut])
+async def list_reviews(status_filter: str | None = Query(default=None, alias="status"), _admin: UserInDB = Depends(get_current_admin)):
+    db = get_database()
+    query: dict = {"status": status_filter} if status_filter else {}
+    docs = await db.reviews.find(query).sort("created_at", -1).to_list(length=None)
+
+    product_ids = {doc["product_id"] for doc in docs}
+    products = await db.products.find({"_id": {"$in": list(product_ids)}}).to_list(length=None)
+    products_by_id = {p["_id"]: p for p in products}
+    user_ids = {doc["user_id"] for doc in docs}
+    users = await db.users.find({"_id": {"$in": list(user_ids)}}).to_list(length=None)
+    users_by_id = {u["_id"]: u for u in users}
+
+    results = []
+    for doc in docs:
+        product_doc = products_by_id.get(doc["product_id"])
+        user_doc = users_by_id.get(doc["user_id"])
+        if product_doc is None or user_doc is None:
+            continue
+        results.append(
+            AdminReviewOut(
+                id=doc["_id"],
+                product_id=doc["product_id"],
+                product_title=product_doc["title"],
+                user_email=user_doc["email"],
+                rating=doc["rating"],
+                title=doc.get("title", ""),
+                body=doc.get("body", ""),
+                display_name=doc.get("display_name", ""),
+                verified_purchase=doc.get("verified_purchase", True),
+                incentivized=doc.get("incentivized", False),
+                status=doc["status"],
+                created_at=doc["created_at"],
+            )
+        )
+    return results
+
+
+@router.patch("/reviews/{review_id}")
+async def update_review_status(review_id: str, payload: ReviewStatusUpdate, _admin: UserInDB = Depends(get_current_admin)):
+    if payload.status not in ("approved", "rejected"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="status must be 'approved' or 'rejected'")
+    db = get_database()
+    result = await db.reviews.update_one({"_id": _oid(review_id)}, {"$set": {"status": payload.status}})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Review not found")
+    return {"updated": True}

@@ -18,7 +18,8 @@ Everything you need is in the `soft-life-assets/` folder in the project root:
 | `covers/og/{slug}.png` | Social share images (1200×630) for all 55 products |
 | `og-image.png` | Site-wide share image (1200×630) |
 | `freebies/soft-life-reset-checklist.pdf` | Free lead-magnet PDF for the email signup |
-| `products/the-soft-life-blueprint-v2.pdf` | The upgraded version of The Soft Life Blueprint, which replaces the current download file |
+| `products/{slug}.pdf` | Upgraded, rebuilt PDF files for all 55 products (one per slug). These replace the current download files. |
+| `content/reviews-kit.md` | My plan for collecting real reviews. Build section 10 from it. |
 | `content/about.md` | About page copy, with placeholders I'll fill in |
 
 Work in the order below and commit after each section. **For every database write, Stripe change, or file replacement: do a dry run, show me the summary, and wait for my "OK" before running it for real.**
@@ -27,7 +28,7 @@ Work in the order below and commit after each section. **For every database writ
 
 - These slugs are in bundles but don't appear in `GET /vault/products`, and `GET /vault/products/{slug}` returns "Product not found": `that-girl-daily-planner`, `soft-life-morning-routine-guide`, `soft-life-night-routine-guide`, `weekly-reset-checklist`, `monthly-soft-life-reset`, `soft-life-goal-setting-workbook`, `dream-life-vision-planner`, `soft-life-budget-planner`, `soft-life-journal`, `affirmations-for-her`.
 - Find the reason (an inactive/unpublished flag or a query filter) and publish them so they appear in the shop and on their own product pages. Keep their current prices ($7–$17).
-- Confirm that each one has a real downloadable file attached. List any that don't, and don't publish those until I upload a file.
+- Each one gets its new file from `products/{slug}.pdf` (see section 4), so publish them only after their file is attached.
 
 ## 2. Fix and expand bundles (follow `data/bundle-plan.json`)
 
@@ -53,11 +54,13 @@ Work in the order below and commit after each section. **For every database writ
 - In `/admin`, add thumbnail upload so I can replace covers later.
 - Show a fallback `ProductCover` component (title on an ivory background with a gold border) for any product without an image.
 
-## 4. Replace The Soft Life Blueprint file
+## 4. Replace every product's download file
 
-- Replace the downloadable file for `soft-life-blueprint` with `products/the-soft-life-blueprint-v2.pdf`, using the existing file system (`/vault/files` or the admin upload). Keep the old file as a backup.
-- Anyone who already bought it should get the new version in My Library automatically.
-- The new PDF mentions the promo code **BLUEPRINT15** (15% off). Create it in Stripe (or the site's discount system) and make sure the cart and checkout accept promo codes. **Show me first.**
+- For each of the 55 products, replace its downloadable file with `products/{slug}.pdf`, using the existing file system (`/vault/files` or the admin upload). Match by slug. Keep every old file as a backup (for example, `backup/{slug}-original.pdf`) and don't delete anything.
+- Dry run first: show me a table with slug, title, current file name and size, new file name, and page count. List any product that doesn't have a matching file. Wait for my OK.
+- Anyone who already bought a product should get the new version in My Library automatically. Don't send any emails about it without asking me.
+- Bundles should pull the new files for their items as well.
+- `soft-life-blueprint.pdf` mentions the promo code **BLUEPRINT15** (15% off). Create it in Stripe (or the site's discount system) and make sure the cart and checkout accept promo codes. **Show me first.**
 
 ## 5. Product detail pages
 
@@ -104,6 +107,19 @@ Work in the order below and commit after each section. **For every database writ
 - `robots.txt` and `sitemap.xml` currently return the homepage HTML. Create a real `public/robots.txt` and a build-time `sitemap.xml` covering all public routes and every `/shop/{slug}`.
 - Add JSON-LD: `Organization` on the homepage, and `Product` + `Offer` (USD, InStock) on product pages.
 - Prerender the public routes at build time.
+
+## 10. Verified reviews (real reviews only)
+
+Follow `content/reviews-kit.md`.
+
+- Backend: add a `reviews` collection with `product_id`, `user_id`, `rating` (1 to 5), `title`, `body`, `display_name`, `verified_purchase`, `status` (`pending`, `approved`, `rejected`), and `created_at`, plus an optional `incentivized` flag for beta reviewers who got the product free.
+- `POST /reviews`: requires login. Only allow it if the user owns the product (check the same ownership data My Library uses). One review per user per product. Save it as `pending`.
+- `GET /products/{slug}/reviews`: public. Return approved reviews only, with the average rating and count.
+- Admin: add a Reviews tab in `/admin` to approve or reject reviews. Never edit a customer's words other than removing personal info.
+- Frontend: add a "Leave a review" button next to each owned item in My Library. On product pages, show stars, the average rating, the count, and approved reviews with a "Verified purchase" badge. Show "Received this product free for an honest review" on incentivized reviews. Hide the section if there are no reviews.
+- Add a `/reviews/request` link format I can put in emails that opens the review form for a specific product.
+- Only include reviews in JSON-LD `aggregateRating` once a product has at least 3 approved reviews.
+- Never create, seed, or generate reviews or testimonials. Test data must stay in test mode and be deleted afterward.
 
 ## Rules
 

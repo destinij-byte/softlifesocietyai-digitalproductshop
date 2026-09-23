@@ -43,6 +43,8 @@ async def create_indexes():
     await db.orders.create_index("stripe_payment_id", unique=True)
     await db.orders.create_index("user_id")
     await db.box_subscriptions.create_index([("user_id", 1), ("box_type", 1)], unique=True)
+    await db.reviews.create_index([("user_id", 1), ("product_id", 1)], unique=True)
+    await db.reviews.create_index([("product_id", 1), ("status", 1)])
 
     await db.goals.create_index("user_id")
     await db.routine_templates.create_index([("user_id", 1), ("type", 1)], unique=True)
