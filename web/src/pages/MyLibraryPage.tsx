@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { vaultApi, LibraryItem, LifeArea } from "../api/vault";
+import { vaultApi, LibraryItem, LifeArea, coverUrl } from "../api/vault";
 import { useAuth } from "../context/AuthContext";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { ProductCard } from "../components/ProductCard";
@@ -76,7 +76,7 @@ export function MyLibraryPage() {
                 type={item.product.type}
                 price={item.product.price}
                 subtitle={item.product.subtitle}
-                thumbnailUrl={item.product.thumbnail_url}
+                thumbnailUrl={coverUrl(item.product)}
                 owned
                 busy={openingId === item.product.id}
                 onClick={() => handleOpen(item)}

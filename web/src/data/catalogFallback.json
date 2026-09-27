@@ -2,7 +2,7 @@
   {
     "title": "The Soft Life Blueprint",
     "subtitle": "Your roadmap to the life you're building.",
-    "description": "",
+    "description": "Figuring out what \"soft life\" actually means for her and mapping out the life she wants to build.",
     "type": "Workbook",
     "collection": "soft_life",
     "life_area": "soft_life",
@@ -15,14 +15,19 @@
     "drop_month": null,
     "slug": "soft-life-blueprint",
     "id": "6aa333ee2ba278f20b0c618d",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who knows she wants more peace and ease but doesn't have a clear picture or plan yet.",
+    "outcome": "A personal roadmap covering her vision, values, priorities, and the first steps to get there.",
+    "whats_inside": [
+      "What soft life means to you, plus an honest life audit",
+      "Your values and a clear picture of the life you're building",
+      "Top focus areas and what you'll say no to",
+      "A 12-month, 90-day, and weekly roadmap"
+    ]
   },
   {
     "title": "The Soft Life Reset",
     "subtitle": "A clean slate, whenever she needs one.",
-    "description": "",
+    "description": "Starting over when life feels cluttered, overwhelming, or off track, whether in her routines, her mindset, or her space.",
     "type": "Workbook",
     "collection": "soft_life",
     "life_area": "soft_life",
@@ -35,14 +40,19 @@
     "drop_month": null,
     "slug": "soft-life-reset",
     "id": "6aa333ef2ba278f20b0c618e",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "Anyone who feels burnt out or stuck and needs a fresh start. She can use it again any time she needs one.",
+    "outcome": "A clean slate and a simple plan for what to let go of and what to rebuild.",
+    "whats_inside": [
+      "A burnout check-in to see where you really are",
+      "A let-go list for your routines, mindset, and space",
+      "A rebuild plan for what you want to keep and create",
+      "A 7-day gentle restart plan and tracker"
+    ]
   },
   {
     "title": "30-Day Soft Life Challenge",
     "subtitle": "30 days to a softer, more intentional life.",
-    "description": "",
+    "description": "Turning soft-life ideas into daily practice through one small, intentional action each day.",
     "type": "Challenge Workbook",
     "collection": "soft_life",
     "life_area": "challenges",
@@ -55,14 +65,19 @@
     "drop_month": null,
     "slug": "30-day-soft-life-challenge",
     "id": "6aa333ef2ba278f20b0c6190",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who does well with structure and accountability.",
+    "outcome": "Thirty days of new habits that make her everyday life feel softer and more intentional.",
+    "whats_inside": [
+      "30 days of small, intentional soft-life actions",
+      "A daily check-in tracker",
+      "Weekly reflections every 7 days",
+      "A before-and-after reflection"
+    ]
   },
   {
     "title": "Soft Life Money Makeover",
     "subtitle": "A softer way to get her money right.",
-    "description": "",
+    "description": "Getting her finances in order without shame or harsh budgeting, so money feels calmer.",
     "type": "Workbook",
     "collection": "wealth",
     "life_area": "money",
@@ -75,14 +90,19 @@
     "drop_month": null,
     "slug": "soft-life-money-makeover",
     "id": "6aa333f02ba278f20b0c6197",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who avoids looking at her money or feels stressed about it.",
+    "outcome": "A clear view of where her money goes and a gentle plan to improve it.",
+    "whats_inside": [
+      "A no-shame money snapshot",
+      "A 30-day spending tracker",
+      "A gentle spending plan",
+      "A money-leak finder and a 90-day money makeover plan"
+    ]
   },
   {
     "title": "Soft Life CEO Starter Kit",
     "subtitle": "Everything she needs to run her empire.",
-    "description": "",
+    "description": "Running her business or side hustle with the right tools, systems, and mindset from day one.",
     "type": "Toolkit",
     "collection": "ceo",
     "life_area": "ceo_life",
@@ -95,14 +115,19 @@
     "drop_month": null,
     "slug": "soft-life-ceo-starter-kit",
     "id": "6aa333f02ba278f20b0c6199",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "New and aspiring women entrepreneurs.",
+    "outcome": "A starter set of business tools to organize, plan, and grow her work.",
+    "whats_inside": [
+      "A CEO vision and business snapshot",
+      "A weekly CEO planner and time-blocking template",
+      "Offer, pricing, and money trackers",
+      "Client tracker and a monthly CEO review"
+    ]
   },
   {
     "title": "100 Soft Life AI Prompts",
     "subtitle": "100 prompts to think, plan, and create faster.",
-    "description": "",
+    "description": "Using AI tools such as ChatGPT or Claude to think, plan, write, and create faster across every area of life.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -115,14 +140,19 @@
     "drop_month": null,
     "slug": "100-soft-life-ai-prompts",
     "id": "6aa333f02ba278f20b0c619a",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who is new to AI and doesn't know what to ask it.",
+    "outcome": "100 copy-and-paste prompts she can use right away.",
+    "whats_inside": [
+      "10 categories with 10 prompts each",
+      "Routines, goals, money, wellness, and mindset",
+      "Relationships, home, career, and content",
+      "Works with Luna, ChatGPT, Claude, or Gemini"
+    ]
   },
   {
     "title": "Content Creator AI Prompt Pack",
     "subtitle": "AI prompts for the girl building her brand.",
-    "description": "",
+    "description": "Using AI to brainstorm content, write captions and scripts, and plan her brand.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -135,14 +165,19 @@
     "drop_month": null,
     "slug": "content-creator-ai-prompt-pack",
     "id": "6aa333f02ba278f20b0c619b",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A creator who wants AI to help her come up with ideas, captions, and scripts faster.",
+    "outcome": "Faster content creation and fewer blank-page moments.",
+    "whats_inside": [
+      "30 prompts for content creators",
+      "Ideas, scripts, captions, and posts",
+      "Content planning prompts",
+      "Growth and community prompts"
+    ]
   },
   {
     "title": "The Ultimate Soft Life Planner",
     "subtitle": "Every tool she needs, in one luxe planner.",
-    "description": "",
+    "description": "Keeping her whole life organized in one place, including goals, routines, money, wellness, and business.",
     "type": "All-in-One",
     "collection": "signature",
     "life_area": "goals",
@@ -155,14 +190,20 @@
     "drop_month": null,
     "slug": "ultimate-soft-life-planner",
     "id": "6aa333f12ba278f20b0c619e",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who wants a single luxe planner instead of juggling a lot of separate tools.",
+    "outcome": "One complete planning system for her whole life. This is the flagship product.",
+    "whats_inside": [
+      "Vision and yearly goals",
+      "Monthly, weekly, and daily planning pages",
+      "Routines and habit trackers",
+      "Money, wellness, business, and home sections",
+      "Monthly and quarterly reviews"
+    ]
   },
   {
     "title": "CEO AI Prompt Pack",
     "subtitle": "Prompts for the boss building her empire.",
-    "description": "",
+    "description": "Using AI for business tasks like planning, marketing, emails, strategy, and decisions.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -175,14 +216,19 @@
     "drop_month": "2026-09",
     "slug": "ceo-ai-prompt-pack",
     "id": "6aa333f12ba278f20b0c619f",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A business owner who wants to hand everyday business tasks to AI.",
+    "outcome": "Prompts that work like an assistant for her business.",
+    "whats_inside": [
+      "30 prompts for running her business",
+      "Strategy and marketing prompts",
+      "Customer and operations prompts",
+      "Prompts for decisions and growth"
+    ]
   },
   {
     "title": "Money AI Prompt Pack",
     "subtitle": "Prompts for getting her money right.",
-    "description": "",
+    "description": "Using AI to make budgets, plan savings, understand money topics, and make financial decisions.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -195,14 +241,19 @@
     "drop_month": "2026-08",
     "slug": "money-ai-prompt-pack",
     "id": "6aa333f12ba278f20b0c61a0",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who wants quick, practical help with everyday money tasks.",
+    "outcome": "Ready-made prompts that make AI her personal money assistant.",
+    "whats_inside": [
+      "30 prompts for everyday money",
+      "Budgeting and money decisions",
+      "Saving and paying off debt",
+      "Life and money prompts"
+    ]
   },
   {
     "title": "Dating & Relationships AI Prompt Pack",
     "subtitle": "Prompts for her heart and her boundaries.",
-    "description": "",
+    "description": "Using AI to think through dating, understand her patterns, set boundaries, and plan hard conversations.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -215,14 +266,19 @@
     "drop_month": "2026-07",
     "slug": "dating-relationships-ai-prompt-pack",
     "id": "6aa333f12ba278f20b0c61a1",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who is dating, healing from a breakup, or wants healthier relationship patterns.",
+    "outcome": "More clarity about what she wants in love and the confidence to protect her peace.",
+    "whats_inside": [
+      "30 prompts for dating and relationships",
+      "Know what you want, and dating with intention",
+      "Boundaries and communication",
+      "Healing prompts"
+    ]
   },
   {
     "title": "Home & Lifestyle AI Prompt Pack",
     "subtitle": "Prompts for the life she's building at home.",
-    "description": "",
+    "description": "Using AI for meal plans, cleaning schedules, organizing, home projects, and household routines.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -235,14 +291,19 @@
     "drop_month": "2026-06",
     "slug": "home-lifestyle-ai-prompt-pack",
     "id": "6aa333f12ba278f20b0c61a2",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A busy woman who wants AI to help run her household.",
+    "outcome": "An AI assistant for running her home.",
+    "whats_inside": [
+      "30 prompts for running a calmer home",
+      "Meals and cleaning",
+      "Organizing and home and family",
+      "Projects and upkeep"
+    ]
   },
   {
     "title": "The 30-Day Life Reset System",
     "subtitle": "A full month to reset your habits, mindset, and momentum.",
-    "description": "",
+    "description": "A full month of resetting her habits, her mindset, and her momentum.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -255,14 +316,19 @@
     "drop_month": null,
     "slug": "her-new-era-30-day-life-reset",
     "id": "6aa6cf911ad8d772cc7667f6",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who feels stuck in old patterns and wants a structured month to start fresh.",
+    "outcome": "New routines and a fresh mental start after 30 days.",
+    "whats_inside": [
+      "A before snapshot",
+      "4 weekly themes: Clear, Rebuild, Strengthen, Rise",
+      "30 daily actions with space to reflect",
+      "An after snapshot and habit keep-list"
+    ]
   },
   {
     "title": "The Identity & Self-Concept Reset",
     "subtitle": "A 14-day plan to rebuild how you see yourself.",
-    "description": "",
+    "description": "Changing how she sees herself through a 14-day plan of self-image work, reflection, and journaling.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -275,14 +341,19 @@
     "drop_month": null,
     "slug": "her-new-era-identity-reset",
     "id": "6aa6cf911ad8d772cc7667f7",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who is ready to stop seeing herself as her old self and step into who she's becoming.",
+    "outcome": "A stronger self-concept and a clear sense of the woman she is becoming.",
+    "whats_inside": [
+      "Old self vs. new self mapping",
+      "Identity statements",
+      "A 14-day self-concept plan with daily journaling",
+      "Evidence log and future-self letter"
+    ]
   },
   {
     "title": "The Habit & Routine Builder",
     "subtitle": "Build routines that actually stick.",
-    "description": "",
+    "description": "Building morning, evening, and daily routines she will actually keep.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -295,14 +366,19 @@
     "drop_month": null,
     "slug": "her-new-era-habit-builder",
     "id": "6aa6cf911ad8d772cc7667f8",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who has tried routines before but couldn't make them stick.",
+    "outcome": "Realistic routines made for her real life, with a way to track them.",
+    "whats_inside": [
+      "A habit audit",
+      "The tiny-habit formula",
+      "Morning, evening, and daily routine builders",
+      "A monthly habit tracker and a slip-up plan"
+    ]
   },
   {
     "title": "The Confidence Rebuild System",
     "subtitle": "A 21-day challenge to rebuild real confidence.",
-    "description": "",
+    "description": "Rebuilding real confidence through a 21-day challenge, especially after a setback, breakup, or hard season.",
     "type": "Challenge Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -315,14 +391,19 @@
     "drop_month": null,
     "slug": "her-new-era-confidence-rebuild",
     "id": "6aa6cf911ad8d772cc7667f9",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman coming out of a setback, breakup, or hard season who wants to trust herself again.",
+    "outcome": "Daily proof of her own capability and a steadier sense of self- worth.",
+    "whats_inside": [
+      "A confidence check-in",
+      "21 daily confidence challenges",
+      "A proof-of-capability log",
+      "Self-talk rewrites and a confidence toolkit"
+    ]
   },
   {
     "title": "The Goal-to-Action Life Planner",
     "subtitle": "Turn her goals into an actual plan.",
-    "description": "",
+    "description": "Turning big goals into specific monthly, weekly, and daily actions.",
     "type": "Planner",
     "collection": "ai",
     "life_area": "ai",
@@ -335,14 +416,19 @@
     "drop_month": null,
     "slug": "her-new-era-goal-to-action-planner",
     "id": "6aa6cf911ad8d772cc7667fa",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman with big goals who isn't sure what to do each week to reach them.",
+    "outcome": "A real plan instead of a wish list.",
+    "whats_inside": [
+      "A big-goal breakdown",
+      "Quarterly, monthly, and weekly action planners",
+      "Daily action pages",
+      "Progress reviews"
+    ]
   },
   {
     "title": "The Future Self AI Planning Kit",
     "subtitle": "AI prompts to plan the next version of her life.",
-    "description": "",
+    "description": "Using AI to picture and plan the next version of her life, including her goals, identity, and next steps.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -355,14 +441,19 @@
     "drop_month": null,
     "slug": "her-new-era-future-self-ai-kit",
     "id": "6aa6cf921ad8d772cc7667fb",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who wants AI to help her get clear on her next chapter.",
+    "outcome": "A clear, AI-assisted plan for her future self.",
+    "whats_inside": [
+      "26 prompts to meet and become your future self",
+      "Identity shifts, habits, and values",
+      "Turn a 5-year vision into yearly and quarterly goals",
+      "Stay on track and visualize her life"
+    ]
   },
   {
     "title": "Business Idea Finder + AI Validation Kit",
     "subtitle": "Find and validate a real business idea with AI.",
-    "description": "",
+    "description": "Finding a business idea that fits her skills and then using AI to check whether people will pay for it.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -375,14 +466,19 @@
     "drop_month": null,
     "slug": "ceo-girl-idea-finder",
     "id": "6aa6cf921ad8d772cc7667fc",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who wants to start a business but hasn't picked an idea yet.",
+    "outcome": "A tested business idea she can feel confident pursuing.",
+    "whats_inside": [
+      "A skills, passions, and problems inventory",
+      "An idea brainstorm and scoring matrix",
+      "A 7-day AI-assisted validation plan",
+      "A go / no-go decision page"
+    ]
   },
   {
     "title": "The Offer Builder System",
     "subtitle": "Build an offer people actually want to buy.",
-    "description": "",
+    "description": "Creating a product, service, or package that people actually want to buy.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -395,14 +491,19 @@
     "drop_month": null,
     "slug": "ceo-girl-offer-builder",
     "id": "6aa6cf921ad8d772cc7667fd",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A new business owner who isn't sure what to sell or how to package it.",
+    "outcome": "A clearly defined offer with its value, price, and positioning.",
+    "whats_inside": [
+      "The offer formula",
+      "Offer builder worksheet",
+      "Value stack and pricing",
+      "Offer page outline and launch checklist"
+    ]
   },
   {
     "title": "The Ideal Customer AI Profile Kit",
     "subtitle": "Know exactly who she's building for.",
-    "description": "",
+    "description": "Using AI to define exactly who her customer is, including their problems, wants, and where to find them.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -415,14 +516,19 @@
     "drop_month": null,
     "slug": "ceo-girl-ideal-customer-profile",
     "id": "6aa6cf921ad8d772cc7667fe",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A business owner whose marketing feels like it's speaking to everyone and no one.",
+    "outcome": "A detailed customer profile that guides her marketing and her offers.",
+    "whats_inside": [
+      "Customer basics and daily life",
+      "Problems, desires, and objections map",
+      "Where to find her",
+      "A one-page ideal customer summary"
+    ]
   },
   {
     "title": "Digital Product Pricing Calculator + Guide",
     "subtitle": "Price her digital products with confidence.",
-    "description": "",
+    "description": "Pricing digital products like e-books, templates, and courses with confidence.",
     "type": "Guide",
     "collection": "ai",
     "life_area": "ai",
@@ -435,14 +541,19 @@
     "drop_month": null,
     "slug": "ceo-girl-pricing-calculator",
     "id": "6aa6cf921ad8d772cc7667ff",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A creator selling e-books, templates, or courses who worries she's undercharging.",
+    "outcome": "Prices that make sense for her, and she stops undercharging.",
+    "whats_inside": [
+      "The 3 pricing methods",
+      "Cost and profit calculator",
+      "Price ladder builder",
+      "Pricing confidence scripts"
+    ]
   },
   {
     "title": "The 30-Day Business Launch System",
     "subtitle": "A day-by-day plan to launch in 30 days.",
-    "description": "",
+    "description": "A day-by-day plan for launching her business in 30 days.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -455,14 +566,19 @@
     "drop_month": null,
     "slug": "ceo-girl-30-day-launch-system",
     "id": "6aa6cf921ad8d772cc766800",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman ready to launch who needs a day-by-day plan to keep her moving.",
+    "outcome": "A launched business and a clear view of what to do each day.",
+    "whats_inside": [
+      "A launch plan overview",
+      "30 daily launch tasks in 4 phases",
+      "A launch content calendar",
+      "Launch metrics and a debrief"
+    ]
   },
   {
     "title": "Small Business Content & Marketing Kit",
     "subtitle": "Market her small business without the overwhelm.",
-    "description": "",
+    "description": "Marketing her small business without the overwhelm, using content ideas, templates, and a simple strategy.",
     "type": "Toolkit",
     "collection": "ai",
     "life_area": "ai",
@@ -475,14 +591,19 @@
     "drop_month": null,
     "slug": "ceo-girl-content-marketing-kit",
     "id": "6aa6cf921ad8d772cc766801",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A small business owner who knows she should market but feels overwhelmed.",
+    "outcome": "A realistic marketing plan she can keep up.",
+    "whats_inside": [
+      "A simple marketing strategy on one page",
+      "Content pillars and 60 post ideas",
+      "Weekly content planner",
+      "Email marketing templates and a metrics tracker"
+    ]
   },
   {
     "title": "The Money Reset Workbook",
     "subtitle": "A full reset on her relationship with money.",
-    "description": "",
+    "description": "Resetting her relationship with money, including her money mindset, old habits, and emotional spending.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -495,14 +616,19 @@
     "drop_month": null,
     "slug": "money-muse-money-reset-workbook",
     "id": "6aa6cf931ad8d772cc766802",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who knows her money habits are tied to her emotions and wants to change that.",
+    "outcome": "A healthier, more confident relationship with her finances.",
+    "whats_inside": [
+      "A money story timeline",
+      "Money mindset rewrites",
+      "An emotional spending tracker",
+      "A money reset plan and a monthly money date"
+    ]
   },
   {
     "title": "The Ultimate Budget Planner",
     "subtitle": "Budgeting that actually fits her life.",
-    "description": "",
+    "description": "Building a budget that fits how she actually lives and spends.",
     "type": "Planner",
     "collection": "ai",
     "life_area": "ai",
@@ -515,14 +641,19 @@
     "drop_month": null,
     "slug": "money-muse-ultimate-budget-planner",
     "id": "6aa6cf931ad8d772cc766803",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who has quit budgets before because they didn't fit her real life.",
+    "outcome": "A working monthly budget and a simple way to keep it up.",
+    "whats_inside": [
+      "A budget style quiz (find what fits you)",
+      "Zero-based monthly budget pages",
+      "Sinking funds planner",
+      "Paycheck planner and year-at-a-glance"
+    ]
   },
   {
     "title": "The Debt Freedom Tracker",
     "subtitle": "Track her path to being debt-free.",
-    "description": "",
+    "description": "Listing her debts, choosing a payoff strategy, and tracking progress until she is debt-free.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -535,14 +666,19 @@
     "drop_month": null,
     "slug": "money-muse-debt-freedom-tracker",
     "id": "6aa6cf931ad8d772cc766804",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman carrying debt who wants a clear payoff plan and motivation to stick with it.",
+    "outcome": "A visible, motivating payoff plan.",
+    "whats_inside": [
+      "A complete debt list",
+      "Snowball vs. avalanche guide",
+      "Payoff planner",
+      "Motivating payoff trackers"
+    ]
   },
   {
     "title": "The Savings Goal Planner",
     "subtitle": "Plan and track every savings goal.",
-    "description": "",
+    "description": "Planning and tracking savings goals such as an emergency fund, a trip, a move, or a big purchase.",
     "type": "Planner",
     "collection": "ai",
     "life_area": "ai",
@@ -555,14 +691,19 @@
     "drop_month": null,
     "slug": "money-muse-savings-goal-planner",
     "id": "6aa6cf931ad8d772cc766805",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman saving for something specific, such as an emergency fund, a trip, or a move.",
+    "outcome": "Clear targets, timelines, and progress trackers for each goal.",
+    "whats_inside": [
+      "A savings goal list",
+      "Goal planners with timelines",
+      "An emergency fund builder",
+      "Visual savings trackers"
+    ]
   },
   {
     "title": "The Money Muse AI Prompt Pack",
     "subtitle": "AI prompts for getting her money right.",
-    "description": "",
+    "description": "Using AI to build long-term wealth: setting income goals, learning investing basics, and shifting her money mindset.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -575,14 +716,19 @@
     "drop_month": null,
     "slug": "money-muse-ai-prompt-pack",
     "id": "6aa6cf931ad8d772cc766806",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who wants AI to help her build long-term wealth and a healthier money mindset.",
+    "outcome": "Prompts that help her plan long-term wealth, investing basics, income goals, and a calmer money mindset.",
+    "whats_inside": [
+      "26 prompts for building long-term wealth",
+      "Wealth vision and investing basics, explained simply",
+      "Growing her income and building a money system",
+      "Money mindset prompts"
+    ]
   },
   {
     "title": "The 30-Day Content Calendar",
     "subtitle": "A full month of content, planned out.",
-    "description": "",
+    "description": "Planning a full month of content ahead of time.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -595,14 +741,19 @@
     "drop_month": null,
     "slug": "creator-muse-30-day-content-calendar",
     "id": "6aa6cf931ad8d772cc766807",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A creator who posts inconsistently and wants a month planned in advance.",
+    "outcome": "A month of posts mapped out, so she isn't posting at random.",
+    "whats_inside": [
+      "A content strategy snapshot",
+      "A done-for-you 30-day content plan",
+      "A blank monthly calendar",
+      "Batching planner and analytics tracker"
+    ]
   },
   {
     "title": "500+ Hooks & Hook Templates",
     "subtitle": "Never stare at a blank caption box again.",
-    "description": "",
+    "description": "Writing scroll-stopping first lines for Reels, TikToks, and captions.",
     "type": "Guide",
     "collection": "ai",
     "life_area": "ai",
@@ -615,14 +766,19 @@
     "drop_month": null,
     "slug": "creator-muse-hooks-templates",
     "id": "6aa6cf931ad8d772cc766808",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A creator whose videos and posts aren't getting people to stop scrolling.",
+    "outcome": "More than 500 hooks she can adapt, so she never starts from nothing.",
+    "whats_inside": [
+      "50 fill-in-the-blank hook templates",
+      "500 ready-to-use hooks across 10 niches",
+      "How to write a hook that stops the scroll",
+      "A hook testing tracker"
+    ]
   },
   {
     "title": "The Caption Vault",
     "subtitle": "Captions ready to copy, paste, and post.",
-    "description": "",
+    "description": "Ready-to-use captions she can copy, paste, and post.",
     "type": "Guide",
     "collection": "ai",
     "life_area": "ai",
@@ -635,14 +791,19 @@
     "drop_month": null,
     "slug": "creator-muse-caption-vault",
     "id": "6aa6cf941ad8d772cc766809",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A busy creator or business owner who wants to post consistently without writing from scratch.",
+    "outcome": "Time saved and posts that stay consistent.",
+    "whats_inside": [
+      "60 fill-in-the-blank captions in 10 categories",
+      "Caption formulas",
+      "Call-to-action bank",
+      "Hashtag and caption planner"
+    ]
   },
   {
     "title": "Reels & TikTok Script Pack",
     "subtitle": "Full hook-body-CTA scripts, ready to film.",
-    "description": "",
+    "description": "Complete short-form video scripts written in a hook, body, and call-to- action format.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -655,14 +816,19 @@
     "drop_month": null,
     "slug": "creator-muse-reels-tiktok-script-pack",
     "id": "6aa6cf941ad8d772cc76680a",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A creator who wants to post more short-form video but freezes on what to say.",
+    "outcome": "Scripts that are ready to film.",
+    "whats_inside": [
+      "The hook-body-CTA script formula",
+      "20 complete scripts in different formats",
+      "Filming and editing checklist",
+      "A script planner"
+    ]
   },
   {
     "title": "The Creator Muse AI Prompt Pack",
     "subtitle": "AI prompts for the girl building her brand.",
-    "description": "",
+    "description": "Using AI to turn her content into a brand: bios, brand story, pitches to brands, a media kit, and ways to make money.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -675,14 +841,19 @@
     "drop_month": null,
     "slug": "creator-muse-ai-prompt-pack",
     "id": "6aa6cf941ad8d772cc76680b",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A creator ready to turn her content into a brand, such as bios, brand pitches, and a media kit.",
+    "outcome": "Prompts for her bio, brand story, brand-deal pitches, media kit, and monetization plan.",
+    "whats_inside": [
+      "29 prompts for building a creator brand",
+      "Brand identity, bio, and profile",
+      "Brand deal pitches and monetization",
+      "Community and growth prompts"
+    ]
   },
   {
     "title": "The Whole Home Reset",
     "subtitle": "A room-by-room method for resetting her whole home.",
-    "description": "",
+    "description": "Resetting her entire home one room at a time.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -695,14 +866,19 @@
     "drop_month": null,
     "slug": "home-reset-whole-home-reset",
     "id": "6aa6cf941ad8d772cc76680c",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman whose home feels chaotic and who wants a fresh start room by room.",
+    "outcome": "A fully reset home and a method she can repeat.",
+    "whats_inside": [
+      "A whole-home walkthrough",
+      "The room reset method",
+      "Room-by-room reset checklists",
+      "A reset schedule and maintenance plan"
+    ]
   },
   {
     "title": "The Declutter Challenge",
     "subtitle": "A 14-day zone-by-zone declutter challenge.",
-    "description": "",
+    "description": "Decluttering her home zone by zone over 14 days.",
     "type": "Challenge Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -715,14 +891,19 @@
     "drop_month": null,
     "slug": "home-reset-declutter-challenge",
     "id": "6aa6cf941ad8d772cc76680d",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who feels overwhelmed by stuff and wants a short, doable challenge.",
+    "outcome": "Less stuff, more space, and a lighter-feeling home.",
+    "whats_inside": [
+      "Declutter rules that make decisions easy",
+      "14 days, one zone a day",
+      "A donate, sell, and toss tracker",
+      "Before and after reflection"
+    ]
   },
   {
     "title": "The Cleaning System",
     "subtitle": "A daily, weekly, and monthly cleaning rotation.",
-    "description": "",
+    "description": "A daily, weekly, and monthly cleaning rotation, so cleaning is never overwhelming.",
     "type": "Guide",
     "collection": "ai",
     "life_area": "ai",
@@ -735,14 +916,19 @@
     "drop_month": null,
     "slug": "home-reset-cleaning-system",
     "id": "6aa6cf941ad8d772cc76680e",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who cleans in big stressful bursts and wants a steady routine instead.",
+    "outcome": "A home that stays clean with small, steady effort.",
+    "whats_inside": [
+      "Daily, weekly, and monthly cleaning rotation",
+      "A 15-minute daily reset",
+      "Seasonal deep-clean checklist",
+      "Printable weekly cleaning tracker"
+    ]
   },
   {
     "title": "The Room Organization Planner",
     "subtitle": "A reusable method for organizing any room.",
-    "description": "",
+    "description": "A method she can reuse to organize any room, whether it's a closet, kitchen, or office.",
     "type": "Planner",
     "collection": "ai",
     "life_area": "ai",
@@ -755,14 +941,19 @@
     "drop_month": null,
     "slug": "home-reset-room-organization-planner",
     "id": "6aa6cf941ad8d772cc76680f",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A woman who wants organized spaces that stay organized.",
+    "outcome": "Organized spaces and systems that last.",
+    "whats_inside": [
+      "The 5-step organizing method",
+      "Room planning worksheet (reuse for any room)",
+      "Zone map and storage shopping list",
+      "Label ideas and a maintenance plan"
+    ]
   },
   {
     "title": "The Moving Planner",
     "subtitle": "From 8 weeks out to move-in day, fully mapped.",
-    "description": "",
+    "description": "Planning a move from eight weeks out to move-in day.",
     "type": "Planner",
     "collection": "ai",
     "life_area": "ai",
@@ -775,14 +966,19 @@
     "drop_month": null,
     "slug": "home-reset-moving-planner",
     "id": "6aa6cf951ad8d772cc766810",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "Anyone with a move coming up in the next two months.",
+    "outcome": "A stress-free move with nothing forgotten.",
+    "whats_inside": [
+      "An 8-week moving countdown",
+      "Moving budget",
+      "Room-by-room packing inventory",
+      "Change-of-address checklist and first-week plan"
+    ]
   },
   {
     "title": "The AI Study Schedule Builder",
     "subtitle": "Turn your exam date and subjects into a real schedule with AI.",
-    "description": "",
+    "description": "Using AI to turn her exam dates and subjects into a realistic study schedule.",
     "type": "Planner",
     "collection": "ai",
     "life_area": "ai",
@@ -795,14 +991,19 @@
     "drop_month": null,
     "slug": "study-muse-ai-schedule-builder",
     "id": "6aa6cf951ad8d772cc766811",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A student with exams coming up who doesn't know where to start.",
+    "outcome": "A custom study plan she can actually follow.",
+    "whats_inside": [
+      "Exam and subject inventory",
+      "AI prompts to build your schedule",
+      "Weekly study schedule template",
+      "Study session log"
+    ]
   },
   {
     "title": "The Exam Prep System",
     "subtitle": "A complete method for walking into any exam prepared.",
-    "description": "",
+    "description": "A complete method for preparing for any exam.",
     "type": "Workbook",
     "collection": "ai",
     "life_area": "ai",
@@ -815,14 +1016,19 @@
     "drop_month": null,
     "slug": "study-muse-exam-prep-system",
     "id": "6aa6cf951ad8d772cc766812",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A student who wants one reliable method she can use for every exam.",
+    "outcome": "Confidence walking into the test room.",
+    "whats_inside": [
+      "The 4-phase exam prep method",
+      "Exam overview sheet",
+      "Topic confidence tracker",
+      "Practice test log and exam-day checklist"
+    ]
   },
   {
     "title": "The 30-Day Exam Countdown",
     "subtitle": "A day-by-day structure for the month before your exam.",
-    "description": "",
+    "description": "A day-by-day structure for the month before a big exam.",
     "type": "Planner",
     "collection": "ai",
     "life_area": "ai",
@@ -835,14 +1041,19 @@
     "drop_month": null,
     "slug": "study-muse-30-day-exam-countdown",
     "id": "6aa6cf951ad8d772cc766813",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A student with a big exam about a month away.",
+    "outcome": "Steady preparation instead of last-minute cramming.",
+    "whats_inside": [
+      "A 30-day countdown plan in 4 phases",
+      "Daily study checkboxes",
+      "Weekly check-ins",
+      "Final-week and exam-day plan"
+    ]
   },
   {
     "title": "The Active Recall & Study Method Kit",
     "subtitle": "The research-backed techniques that actually build memory.",
-    "description": "",
+    "description": "Learning research-backed study techniques, such as active recall and spaced repetition, that actually build memory.",
     "type": "Guide",
     "collection": "ai",
     "life_area": "ai",
@@ -855,14 +1066,19 @@
     "drop_month": null,
     "slug": "study-muse-active-recall-study-kit",
     "id": "6aa6cf951ad8d772cc766814",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A student who studies for hours but forgets what she learned.",
+    "outcome": "Better retention in less study time.",
+    "whats_inside": [
+      "Why cramming doesn't work",
+      "Active recall and spaced repetition guides",
+      "The blurting method and Feynman technique",
+      "Flashcard and spaced-review templates"
+    ]
   },
   {
     "title": "The Finals Week Survival System",
     "subtitle": "A triage system for the week everything is due at once.",
-    "description": "",
+    "description": "Prioritizing when everything is due at once.",
     "type": "Guide",
     "collection": "ai",
     "life_area": "ai",
@@ -875,14 +1091,19 @@
     "drop_month": null,
     "slug": "study-muse-finals-week-survival-system",
     "id": "6aa6cf951ad8d772cc766815",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A student facing finals with too much due at once.",
+    "outcome": "A clear plan to get through finals week without falling apart.",
+    "whats_inside": [
+      "Finals triage matrix",
+      "Finals week schedule",
+      "Daily survival plan",
+      "Self-care and stress plan"
+    ]
   },
   {
     "title": "The Study AI Prompt Kit",
     "subtitle": "Prompts that turn AI into a study partner.",
-    "description": "",
+    "description": "Turning AI into a study partner that can quiz her, explain concepts, summarize notes, and make flashcards.",
     "type": "Prompt Pack",
     "collection": "ai",
     "life_area": "ai",
@@ -895,8 +1116,13 @@
     "drop_month": null,
     "slug": "study-muse-ai-prompt-kit",
     "id": "6aa6cf951ad8d772cc766816",
-    "best_for": "",
-    "outcome": "",
-    "whats_inside": []
+    "best_for": "A student who wants AI to quiz her, explain topics, and make flashcards.",
+    "outcome": "A personal tutor she can use any time.",
+    "whats_inside": [
+      "30 prompts for studying smarter",
+      "Understand and practice",
+      "Summarize and remember",
+      "Honest writing help, planning, and motivation"
+    ]
   }
 ]

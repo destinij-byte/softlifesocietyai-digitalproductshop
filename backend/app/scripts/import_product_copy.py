@@ -1,4 +1,4 @@
-"""One-time import of product copy (description/best_for/outcome) plus two
+"""One-time import of product copy (description/best_for/outcome/whats_inside) plus two
 subtitle corrections, from soft-life-assets/data/product-copy.json (project
 root).
 
@@ -42,7 +42,11 @@ async def run(apply: bool) -> None:
             missing_slugs.append(slug)
             continue
 
-        update: dict[str, str] = {}
+        update: dict = {}
+        new_inside = entry.get("whats_inside") or []
+        if new_inside and new_inside != (doc.get("whats_inside") or []):
+            update["whats_inside"] = new_inside
+
         for field in COPY_FIELDS:
             new_value = entry.get(field, "")
             old_value = doc.get(field, "")
@@ -64,6 +68,9 @@ async def run(apply: bool) -> None:
     for slug, doc, update in changes:
         print(f"- {slug} ({doc.get('title', '?')})")
         for field, new_value in update.items():
+            if isinstance(new_value, list):
+                print(f"    {field}: {len(doc.get(field) or [])} items -> {len(new_value)} items: {new_value}")
+                continue
             old_value = doc.get(field, "") or "(empty)"
             preview_old = old_value if len(old_value) <= 60 else old_value[:57] + "..."
             preview_new = new_value if len(new_value) <= 60 else new_value[:57] + "..."

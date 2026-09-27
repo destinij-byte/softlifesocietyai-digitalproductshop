@@ -9,7 +9,15 @@
     "description": "Figuring out what \"soft life\" actually means for her and mapping out the life she wants to build.",
     "best_for": "A woman who knows she wants more peace and ease but doesn't have a clear picture or plan yet.",
     "outcome": "A personal roadmap covering her vision, values, priorities, and the first steps to get there.",
-    "drafted_fields": []
+    "drafted_fields": [
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "What soft life means to you, plus an honest life audit",
+      "Your values and a clear picture of the life you're building",
+      "Top focus areas and what you'll say no to",
+      "A 12-month, 90-day, and weekly roadmap"
+    ]
   },
   {
     "slug": "soft-life-reset",
@@ -21,7 +29,13 @@
     "description": "Starting over when life feels cluttered, overwhelming, or off track, whether in her routines, her mindset, or her space.",
     "best_for": "Anyone who feels burnt out or stuck and needs a fresh start. She can use it again any time she needs one.",
     "outcome": "A clean slate and a simple plan for what to let go of and what to rebuild.",
-    "drafted_fields": []
+    "drafted_fields": [],
+    "whats_inside": [
+      "A burnout check-in to see where you really are",
+      "A let-go list for your routines, mindset, and space",
+      "A rebuild plan for what you want to keep and create",
+      "A 7-day gentle restart plan and tracker"
+    ]
   },
   {
     "slug": "30-day-soft-life-challenge",
@@ -33,7 +47,13 @@
     "description": "Turning soft-life ideas into daily practice through one small, intentional action each day.",
     "best_for": "A woman who does well with structure and accountability.",
     "outcome": "Thirty days of new habits that make her everyday life feel softer and more intentional.",
-    "drafted_fields": []
+    "drafted_fields": [],
+    "whats_inside": [
+      "30 days of small, intentional soft-life actions",
+      "A daily check-in tracker",
+      "Weekly reflections every 7 days",
+      "A before-and-after reflection"
+    ]
   },
   {
     "slug": "soft-life-money-makeover",
@@ -45,7 +65,13 @@
     "description": "Getting her finances in order without shame or harsh budgeting, so money feels calmer.",
     "best_for": "A woman who avoids looking at her money or feels stressed about it.",
     "outcome": "A clear view of where her money goes and a gentle plan to improve it.",
-    "drafted_fields": []
+    "drafted_fields": [],
+    "whats_inside": [
+      "A no-shame money snapshot",
+      "A 30-day spending tracker",
+      "A gentle spending plan",
+      "A money-leak finder and a 90-day money makeover plan"
+    ]
   },
   {
     "slug": "soft-life-ceo-starter-kit",
@@ -57,7 +83,13 @@
     "description": "Running her business or side hustle with the right tools, systems, and mindset from day one.",
     "best_for": "New and aspiring women entrepreneurs.",
     "outcome": "A starter set of business tools to organize, plan, and grow her work.",
-    "drafted_fields": []
+    "drafted_fields": [],
+    "whats_inside": [
+      "A CEO vision and business snapshot",
+      "A weekly CEO planner and time-blocking template",
+      "Offer, pricing, and money trackers",
+      "Client tracker and a monthly CEO review"
+    ]
   },
   {
     "slug": "ultimate-soft-life-planner",
@@ -69,7 +101,14 @@
     "description": "Keeping her whole life organized in one place, including goals, routines, money, wellness, and business.",
     "best_for": "A woman who wants a single luxe planner instead of juggling a lot of separate tools.",
     "outcome": "One complete planning system for her whole life. This is the flagship product.",
-    "drafted_fields": []
+    "drafted_fields": [],
+    "whats_inside": [
+      "Vision and yearly goals",
+      "Monthly, weekly, and daily planning pages",
+      "Routines and habit trackers",
+      "Money, wellness, business, and home sections",
+      "Monthly and quarterly reviews"
+    ]
   },
   {
     "slug": "100-soft-life-ai-prompts",
@@ -81,7 +120,15 @@
     "description": "Using AI tools such as ChatGPT or Claude to think, plan, write, and create faster across every area of life.",
     "best_for": "A woman who is new to AI and doesn't know what to ask it.",
     "outcome": "100 copy-and-paste prompts she can use right away.",
-    "drafted_fields": []
+    "drafted_fields": [
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "10 categories with 10 prompts each",
+      "Routines, goals, money, wellness, and mindset",
+      "Relationships, home, career, and content",
+      "Works with Luna, ChatGPT, Claude, or Gemini"
+    ]
   },
   {
     "slug": "dating-relationships-ai-prompt-pack",
@@ -94,7 +141,14 @@
     "best_for": "A woman who is dating, healing from a breakup, or wants healthier relationship patterns.",
     "outcome": "More clarity about what she wants in love and the confidence to protect her peace.",
     "drafted_fields": [
-      "best_for"
+      "best_for",
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "30 prompts for dating and relationships",
+      "Know what you want, and dating with intention",
+      "Boundaries and communication",
+      "Healing prompts"
     ]
   },
   {
@@ -109,6 +163,12 @@
     "outcome": "New routines and a fresh mental start after 30 days.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A before snapshot",
+      "4 weekly themes: Clear, Rebuild, Strengthen, Rise",
+      "30 daily actions with space to reflect",
+      "An after snapshot and habit keep-list"
     ]
   },
   {
@@ -123,6 +183,12 @@
     "outcome": "A stronger self-concept and a clear sense of the woman she is becoming.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "Old self vs. new self mapping",
+      "Identity statements",
+      "A 14-day self-concept plan with daily journaling",
+      "Evidence log and future-self letter"
     ]
   },
   {
@@ -137,6 +203,12 @@
     "outcome": "Realistic routines made for her real life, with a way to track them.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A habit audit",
+      "The tiny-habit formula",
+      "Morning, evening, and daily routine builders",
+      "A monthly habit tracker and a slip-up plan"
     ]
   },
   {
@@ -151,6 +223,12 @@
     "outcome": "Daily proof of her own capability and a steadier sense of self- worth.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A confidence check-in",
+      "21 daily confidence challenges",
+      "A proof-of-capability log",
+      "Self-talk rewrites and a confidence toolkit"
     ]
   },
   {
@@ -165,6 +243,12 @@
     "outcome": "A real plan instead of a wish list.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A big-goal breakdown",
+      "Quarterly, monthly, and weekly action planners",
+      "Daily action pages",
+      "Progress reviews"
     ]
   },
   {
@@ -178,7 +262,14 @@
     "best_for": "A woman who wants AI to help her get clear on her next chapter.",
     "outcome": "A clear, AI-assisted plan for her future self.",
     "drafted_fields": [
-      "best_for"
+      "best_for",
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "26 prompts to meet and become your future self",
+      "Identity shifts, habits, and values",
+      "Turn a 5-year vision into yearly and quarterly goals",
+      "Stay on track and visualize her life"
     ]
   },
   {
@@ -192,7 +283,14 @@
     "best_for": "A woman who wants quick, practical help with everyday money tasks.",
     "outcome": "Ready-made prompts that make AI her personal money assistant.",
     "drafted_fields": [
-      "best_for"
+      "best_for",
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "30 prompts for everyday money",
+      "Budgeting and money decisions",
+      "Saving and paying off debt",
+      "Life and money prompts"
     ]
   },
   {
@@ -207,6 +305,12 @@
     "outcome": "A healthier, more confident relationship with her finances.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A money story timeline",
+      "Money mindset rewrites",
+      "An emotional spending tracker",
+      "A money reset plan and a monthly money date"
     ]
   },
   {
@@ -221,6 +325,12 @@
     "outcome": "A working monthly budget and a simple way to keep it up.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A budget style quiz (find what fits you)",
+      "Zero-based monthly budget pages",
+      "Sinking funds planner",
+      "Paycheck planner and year-at-a-glance"
     ]
   },
   {
@@ -235,6 +345,12 @@
     "outcome": "A visible, motivating payoff plan.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A complete debt list",
+      "Snowball vs. avalanche guide",
+      "Payoff planner",
+      "Motivating payoff trackers"
     ]
   },
   {
@@ -249,6 +365,12 @@
     "outcome": "Clear targets, timelines, and progress trackers for each goal.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A savings goal list",
+      "Goal planners with timelines",
+      "An emergency fund builder",
+      "Visual savings trackers"
     ]
   },
   {
@@ -258,13 +380,20 @@
     "price": 15.0,
     "guide_section": "Money Muse",
     "subtitle": "AI prompts for getting her money right.",
-    "description": "Using AI to build long-term wealth: setting income goals, learning investing basics, and shifting her money mindset. (Recommended new focus, so it's different from the Money AI Prompt Pack, which covers everyday budgets and decisions.)",
+    "description": "Using AI to build long-term wealth: setting income goals, learning investing basics, and shifting her money mindset.",
     "best_for": "A woman who wants AI to help her build long-term wealth and a healthier money mindset.",
     "outcome": "Prompts that help her plan long-term wealth, investing basics, income goals, and a calmer money mindset.",
     "drafted_fields": [
       "best_for",
       "outcome",
-      "description"
+      "description",
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "26 prompts for building long-term wealth",
+      "Wealth vision and investing basics, explained simply",
+      "Growing her income and building a money system",
+      "Money mindset prompts"
     ]
   },
   {
@@ -278,7 +407,14 @@
     "best_for": "A business owner who wants to hand everyday business tasks to AI.",
     "outcome": "Prompts that work like an assistant for her business.",
     "drafted_fields": [
-      "best_for"
+      "best_for",
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "30 prompts for running her business",
+      "Strategy and marketing prompts",
+      "Customer and operations prompts",
+      "Prompts for decisions and growth"
     ]
   },
   {
@@ -293,6 +429,12 @@
     "outcome": "A tested business idea she can feel confident pursuing.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A skills, passions, and problems inventory",
+      "An idea brainstorm and scoring matrix",
+      "A 7-day AI-assisted validation plan",
+      "A go / no-go decision page"
     ]
   },
   {
@@ -307,6 +449,12 @@
     "outcome": "A clearly defined offer with its value, price, and positioning.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "The offer formula",
+      "Offer builder worksheet",
+      "Value stack and pricing",
+      "Offer page outline and launch checklist"
     ]
   },
   {
@@ -321,6 +469,12 @@
     "outcome": "A detailed customer profile that guides her marketing and her offers.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "Customer basics and daily life",
+      "Problems, desires, and objections map",
+      "Where to find her",
+      "A one-page ideal customer summary"
     ]
   },
   {
@@ -335,6 +489,12 @@
     "outcome": "Prices that make sense for her, and she stops undercharging.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "The 3 pricing methods",
+      "Cost and profit calculator",
+      "Price ladder builder",
+      "Pricing confidence scripts"
     ]
   },
   {
@@ -349,6 +509,12 @@
     "outcome": "A launched business and a clear view of what to do each day.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A launch plan overview",
+      "30 daily launch tasks in 4 phases",
+      "A launch content calendar",
+      "Launch metrics and a debrief"
     ]
   },
   {
@@ -363,6 +529,12 @@
     "outcome": "A realistic marketing plan she can keep up.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A simple marketing strategy on one page",
+      "Content pillars and 60 post ideas",
+      "Weekly content planner",
+      "Email marketing templates and a metrics tracker"
     ]
   },
   {
@@ -376,7 +548,14 @@
     "best_for": "A creator who wants AI to help her come up with ideas, captions, and scripts faster.",
     "outcome": "Faster content creation and fewer blank-page moments.",
     "drafted_fields": [
-      "best_for"
+      "best_for",
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "30 prompts for content creators",
+      "Ideas, scripts, captions, and posts",
+      "Content planning prompts",
+      "Growth and community prompts"
     ]
   },
   {
@@ -391,6 +570,12 @@
     "outcome": "A month of posts mapped out, so she isn't posting at random.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A content strategy snapshot",
+      "A done-for-you 30-day content plan",
+      "A blank monthly calendar",
+      "Batching planner and analytics tracker"
     ]
   },
   {
@@ -405,6 +590,12 @@
     "outcome": "More than 500 hooks she can adapt, so she never starts from nothing.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "50 fill-in-the-blank hook templates",
+      "500 ready-to-use hooks across 10 niches",
+      "How to write a hook that stops the scroll",
+      "A hook testing tracker"
     ]
   },
   {
@@ -419,6 +610,12 @@
     "outcome": "Time saved and posts that stay consistent.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "60 fill-in-the-blank captions in 10 categories",
+      "Caption formulas",
+      "Call-to-action bank",
+      "Hashtag and caption planner"
     ]
   },
   {
@@ -433,6 +630,12 @@
     "outcome": "Scripts that are ready to film.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "The hook-body-CTA script formula",
+      "20 complete scripts in different formats",
+      "Filming and editing checklist",
+      "A script planner"
     ]
   },
   {
@@ -442,13 +645,20 @@
     "price": 15.0,
     "guide_section": "Creator Muse",
     "subtitle": "AI prompts for the girl building her brand.",
-    "description": "Using AI to turn her content into a brand: bios, brand story, pitches to brands, a media kit, and ways to make money. (Recommended new focus, so it's different from the Content Creator AI Prompt Pack, which covers ideas, captions, and scripts.)",
+    "description": "Using AI to turn her content into a brand: bios, brand story, pitches to brands, a media kit, and ways to make money.",
     "best_for": "A creator ready to turn her content into a brand, such as bios, brand pitches, and a media kit.",
     "outcome": "Prompts for her bio, brand story, brand-deal pitches, media kit, and monetization plan.",
     "drafted_fields": [
       "best_for",
       "outcome",
-      "description"
+      "description",
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "29 prompts for building a creator brand",
+      "Brand identity, bio, and profile",
+      "Brand deal pitches and monetization",
+      "Community and growth prompts"
     ]
   },
   {
@@ -462,7 +672,14 @@
     "best_for": "A busy woman who wants AI to help run her household.",
     "outcome": "An AI assistant for running her home.",
     "drafted_fields": [
-      "best_for"
+      "best_for",
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "30 prompts for running a calmer home",
+      "Meals and cleaning",
+      "Organizing and home and family",
+      "Projects and upkeep"
     ]
   },
   {
@@ -477,6 +694,12 @@
     "outcome": "A fully reset home and a method she can repeat.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A whole-home walkthrough",
+      "The room reset method",
+      "Room-by-room reset checklists",
+      "A reset schedule and maintenance plan"
     ]
   },
   {
@@ -491,6 +714,12 @@
     "outcome": "Less stuff, more space, and a lighter-feeling home.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "Declutter rules that make decisions easy",
+      "14 days, one zone a day",
+      "A donate, sell, and toss tracker",
+      "Before and after reflection"
     ]
   },
   {
@@ -505,6 +734,12 @@
     "outcome": "A home that stays clean with small, steady effort.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "Daily, weekly, and monthly cleaning rotation",
+      "A 15-minute daily reset",
+      "Seasonal deep-clean checklist",
+      "Printable weekly cleaning tracker"
     ]
   },
   {
@@ -519,6 +754,12 @@
     "outcome": "Organized spaces and systems that last.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "The 5-step organizing method",
+      "Room planning worksheet (reuse for any room)",
+      "Zone map and storage shopping list",
+      "Label ideas and a maintenance plan"
     ]
   },
   {
@@ -533,6 +774,12 @@
     "outcome": "A stress-free move with nothing forgotten.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "An 8-week moving countdown",
+      "Moving budget",
+      "Room-by-room packing inventory",
+      "Change-of-address checklist and first-week plan"
     ]
   },
   {
@@ -547,6 +794,12 @@
     "outcome": "A custom study plan she can actually follow.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "Exam and subject inventory",
+      "AI prompts to build your schedule",
+      "Weekly study schedule template",
+      "Study session log"
     ]
   },
   {
@@ -561,6 +814,12 @@
     "outcome": "Confidence walking into the test room.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "The 4-phase exam prep method",
+      "Exam overview sheet",
+      "Topic confidence tracker",
+      "Practice test log and exam-day checklist"
     ]
   },
   {
@@ -575,6 +834,12 @@
     "outcome": "Steady preparation instead of last-minute cramming.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "A 30-day countdown plan in 4 phases",
+      "Daily study checkboxes",
+      "Weekly check-ins",
+      "Final-week and exam-day plan"
     ]
   },
   {
@@ -589,6 +854,12 @@
     "outcome": "Better retention in less study time.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "Why cramming doesn't work",
+      "Active recall and spaced repetition guides",
+      "The blurting method and Feynman technique",
+      "Flashcard and spaced-review templates"
     ]
   },
   {
@@ -603,6 +874,12 @@
     "outcome": "A clear plan to get through finals week without falling apart.",
     "drafted_fields": [
       "best_for"
+    ],
+    "whats_inside": [
+      "Finals triage matrix",
+      "Finals week schedule",
+      "Daily survival plan",
+      "Self-care and stress plan"
     ]
   },
   {
@@ -616,7 +893,14 @@
     "best_for": "A student who wants AI to quiz her, explain topics, and make flashcards.",
     "outcome": "A personal tutor she can use any time.",
     "drafted_fields": [
-      "best_for"
+      "best_for",
+      "whats_inside"
+    ],
+    "whats_inside": [
+      "30 prompts for studying smarter",
+      "Understand and practice",
+      "Summarize and remember",
+      "Honest writing help, planning, and motivation"
     ]
   },
   {
@@ -634,7 +918,13 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "A daily planning page (print as many as you need)",
+      "A weekly overview",
+      "A habit tracker",
+      "A self-care menu"
+    ]
   },
   {
     "slug": "soft-life-morning-routine-guide",
@@ -651,7 +941,13 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "The 4 parts of a soft morning",
+      "Three ready-made routines (10, 30, and 60 minutes)",
+      "A build-your-own routine worksheet",
+      "A 14-day morning tracker"
+    ]
   },
   {
     "slug": "weekly-reset-checklist",
@@ -668,7 +964,12 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "A one-hour Sunday reset checklist",
+      "A weekly plan page",
+      "A four-week reset tracker"
+    ]
   },
   {
     "slug": "soft-life-night-routine-guide",
@@ -685,7 +986,13 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "The 4 parts of a soft evening",
+      "Three wind-down routines (15, 30, and 60 minutes)",
+      "A build-your-own routine worksheet",
+      "A 14-day sleep and wind-down tracker"
+    ]
   },
   {
     "slug": "monthly-soft-life-reset",
@@ -702,7 +1009,13 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "A monthly check-in ritual (use it 12 times)",
+      "A life-area review",
+      "A money check-in",
+      "Next month's intention and plan"
+    ]
   },
   {
     "slug": "soft-life-goal-setting-workbook",
@@ -719,7 +1032,13 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "A want-versus-should sorting exercise",
+      "The soft goal formula",
+      "Goal planning pages for up to 3 goals",
+      "An obstacle plan and progress tracker"
+    ]
   },
   {
     "slug": "dream-life-vision-planner",
@@ -736,7 +1055,13 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "A dream-life brainstorm",
+      "Vision pages for 8 life areas",
+      "A dream day script",
+      "A vision board planner and a 5-year timeline"
+    ]
   },
   {
     "slug": "soft-life-budget-planner",
@@ -753,7 +1078,13 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "A simple budget setup page",
+      "Monthly budget pages",
+      "A bill calendar",
+      "A savings and no-spend tracker"
+    ]
   },
   {
     "slug": "soft-life-journal",
@@ -770,7 +1101,13 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "A how-to-journal guide",
+      "60 guided prompts across 6 themes",
+      "Free-write pages",
+      "A mood and gratitude tracker"
+    ]
   },
   {
     "slug": "affirmations-for-her",
@@ -787,6 +1124,12 @@
       "best_for",
       "outcome"
     ],
-    "currently_hidden_from_shop": true
+    "currently_hidden_from_shop": true,
+    "whats_inside": [
+      "100 affirmations in 6 themes",
+      "How to make affirmations actually work",
+      "A write-your-own page",
+      "A 30-day affirmation practice tracker"
+    ]
   }
 ]

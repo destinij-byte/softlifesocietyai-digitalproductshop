@@ -1,7 +1,7 @@
 import { SVGProps } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { vaultApi, Product } from "../api/vault";
+import { vaultApi, Product, coverUrl } from "../api/vault";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { useCart } from "../context/CartContext";
 import { FadeInSection } from "../components/FadeInSection";
@@ -119,7 +119,7 @@ export function HomePage() {
   const featuredBundle = (bundles ?? []).find((b) => b.slug === "full-library");
 
   function handleAddToCart(product: Product) {
-    cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: product.thumbnail_url });
+    cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: coverUrl(product) });
   }
 
   return (
@@ -186,7 +186,9 @@ export function HomePage() {
                     subtitle={product.subtitle}
                     type={product.type}
                     price={product.price}
-                    thumbnailUrl={product.thumbnail_url}
+                    thumbnailUrl={coverUrl(product)}
+                    outcome={product.outcome}
+                    whatsInside={product.whats_inside}
                     collectionMeta={COLLECTIONS[product.collection]}
                     creditLine={product.credit_line}
                     onClick={() => navigate(`/shop/${product.slug}`)}

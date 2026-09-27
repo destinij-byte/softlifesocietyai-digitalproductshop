@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { CollectionMeta } from "../theme/collections";
 
 interface ProductCardProps {
@@ -6,6 +7,10 @@ interface ProductCardProps {
   type: string;
   price: number;
   thumbnailUrl?: string;
+  /** "She walks away with" line - shown in place of the subtitle when present. */
+  outcome?: string;
+  /** "What's inside" bullets - the first few are previewed on the card. */
+  whatsInside?: string[];
   owned?: boolean;
   locked?: boolean;
   busy?: boolean;
@@ -22,6 +27,8 @@ export function ProductCard({
   type,
   price,
   thumbnailUrl,
+  outcome,
+  whatsInside,
   owned,
   locked,
   busy,
@@ -31,6 +38,9 @@ export function ProductCard({
   onAddToCart,
   inCart,
 }: ProductCardProps) {
+  const [coverFailed, setCoverFailed] = useState(false);
+  const preview = (whatsInside ?? []).slice(0, 3);
+  const muted = collectionMeta?.mutedColor ?? "var(--espresso)";
   return (
     <div
       role={onClick ? "button" : undefined}
@@ -56,8 +66,14 @@ export function ProductCard({
         color: collectionMeta?.textColor,
       }}
     >
-      {thumbnailUrl ? (
-        <img className="thumb" src={thumbnailUrl} alt="" />
+      {thumbnailUrl && !coverFailed ? (
+        <img
+          className="thumb thumb-cover"
+          src={thumbnailUrl}
+          alt={`${title} cover`}
+          loading="lazy"
+          onError={() => setCoverFailed(true)}
+        />
       ) : (
         <div className="thumb" style={collectionMeta ? { background: collectionMeta.accentColor } : undefined}>
           {locked ? "🔒" : collectionMeta?.emoji ?? "🎀"}
@@ -74,10 +90,20 @@ export function ProductCard({
         {type}
       </span>
       <h3 style={{ fontSize: 18, color: collectionMeta?.textColor }}>{title}</h3>
-      {subtitle && (
-        <span style={{ fontSize: 13, color: collectionMeta?.mutedColor ?? "var(--espresso)", opacity: 0.9 }}>
-          {subtitle}
+      {(outcome || subtitle) && (
+        <span style={{ fontSize: 13.5, lineHeight: 1.5, color: muted, opacity: 0.9 }}>
+          {outcome || subtitle}
         </span>
+      )}
+      {preview.length > 0 && (
+        <div className="card-inside">
+          <span className="card-inside-label" style={{ color: muted }}>Inside</span>
+          <ul>
+            {preview.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
       )}
       {owned ? (
         <span style={{ fontSize: 14, color: collectionMeta?.mutedColor ?? "var(--espresso)" }}>✨ In your Vault</span>

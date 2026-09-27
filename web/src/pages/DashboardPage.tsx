@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { vaultApi } from "../api/vault";
+import { vaultApi, coverUrl } from "../api/vault";
 import { useAuth } from "../context/AuthContext";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { MembershipBadge } from "../components/MembershipBadge";
@@ -66,7 +66,7 @@ export function DashboardPage() {
                 type={product.type}
                 price={product.price}
                 subtitle={product.subtitle}
-                thumbnailUrl={product.thumbnail_url}
+                thumbnailUrl={coverUrl(product)}
                 locked
                 onClick={() => navigate("/shop")}
               />
@@ -88,7 +88,7 @@ export function DashboardPage() {
                 type={item.product.type}
                 price={item.product.price}
                 subtitle={item.product.subtitle}
-                thumbnailUrl={item.product.thumbnail_url}
+                thumbnailUrl={coverUrl(item.product)}
                 owned
                 onClick={() => navigate("/library")}
               />

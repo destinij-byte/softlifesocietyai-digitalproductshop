@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { vaultApi, Product, ProductReviews } from "../api/vault";
+import { vaultApi, Product, ProductReviews, coverUrl } from "../api/vault";
 import { ApiError } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
@@ -81,7 +81,7 @@ export function ProductDetailPage() {
 
   function handleAddToCart() {
     if (!product) return;
-    cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: product.thumbnail_url });
+    cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: coverUrl(product) });
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 2000);
   }
@@ -118,7 +118,7 @@ export function ProductDetailPage() {
     .slice(0, 4);
 
   function handleAddRelatedToCart(related: Product) {
-    cart.addItem({ type: "product", id: related.id, title: related.title, price: related.price, thumbnailUrl: related.thumbnail_url });
+    cart.addItem({ type: "product", id: related.id, title: related.title, price: related.price, thumbnailUrl: coverUrl(related) });
   }
 
   return (
@@ -130,10 +130,10 @@ export function ProductDetailPage() {
       {error && <div className="form-error">{error}</div>}
 
       <div className="grid" style={{ gridTemplateColumns: "minmax(240px, 360px) 1fr", gap: 32, alignItems: "start" }}>
-        {product.thumbnail_url ? (
+        {coverUrl(product) ? (
           <img
-            src={product.thumbnail_url}
-            alt=""
+            src={coverUrl(product)}
+            alt={`${product.title} cover`}
             style={{ width: "100%", borderRadius: "var(--radius-lg)", border: "1px solid var(--blush)" }}
           />
         ) : (
@@ -260,7 +260,9 @@ export function ProductDetailPage() {
                 subtitle={related.subtitle}
                 type={related.type}
                 price={related.price}
-                thumbnailUrl={related.thumbnail_url}
+                thumbnailUrl={coverUrl(related)}
+                outcome={related.outcome}
+                whatsInside={related.whats_inside}
                 collectionMeta={COLLECTIONS[related.collection]}
                 creditLine={related.credit_line}
                 onClick={() => navigate(`/shop/${related.slug}`)}

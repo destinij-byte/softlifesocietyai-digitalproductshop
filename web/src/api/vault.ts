@@ -178,3 +178,10 @@ export const vaultApi = {
       body: payload,
     }),
 };
+
+/** Cover image for a product: the uploaded thumbnail if there is one,
+ *  otherwise the finished cover shipped in public/covers/{slug}.webp. */
+export function coverUrl(p: { slug?: string; thumbnail_url?: string }): string | undefined {
+  if (p.thumbnail_url) return p.thumbnail_url;
+  return p.slug ? `/covers/${p.slug}.webp` : undefined;
+}

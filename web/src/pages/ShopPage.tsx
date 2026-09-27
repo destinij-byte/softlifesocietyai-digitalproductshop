@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { vaultApi, LifeArea, Product } from "../api/vault";
+import { vaultApi, LifeArea, Product, coverUrl } from "../api/vault";
 import { ApiError } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
@@ -73,7 +73,7 @@ export function ShopPage() {
   }
 
   function handleAddToCart(product: Product) {
-    cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: product.thumbnail_url });
+    cart.addItem({ type: "product", id: product.id, title: product.title, price: product.price, thumbnailUrl: coverUrl(product) });
   }
 
   function renderCard(product: Product, meta: CollectionMeta = COLLECTIONS[product.collection]) {
@@ -84,7 +84,9 @@ export function ShopPage() {
         subtitle={product.subtitle}
         type={product.type}
         price={product.price}
-        thumbnailUrl={product.thumbnail_url}
+        thumbnailUrl={coverUrl(product)}
+        outcome={product.outcome}
+        whatsInside={product.whats_inside}
         owned={ownedIds.has(product.id)}
         busy={busyId === product.id}
         collectionMeta={meta}

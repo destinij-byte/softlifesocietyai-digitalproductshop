@@ -485,6 +485,49 @@ input {
   font-size: 32px;
 }
 
+/* Real product covers are 4:5 portraits - show the whole cover, uncropped. */
+.thumb.thumb-cover {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 1px solid var(--blush);
+}
+
+.card-inside {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.card-inside-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.card-inside ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.card-inside li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.card-inside li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold, #d4af37);
+}
+
 /* Progress / loading */
 
 .loading-wrap {
