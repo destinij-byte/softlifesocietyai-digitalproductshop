@@ -5,11 +5,16 @@ launch plan in the project brief.
     python -m app.scripts.seed_vault_products
 
 Idempotent - upserts by slug, safe to re-run. Content/business fields
-(description, best_for, outcome, thumbnail_url, is_active) are only
-applied here if explicitly set below - otherwise a live value set later
-via PATCH /vault/admin/products/{id} or the copy-import script survives
-future boots instead of being reset to whatever this file said originally.
-Bundles follow the same rule for is_active (see _upsert_bundle).
+(description, best_for, outcome, is_active) are only applied here if
+explicitly set below - otherwise a live value set later via PATCH
+/vault/admin/products/{id} or the copy-import script survives future boots
+instead of being reset to whatever this file said originally. Bundles
+follow the same rule for is_active (see _upsert_bundle).
+
+thumbnail_url is structural, not content, like file_url: it's derived from
+whether a cover image exists on disk (backend/app/static/covers/{slug}.jpg,
+served publicly at /static/covers/) and recomputed on every boot. Swap a
+product's thumbnail by replacing that file, not via PATCH.
 
 Phase 1 was the original 18-product launch; all 10 originally-held-back
 "Phase 2" products have since been published (real files attached,
@@ -27,12 +32,18 @@ import asyncio
 from datetime import datetime, timezone
 from pathlib import Path
 
+from app.config import settings
 from app.database import get_database
 
 # Real product files live here, named "{slug}.pdf" - only products with a
 # file actually present get a working file_url; everything else stays empty
 # ("not available yet") rather than pointing at a fake/dead placeholder URL.
 STATIC_VAULT_DIR = Path(__file__).resolve().parent.parent / "static" / "vault"
+
+# Cover images live here, named "{slug}.jpg", served publicly (see
+# STATIC_COVERS_DIR mount in main.py) - same "only if the file exists"
+# pattern as STATIC_VAULT_DIR above.
+STATIC_COVERS_DIR = Path(__file__).resolve().parent.parent / "static" / "covers"
 
 PRODUCTS = [
     # 🌸 Soft Life Collection (#1-10) - blush + cream + champagne
@@ -312,6 +323,11 @@ BUNDLES = [
 async def _upsert_product(db, data: dict) -> None:
     now = datetime.now(timezone.utc)
     file_url = data.get("file_url") or (f"local:vault/{data['slug']}.pdf" if (STATIC_VAULT_DIR / f"{data['slug']}.pdf").is_file() else "")
+    thumbnail_url = data.get("thumbnail_url") or (
+        f"{settings.api_public_base_url}/static/covers/{data['slug']}.jpg"
+        if (STATIC_COVERS_DIR / f"{data['slug']}.jpg").is_file()
+        else ""
+    )
     # Structural/catalog fields this seed owns outright and keeps in sync
     # with this file on every boot.
     doc = {
@@ -323,6 +339,7 @@ async def _upsert_product(db, data: dict) -> None:
         "credit_line": data.get("credit_line", "D. Jones / Soft Life Society"),
         "price": data["price"],
         "file_url": file_url,
+        "thumbnail_url": thumbnail_url,
         "is_ai_resource": data.get("is_ai_resource", False),
         "is_monthly_drop": data.get("is_monthly_drop", False),
         "is_hero": data.get("is_hero", False),
@@ -331,13 +348,13 @@ async def _upsert_product(db, data: dict) -> None:
     }
     existing = await db.products.find_one({"slug": data["slug"]})
     if existing:
-        # description/best_for/outcome/thumbnail_url/is_active are content
-        # and business fields owned by the copy-import script and the admin
-        # panel - a boot must not silently stomp them back to whatever this
-        # file happened to say (that's the bug that made "flip is_active via
+        # description/best_for/outcome/is_active are content and business
+        # fields owned by the copy-import script and the admin panel - a
+        # boot must not silently stomp them back to whatever this file
+        # happened to say (that's the bug that made "flip is_active via
         # PATCH" in the docstring above not actually stick). Only touch one
         # here if this file explicitly sets it.
-        for key in ("description", "best_for", "outcome", "thumbnail_url", "is_active"):
+        for key in ("description", "best_for", "outcome", "is_active"):
             if key in data:
                 doc[key] = data[key]
         await db.products.update_one({"_id": existing["_id"]}, {"$set": doc})
@@ -348,7 +365,6 @@ async def _upsert_product(db, data: dict) -> None:
         doc["best_for"] = data.get("best_for", "")
         doc["outcome"] = data.get("outcome", "")
         doc["whats_inside"] = data.get("whats_inside", [])
-        doc["thumbnail_url"] = data.get("thumbnail_url", "")
         doc["is_active"] = data.get("is_active", True)
         doc["created_at"] = now
         await db.products.insert_one(doc)
