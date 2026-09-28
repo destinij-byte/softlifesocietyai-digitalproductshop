@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import get_database
@@ -16,6 +19,12 @@ if settings.cors_allowed_origins_list:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+# Product cover images - public marketing assets (unlike static/vault, which
+# holds paid PDFs gated behind the signed-download flow in routers/vault.py).
+STATIC_COVERS_DIR = Path(__file__).resolve().parent / "static" / "covers"
+STATIC_COVERS_DIR.mkdir(parents=True, exist_ok=True)
+app.mount("/static/covers", StaticFiles(directory=STATIC_COVERS_DIR), name="covers")
 
 app.include_router(auth.router)
 app.include_router(academy.router)

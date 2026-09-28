@@ -475,9 +475,13 @@ input {
 
 .thumb {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  /* Book-cover-style product covers are portrait (2:3) - 3:4 keeps almost
+     the whole design in frame (object-position: top loses only the very
+     bottom) instead of the harsh crop a landscape box would force. */
+  aspect-ratio: 3 / 4;
   border-radius: var(--radius-md);
   object-fit: cover;
+  object-position: top;
   background: var(--blush);
   display: flex;
   align-items: center;
