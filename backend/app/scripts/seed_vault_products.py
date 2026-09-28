@@ -117,19 +117,6 @@ AI_BRAND_PRODUCTS = [
     {"slug": "study-muse-active-recall-study-kit", "title": "The Active Recall & Study Method Kit", "subtitle": "The research-backed techniques that actually build memory.", "type": "Guide", "price": 24, "description": 'Learning research-backed study techniques, such as active recall and spaced repetition, that actually build memory.', "best_for": 'A student who studies for hours but forgets what she learned.', "outcome": 'Better retention in less study time.'},
     {"slug": "study-muse-finals-week-survival-system", "title": "The Finals Week Survival System", "subtitle": "A triage system for the week everything is due at once.", "type": "Guide", "price": 24, "description": 'Prioritizing when everything is due at once.', "best_for": 'A student facing finals with too much due at once.', "outcome": 'A clear plan to get through finals week without falling apart.'},
     {"slug": "study-muse-ai-prompt-kit", "title": "The Study AI Prompt Kit", "subtitle": "Prompts that turn AI into a study partner.", "type": "Prompt Pack", "price": 17, "is_ai_resource": True, "description": 'Turning AI into a study partner that can quiz her, explain concepts, summarize notes, and make flashcards.', "best_for": 'A student who wants AI to quiz her, explain topics, and make flashcards.', "outcome": 'A personal tutor she can use any time.'},
-    # 🌴 Florida Property AI shelf - new shelf, vacation-rental hosting angle.
-    # General frameworks/systems only, same as every other shelf - no
-    # specific tax/legal/licensing claims stated as fact anywhere here.
-    # is_active=False on all 6: the lineup (titles/prices) is approved, but
-    # unlike the other 33, none of these have actual workbook content or a
-    # PDF written yet - flip to True per-product via PATCH /vault/admin/
-    # products/{id} once each one is real.
-    {"slug": "florida-property-short-term-rental-launch-kit", "title": "The Short-Term Rental Launch Kit", "subtitle": "Everything to set up her first vacation rental the right way.", "type": "Workbook", "price": 19, "is_hero": True, "is_active": False},
-    {"slug": "florida-property-host-pricing-revenue-planner", "title": "The Host Pricing & Revenue Planner", "subtitle": "Price her nights with a system, not a guess.", "type": "Planner", "price": 17, "is_active": False},
-    {"slug": "florida-property-5-star-guest-experience-playbook", "title": "The 5-Star Guest Experience Playbook", "subtitle": "Turn one-time guests into repeat bookings and reviews.", "type": "Guide", "price": 15, "is_active": False},
-    {"slug": "florida-property-systems-turnover-checklist", "title": "The Property Systems & Turnover Checklist", "subtitle": "A repeatable system for every guest turnover.", "type": "Workbook", "price": 17, "is_active": False},
-    {"slug": "florida-property-rental-investment-tracker", "title": "The Rental Property Investment Tracker", "subtitle": "Track income, expenses, and ROI on every property.", "type": "Planner", "price": 15, "is_active": False},
-    {"slug": "florida-property-ai-prompt-pack", "title": "The Florida Property AI Prompt Pack", "subtitle": "AI prompts for listings, guest messages, and pricing strategy.", "type": "Prompt Pack", "price": 15, "is_ai_resource": True, "is_active": False},
 ]
 
 # Future AI Collection additions, seeded as the Vault's Monthly Drops so
@@ -218,12 +205,11 @@ CEO_GIRL_COLLECTION_SLUGS = [
     "ceo-girl-pricing-calculator",
 ]
 
-# All 55 active (non-Florida-Property) product slugs, for Everything Vault
-# and Founding Member.
+# All 55 active product slugs, for Everything Vault and Founding Member.
 ALL_PRODUCT_SLUGS = (
     [p["slug"] for p in PRODUCTS]
     + [d["slug"] for d in AI_COLLECTION_DROPS]
-    + [p["slug"] for p in AI_BRAND_PRODUCTS if not p["slug"].startswith("florida-property-")]
+    + [p["slug"] for p in AI_BRAND_PRODUCTS]
 )
 
 BUNDLES = [
@@ -418,6 +404,16 @@ async def run() -> None:
 
     for bundle in BUNDLES:
         await _upsert_bundle(db, bundle)
+
+    # Florida Property was scrapped before launch (never had real workbook
+    # content or a PDF - only ever seeded as 6 is_active=False placeholders).
+    # Delete any leftover documents from that period; confirmed via direct
+    # query that none have entitlements, reviews, or bundle_ids referencing
+    # them, so this is safe. A no-op once they're gone, so this line can be
+    # removed the next time this file needs a real edit.
+    deleted = await db.products.delete_many({"slug": {"$regex": "^florida-property-"}})
+    if deleted.deleted_count:
+        print(f"Removed {deleted.deleted_count} leftover Florida Property placeholder product(s).")
 
     print(
         f"Seeded {len(PRODUCTS)} products, {len(AI_COLLECTION_DROPS)} monthly drops, "
